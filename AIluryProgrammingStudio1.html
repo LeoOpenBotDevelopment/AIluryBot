@@ -1,0 +1,3425 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link id="faviconico" rel="icon" href="AIlurylogo.ico" type="image/x-icon">
+    <title>AIlury Studio</title>
+    <style>
+        :root {
+            --background-color: #ffffff;
+            --text-color: #000000;
+            --editor-background-color: #E9E9E9; /* #D9EBFF;*/
+            --editor-background2-color: #E9E9E9;
+            --header-background-color: #e0e0e0;
+            --circle-color: #000000;
+            --button-background-color: #000000;
+            --button-text-color: #ffffff;
+            --editor-color: #172C41;
+            --button-disabled-color: #999999;
+            --button-disabled-background-color: #cccccc;
+            --tag-color: #a239ca; /* Lila für Tags */
+            --attribute-color: #d500f9; /* Intensives Lila für Attribute */
+            --text2-color: #e040fb; /* Dunkelrosa für Attribute innerhalb von Tags */
+            --keyword-color: #e040fb; /* Lebendiges Lila für Schlüsselwörter */
+            --string-color: #e292fe; /* Sanftes Pink für Strings */
+            --number-color: #ff8a80; /* Helles Korallenrot für Zahlen */
+            --def-color: #ab47bc; /* Lila für Definitionen */
+            --variable-color: #7e57c2; /* Lila für Variablen */
+            --variable-2-color: #8e24aa; /* Helles Lila für zweite Variablen */
+            --variable-3-color: #aa00ff; /* Kräftiges Lila für dritte Variablen */
+            --property-color: #ba68c8; /* Helles Lila für Eigenschaften */
+            --operator-color: #e91e63; /* Dunkelpink für Operatoren */
+            --comment-color: #7d7d7d; /* Dunkles Grau für Kommentare */
+            --meta-color: #800080; /* Pastell-Lila für Meta-Informationen */
+            --qualifier-color: #8e24aa; /* Sattes Lila für Qualifier */
+            --builtin-color: #800080; /* Dunkles Burgunderrot für Built-ins */
+            --error-color: #d32f2f; /* Rot für Fehler */
+            --bracket-color: #8e24aa; /* Pastell-Lila für Klammern */
+            --link-color: #d81b60; /* Helles Pink für Links */
+            --active-line-bg: #1e1e1e; /* Dunkler Hintergrund für die aktive Zeile */
+            --selection-bg: #2c2c2c; /* Dunkle Auswahlfarbe */
+            --matching-bracket-color: #800080;
+            --highlight-bg-color: rgba(0, 0, 0, 0.2);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background-color: #000000;
+                --text-color: #ffffff;
+                --editor-background-color: #122335;
+                --editor-background2-color: #122335;
+                --header-background-color: #000000;
+                --circle-color: #ffffff;
+                --button-background-color: #ffffff;
+                --button-text-color: #000000;
+                --editor-color: #49C7CC;/*#5CE1E6;*/
+                --button-disabled-color: grey;
+                --button-disabled-background-color: #121212;
+                --tag-color: #a239ca; /* Lila für Tags */
+                --attribute-color: #d500f9; /* Intensives Lila für Attribute */
+                --text2-color: #e040fb; /* Dunkelrosa für Attribute innerhalb von Tags */
+                --keyword-color: #e040fb; /* Lebendiges Lila für Schlüsselwörter */
+                --string-color: #e292fe; /* Sanftes Pink für Strings */
+                --number-color: #ff8a80; /* Helles Korallenrot für Zahlen */
+                --def-color: #ab47bc; /* Lila für Definitionen */
+                --variable-color: #7e57c2; /* Lila für Variablen */
+                --variable-2-color: #8e24aa; /* Helles Lila für zweite Variablen */
+                --variable-3-color: #aa00ff; /* Kräftiges Lila für dritte Variablen */
+                --property-color: #ba68c8; /* Helles Lila für Eigenschaften */
+                --operator-color: #e91e63; /* Dunkelpink für Operatoren */
+                --comment-color: #7d7d7d; /* Dunkles Grau für Kommentare */
+                --meta-color: #800080; /* Pastell-Lila für Meta-Informationen */
+                --qualifier-color: #8e24aa; /* Sattes Lila für Qualifier */
+                --builtin-color: #800080; /* Dunkles Burgunderrot für Built-ins */
+                --error-color: #d32f2f; /* Rot für Fehler */
+                --bracket-color: #8e24aa; /* Pastell-Lila für Klammern */
+                --link-color: #d81b60; /* Helles Pink für Links */
+                --active-line-bg: #1e1e1e; /* Dunkler Hintergrund für die aktive Zeile */
+                --selection-bg: #2c2c2c; /* Dunkle Auswahlfarbe */
+                --matching-bracket-color: #800080; /* Dunkles Lila für passende Klammern */
+                --highlight-bg-color: rgba(255, 255, 255, 0.2);
+            }
+        }
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            padding: 0;
+            width: 100vw;
+            transition: 1s;
+            background: var(--background-color);
+            overflow: hidden;
+        }
+
+        #editor-container {
+            display: flex;
+            margin-top: 7%;
+            width: 100%;
+            height: calc(100vh - 60px); /* Höhe anpassen, um den Header-Bereich zu berücksichtigen */
+            transition: 1s;
+        }
+
+        #preview {
+            flex: 1;
+            height: 75vh;
+            width: 100vw;
+            border: none;
+            overflow: auto;
+            transition: 1s;
+            background-color: var(--editor-background-color);
+            border-radius: 5px;
+        }
+
+        .CodeMirror {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.3em;
+            line-height: 1.5;
+            background: var(--editor-background-color);
+            color: var(--text-color);
+            border-radius: 0;
+        }
+
+        /* Zeilennummern und Cursor */
+        .cm-s-mytheme .CodeMirror-gutters {
+            background: var(--button-text-color);
+            color: var(--button-background-color);
+            border: none;
+            padding: 10px;
+            background-color: var(--button-text-color);
+        }
+
+        .CodeMirror-cursor {
+            color: var(--button-background-color);
+            border: none;
+        }
+        /* Definiere ein neues CodeMirror-Theme */
+        .cm-s-mytheme.CodeMirror {
+            background-color: var(--editor-background2-color); /* Deine gewünschte Hintergrundfarbe */
+            color: var(--editor-color); /* Textfarbe */
+            border: none;
+        }
+
+        .cm-s-mytheme .CodeMirror-cursor {
+            border-left: none; /* Cursorfarbe */ 
+            border: none;
+        }
+
+        .CodeMirror-gutters {
+            color: var(--button-background-color); /* Setze deine gewünschte Hintergrundfarbe hier */
+            background: var(--button-text-color);
+            border: none;
+        }
+
+        .cm-s-mytheme .CodeMirror-gutter {
+            color: var(--button-background-color); /* Setze deine gewünschte Hintergrundfarbe hier */
+            background: var(--button-text-color);
+            border: none;
+        }
+        .CodeMirror-linenumber {
+            background: var(--button-text-color); /* Hintergrundfarbe für die Leisten (z.B. Zeilennummern) */
+            color: var(--button-background-color); /* Farbe für die Zeilennummern */
+            border: none;
+        }
+
+        .cm-s-mytheme .CodeMirror-linenumber {
+            color: var(--button-background-color); /* Hintergrundfarbe für die Leisten (z.B. Zeilennummern) */
+            background: var(--button-text-color); /* Farbe für die Zeilennummern */ 
+            border: none;
+        }
+
+        .cm-s-mytheme .CodeMirror-foldgutter{
+            color: var(--button-background-color); /* Hintergrundfarbe für die Leisten (z.B. Zeilennummern) */
+            background: var(--button-text-color); /* Farbe für die Zeilennummern */ 
+            border: none;
+        }
+
+        /* Füge zusätzliche Styles hinzu, um weitere CodeMirror-Elemente anzupassen */
+
+
+        /* Container für Tabs */
+        #files {
+            display: flex;
+            align-items: center;
+            background-color: var(--header-background-color);
+            padding: 10px;
+            border-bottom: none;
+            overflow-x: auto;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 50;
+            transition: 1s;
+        }
+
+        #index {
+            padding: 10px 20px;
+            margin-right: 5px;
+            background-color: #3a3f47;
+            border-radius: 5px;
+            color: #ffffff;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-width: 100px;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .index.highlight {
+            background-color: var(--button-background-color);
+            color: var(--button-text-color);
+            border-bottom: 0;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .view.highlight {
+            background-color: var(--button-background-color);
+            color: var(--button-text-color);
+            border-bottom: 0;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .toolbtn {
+            padding: 9px 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--button-text-color);
+            background: var(--button-background-color);
+            border: none;
+            border-radius: 100px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin: 0 8px;
+        }
+
+        #runbtn {
+            font-size: 1em;
+            padding: 12px 24px;
+            background: linear-gradient(90deg, #ff0077, #7700ff);
+            color: #fff;
+        }
+
+        #consolebtn {
+            font-size: 1em;
+            padding: 12px 24px;
+        }
+
+        .toolbtn:hover {
+            background: #f0f0f0;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .toolbtn:active {
+            background: #e0e0e0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transform: translateY(0);
+        }
+
+        .toolbtn:disabled {
+            background: #ddd;
+            color: #666;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #sidebar {
+            background-color: var(--header-background-color);
+            color: var(--text-color);
+            position: absolute;
+            width: 250px;
+            height: 100vh;
+            top: 0;
+            left: -300px;
+            padding: 10px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+            /*overflow-y: auto;*/
+            transition: left 0.3s;
+            z-index: 100;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+
+        #sidebar.show {
+            left: 0;
+        }
+
+        .file {
+            color: var(--text-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            opacity: 1;
+            border-bottom: 1px solid #5c5c5c;
+        }
+
+        .file input {
+            border: none;
+            background: none;
+            color: var(--text-color);
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .file .options {
+            position: relative;
+        }
+
+        .file .options .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: var(--text-color);
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .file .options .dropdown button {
+            display: block;
+            background: none;
+            border: none;
+            color: var(--button-text-color);
+            padding: 5px 10px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .file .options .dropdown button:hover {
+            background-color: var(--header-background-color);
+            color: var(--text-color);
+        }
+
+        /* Stil für den Schaltfläche zum Hinzufügen neuer Dateien */
+        #addFile {
+            background-color: var(--button-background-color);
+            color: var(--button-text-color);
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            margin-left: 10px;
+            font-weight: bold;
+            height: 5%;
+        }
+
+        #hidesidebar {
+            background-color: var(--button-background-color);
+            color: var(--button-text-color);
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            font-weight: bold;
+            height: 5%;
+        }
+
+        .file .menu-btn {
+            cursor: pointer;
+            color: var(--text-color);
+            font-size: 20px;
+            margin-left: 10px;
+        }
+
+        #filepath-container {
+            display: flex;
+            align-items: center;
+            background-color: var(--editor-background-color);
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100vw;
+            z-index: 10;
+        }
+
+        #filepath-container label {
+            font-size: 1em;
+            color: var(--editor-color);
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+
+        #filepath-container input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            color: var(--editor-color);
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: transparent;
+        }
+
+        #filepath-container input[type="text"]:focus {
+            border: none;
+            outline: none;
+        }
+
+        .index {
+            padding: 10px 20px;
+            margin-right: 5px;
+            background-color: var(--button-disabled-background-color); /* Hintergrundfarbe der Tabs */
+            border-radius: 5px;
+            color: var(--button-disabled-color);
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-width: 100px;
+            text-align: center;
+            white-space: nowrap; /* Verhindert Zeilenumbruch im Tab */
+        }
+
+        .index:hover {
+            background-color: var(--button-background-color);
+            color: var(--button-text-color);
+        }
+
+        /* Stil für den aktiven Tab */
+        .index.highlight {
+            background-color: var(--button-background-color);
+            color: var(--button-text-color);
+            border-bottom: 0;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Schatten unter dem aktiven Tab */
+        }
+
+        .view.highlight {
+            background-color: var(--button-background-color);
+            color: var(--button-text-color);
+            border-bottom: 0;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Schatten unter dem aktiven Tab */
+        }
+        /* Media Queries für Responsive Design */
+        /*@media (max-width: 768px) {
+            #editor-container {
+                flex-direction: column;
+                margin-top: 0;
+                height: calc(100vh - 60px);
+            }
+
+            #preview {
+                width: 100%;
+                border-left: none;
+                border: none;
+            }
+
+            #files {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 5px;
+            }
+
+            .index {
+                margin-right: 0;
+                min-width: auto;
+            }
+
+            #filepath-container {
+                width: 100vw;
+                top: 5%;
+                right: 5%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .CodeMirror {
+                font-size: 1em;
+            }
+
+            #files {
+                padding: 5px;
+            }
+
+            .toolbtn {
+                font-size: 1em;
+                padding: 8px 16px;
+            }
+
+            #filepath-container {
+                width: 100vw;
+                top: 5%;
+                right: 0;
+            }
+        }*/
+        /* Definiere die Farbvariablen */
+
+        /* Anwendung der Farbvariablen */
+        .cm-s-mytheme .cm-tag {
+            color: var(--tag-color);
+        }
+
+        .cm-s-mytheme .cm-attribute {
+            color: var(--attribute-color);
+        }
+
+        .cm-s-mytheme .cm-attribute.cm-tag {
+            color: var(--text2-color);
+        }
+
+        .cm-s-mytheme .cm-keyword {
+            color: var(--keyword-color);
+        }
+
+        .cm-s-mytheme .cm-string {
+            color: var(--string-color);
+        }
+
+        .cm-s-mytheme .cm-number {
+            color: var(--number-color);
+        }
+
+        .cm-s-mytheme .cm-def {
+            color: var(--def-color);
+        }
+
+        .cm-s-mytheme .cm-variable {
+            color: var(--variable-color);
+        }
+
+        .cm-s-mytheme .cm-variable-2 {
+            color: var(--variable-2-color);
+        }
+
+        .cm-s-mytheme .cm-variable-3 {
+            color: var(--variable-3-color);
+        }
+
+        .cm-s-mytheme .cm-property {
+            color: var(--property-color);
+        }
+
+        .cm-s-mytheme .cm-operator {
+            color: var(--operator-color);
+        }
+
+        .cm-s-mytheme .cm-comment {
+            color: var(--comment-color);
+        }
+
+        .cm-s-mytheme .cm-meta {
+            color: var(--meta-color);
+        }
+
+        .cm-s-mytheme .cm-qualifier {
+            color: var(--qualifier-color);
+        }
+
+        .cm-s-mytheme .cm-builtin {
+            color: var(--builtin-color);
+        }
+
+        .cm-s-mytheme .cm-error {
+            /*color: var(--error-color);
+            font-weight: bold;*/
+            background: rgba(255, 0, 0, 0.2);
+        }
+
+        .cm-s-mytheme .cm-bracket {
+            color: var(--bracket-color);
+        }
+
+        .cm-s-mytheme .cm-link {
+            color: var(--link-color);
+        }
+
+        .cm-s-mytheme .cm-activeLine {
+            background: var(--active-line-bg);
+        }
+
+        .cm-s-mytheme .cm-selection {
+            background: var(--selection-bg);
+        }
+
+        .cm-s-mytheme .cm-matchingbracket {
+            text-decoration: underline;
+            color: var(--matching-bracket-color);
+            background-color: var(--matching-bracket-color);
+        }
+        .cm-s-mytheme .cm-matchingbrackets {
+            text-decoration: underline;
+            color: var(--matching-bracket-color);
+            background-color: var(--matching-bracket-color);
+        }
+
+        .cm-s-mytheme .CodeMirror-hints {
+            background-color: var(--button-text-color); /* Hintergrundfarbe */
+            color: var(--button-background-color); /* Textfarbe */
+            border: none; /* Randfarbe */
+            font-size: 1em; /* Schriftgröße */
+            padding: 5px; /* Innenabstand */
+        }
+
+        /* Stil für einzelne Hint-Elemente */
+        .cm-s-mytheme .CodeMirror-hint {
+            padding: 2px 5px; /* Innenabstand für jedes Hint-Element */
+            cursor: pointer; /* Mauszeiger bei Hover */ 
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Stil für das aktuell ausgewählte Hint-Element */
+        .cm-s-mytheme .CodeMirror-hint-active {
+            background-color: var(--button-background-color); /* Hintergrundfarbe des ausgewählten Elements */
+            color: var(--button-text-color); /* Textfarbe des ausgewählten Elements */ 
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Stil für die Suchleiste */
+
+        .cm-s-mytheme .CodeMirror-search-field{
+            background-color: var(--button-text-color) !important; /* Hintergrundfarbe */
+            color: var(--button-background-color) !important; /* Textfarbe */
+            border: none; /* Randfarbe */
+            font-size: 1em; /* Schriftgröße */
+            padding: 5px; /* Innenabstand */
+        }
+
+        /* Stil für die Suchleiste-Eingabefeld */
+        .cm-s-mytheme .CodeMirror-search-field input{
+            background-color: transparent; /* Hintergrundfarbe */
+            color: var(--button-background-color) !important; /* Textfarbe */
+            border: none; /* Randfarbe */
+            font-size: 1em; /* Schriftgröße */
+            padding: 5px; /* Innenabstand */
+        }
+
+        /* fold gutters */
+
+        .CodeMirror-foldgutter-open {
+            background-color: transparent; /* Hintergrundfarbe */
+            color: var(--button-background-color) !important; /* Textfarbe */
+            border: none; /* Randfarbe */
+            font-size: 1em; /* Schriftgröße */
+            padding: 5px; /* Innenabstand */
+            font-weight: bold;
+        }
+
+        .CodeMirror-foldgutter-folded {
+            background-color: transparent; /* Hintergrundfarbe */
+            color: var(--button-background-color) !important; /* Textfarbe */
+            border: none; /* Randfarbe */
+            font-size: 1em; /* Schriftgröße */
+            padding: 5px; /* Innenabstand */
+            font-weight: bold;
+        }
+
+        /*.cm-s-mytheme .CodeMirror-hints {
+            color: var(--button-text-color) !important;
+            background-color: var(--button-background-color) !important;
+            border: none !important;
+            font-family: 'Fira Code', monospace !important;
+        }
+        .cm-s-mytheme .CodeMirror-hint {
+            color: var(--button-text-color) !important;
+            background-color: var(--button-background-color) !important;
+            border: none !important;
+            font-family: 'Fira Code', monospace !important;
+        }
+
+        .cm-s-mytheme .CodeMirror-hint-active {
+            color: var(--button-background-color) !important;
+            background-color: var(--button-text-color) !important;
+        }*/
+
+        .CodeMirror-hints {
+            color: var(--button-text-color) !important; /* Dunkelgrau */
+            background-color: var(--button-background-color) !important; /* Weiß für den Text */
+            border: none !important; /* Dunklere Umrandung */
+            font-family: 'Fira Code', monospace !important;
+        }
+
+        .CodeMirror-hint {
+            color: var(--button-text-color) !important; /* Dunkelgrau */
+            background-color: var(--button-background-color) !important; /* Weiß für den Text */
+            border: none !important; /* Dunklere Umrandung */ 
+            font-family: 'Fira Code', monospace !important;
+        }
+
+        /* Ändert die Farbe des aktiven Hint-Eintrags */
+        .CodeMirror-hint-active {
+            color: var(--button-background-color) !important; /* Etwas helleres Grau für die Auswahl */
+            background-color: var(--button-text-color) !important; /* Weiß für den Text */
+        }
+
+        #preview-container{
+            width: 100vw;
+            height: 100%;
+            /* every element on top of each other */
+            display: flex;
+            flex-direction: column;
+            transition: 1s;
+        }
+        .resizable-draggable {
+            display: none;
+            width: 40%;
+            height: 70%;
+            background-color: var(--button-disabled-background-color);
+            border: none;
+            border-radius: 8px;
+            position: absolute;
+            right: 20%;
+            top: 10%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            resize: both;
+            overflow: auto;
+            cursor: move;
+            z-index: 50;
+            transition: background-color 1s ease;
+        }
+        .resizable-draggable.show{
+            display: block;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2em;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            line-height: 20px;
+            text-align: center;
+            cursor: pointer;
+            color: var(--text-color);
+            z-index: 52;
+            transition: 1s;
+        }
+
+        .move-button{
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2em;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            line-height: 20px;
+            text-align: center;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: 1s;
+        }
+
+        #console {
+            margin-top: 0;
+            width: 100%;
+            height: 100%;
+            margin-top: 15%;
+            transition: 1s;
+        }
+        #console-message{
+            color: var(--text-color);
+            font-family: 'Fira Code', monospace;
+            transition: 1s;
+        }
+
+        .error{
+            color: red;
+            font-family: 'Fira Code', monospace;
+            transition: 1s;
+        }
+
+        .warn{
+            color: orange;
+            font-family: 'Fira Code', monospace;
+            transition: 1s;
+        }
+
+        .info{
+            color: var(--text-color);
+            font-family: 'Fira Code', monospace;
+            transition: 1s;
+        }
+
+        .log{
+            color: var(--text-color);
+            font-family: 'Fira Code', monospace;
+            transition: 1s;
+        }
+
+        .success{
+            color: green;
+            font-family: 'Fira Code', monospace;
+            transition: 1s;
+        }
+
+        .button-container{
+            height: 11%;
+            width: 100%;
+            overflow-y: scroll;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-top: 30px;
+            transition: 1s;
+            position: absolute;
+            z-index: 51;
+            margin-top: 0;
+            margin-left: 0;
+        }
+
+        #console-container{
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: 1s;
+        }
+        .console-setting-btn{
+            background-color: var(--button-disabled-background-color);
+            color: var(--button-disabled-color);
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-bottom: 10px;
+            margin-left: 10px;
+            width: 100%;
+            transition: 1s;
+        }
+        .console-setting-btn:hover{
+            background-color: var(--button-background-color);
+            color: var(--button-text-color);
+            transition: 1s;
+        }
+        .console-setting-btn.enabled{
+            background-color: var(--button-background-color);
+            color: var(--button-text-color);
+            transition: 1s;
+        }
+        #UploadFile{
+            text-decoration: underline;
+            background-color: var(--button-background-color);
+            color: var(--button-text-color);
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            margin-left: 10px;
+            font-weight: bold;
+            height: 5%;
+            transition: 1s;
+        }
+        #currentFileImg{
+            /*width: 100%;
+            height: 100%;*/
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: cover;
+            transition: 1s;
+        }
+        #currentFileImg-container{
+            width: 100vw;
+            height: 100vh;
+            background: var(--editor-background-color);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 45;
+            transition: 1s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            display: none;
+            padding: 10%;
+        }
+        
+        .CodeMirror-ghost {
+            opacity: 0.5; /* Transparenz für den Ghost-Text */
+            color: gray; /* Farbe des Ghost-Texts */ 
+            pointer-events: none; /* Damit der Ghost-Text nicht anklickbar ist */
+            position: absolute;
+            transition: 1s;
+        }
+
+        #line-number-input-container{
+            width: 20%;
+            max-width: 250px;
+            color: var(--button-background-color);
+            background-color: var(--button-text-color);
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            position: fixed;
+            right: 10px;
+            bottom: 10px;
+        }
+
+        #GO-button{
+            background-color: var(--button-background-color);
+            color: var(--button-text-color);
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-left: 10px;
+            width: 30%;
+            transition: 1s;
+        }
+
+        #lineNumber{
+            background-color: var(--button-background-color);
+            color: var(--button-text-color);
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 1em;
+            margin-left: 10px;
+            width: 60%;
+            transition: 1s;
+        }
+
+        #lineNumber:focus{
+            outline: none;
+        }
+
+        @keyframes rotateAnimation {
+            0% {
+              filter: hue-rotate(0deg);
+            }
+            100% {
+              filter: hue-rotate(360deg);
+            }
+        }
+        #load {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100vw;
+            background: rgba(0, 0, 0, 0.4);
+            animation: rotateAnimation 10s linear infinite;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999;
+        }
+        #load .loader {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+        #load .loader span{
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            transform: rotate(calc(18deg * var(--i)));
+        }
+        #load .loader span::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 0 10px #fff;/*, 0 0 20px #fff, 0 0 40px #fff, 0 0 60px #fff, 0 0 80px #fff;*/
+            animation: loadingAnimation 2s linear infinite;
+            animation-delay: calc(0.1s * var(--i));
+        }
+        @keyframes loadingAnimation{
+            0%{
+              transform: scale(0);
+            }
+            80%,100%{
+              transform: scale(1);
+            }
+        }
+        .file-icon{
+            font-size: 1em;
+        }
+        #refreshBtn{
+            background: transparent;
+            color: var(--editor-color);
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 1.5em;
+            margin-right: 20px;
+            font-weight: bold;
+        }
+        #preview-cross{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            color: var(--editor-color);
+            border: none;
+            font-size: 2.5em;
+            border-radius: none;
+            z-index: 999;
+            font-weight: bold;
+            display: none;
+            text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        #previewFullScreenBtn{
+            background: transparent;
+            color: var(--editor-color);
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 1.5em;
+            margin-right: 20px;
+            font-weight: bold;
+            transform: rotate(45deg);
+        }
+        #alert-icon{
+            position: absolute;
+            font-size: 1.5em;
+            color: red;
+            margin-top: -0.8em;
+            margin-left: 0.3em;
+            display: none;
+            animation: alertAnimation 1s;
+        }
+
+        @keyframes alertAnimation {
+            0%{
+                transform: scale(1) rotate(0deg);
+            }
+            33%{
+                transform: scale(1.5) rotate(45deg);
+            }
+            66%{
+                transform: scale(1.5) rotate(-45deg);
+            }
+            100%{
+                transform: scale(1) rotate(0deg);
+            }
+        }
+        
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/addon/fold/foldgutter.min.css">
+    <link rel="stylesheet" href="https://codemirror.net/lib/codemirror.css">
+    <link rel="stylesheet" href="https://codemirror.net/addon/dialog/dialog.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/show-hint.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.4/addon/hint/show-hint.min.css">
+
+</head>
+<body>
+    <section id="load">
+      <div class="loader">
+        <span style="--i: 1"></span>
+        <span style="--i: 2"></span>
+        <span style="--i: 3"></span>
+        <span style="--i: 4"></span>
+        <span style="--i: 5"></span>
+        <span style="--i: 6"></span>
+        <span style="--i: 7"></span>
+        <span style="--i: 8"></span>
+        <span style="--i: 9"></span>
+        <span style="--i: 10"></span>
+        <span style="--i: 11"></span>
+        <span style="--i: 12"></span>
+        <span style="--i: 13"></span>
+        <span style="--i: 14"></span>
+        <span style="--i: 15"></span>
+        <span style="--i: 16"></span>
+        <span style="--i: 17"></span>
+        <span style="--i: 18"></span>
+        <span style="--i: 19"></span>
+        <span style="--i: 20"></span>
+      </div>
+    </section>
+    <button id="preview-cross" onclick="previewFullScreen()">×</button>
+    <div id="sidebar">
+        <input type="file" id="fileInput" accept="image/*,.txt,.html,.css,.js" style="display: none;">
+        <button id="hidesidebar">←</button><button id="addFile">+</button><label for="fileInput"><button id="UploadFile">↓</button></label>
+        <div id="fileList">
+            <!-- Dateien werden hier dynamisch hinzugefügt -->
+        </div>
+    </div>
+    <div id="files">
+        <button class="toolbtn" id="toggleSidebar">≡</button>
+        <button class="toolbtn" id="homebtn">⌂</button>
+        <button class="toolbtn" id="runbtn">Test</button>
+        <button class="toolbtn" id="consolebtn">console<span id="alert-icon">⚠</span></button>
+        <div class="view index">view</div>
+    </div>
+    <div class="resizable-draggable" id="resizable-element">
+        <button class="close-button" onclick="closeElement()">×</button>
+        <button class="move-button">○</button>
+        <div id="console-container">
+            <div class="button-container" id="button-container">
+                <button id="warning" class="console-setting-btn">warning</button>
+                <button id="error" class="console-setting-btn">error</button>
+                <button id="log" class="console-setting-btn">log</button>
+                <button id="info" class="console-setting-btn">info</button>
+                <button id="all" class="console-setting-btn">all</button>
+            </div>
+            <div class="console" id="console">
+
+            </div>
+        </div>
+    </div>
+
+    <div id="editor-container">
+        <textarea id="editor"></textarea>
+        <div id="preview-container">
+            <div id="filepath-container"><button id="previewFullScreenBtn" onclick="previewFullScreen()">↔</button><button id="refreshBtn" onclick="refreshFunction()">⏻</button><label for="filename">/</label><input type="text" id="filename" placeholder="html file path..." value="index.html"></div><br>
+            <iframe id="preview" loading="lazy"></iframe>
+        </div>
+        <div id="currentFileImg-container">
+            <img src="" id="currentFileImg">
+        </div>
+    </div>
+    <div id="line-number-input-container">
+        <input type="number" id="lineNumber" placeholder="line">
+        <button id="GO-button" onclick="goToLine()">GO</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/addon/lint/lint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/addon/lint/javascript-lint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.13.0/jshint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/addon/fold/foldcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/addon/fold/brace-fold.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/addon/fold/xml-fold.min.js"></script>
+    <script src="path/to/codemirror/addon/edit/closebrackets.js"></script>
+    <script src="path/to/codemirror/addon/edit/closetag.js"></script>
+    <script src="path/to/codemirror/addon/edit/matchtags.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/addon/edit/closetag.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/addon/edit/matchtags.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/addon/edit/matchbrackets.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/addon/fold/foldgutter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/addon/fold/foldcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/addon/fold/brace-fold.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/addon/fold/comment-fold.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.6/addon/fold/markdown-fold.min.js"></script>
+
+    <script src="https://codemirror.net/addon/search/search.js"></script>
+    <script src="https://codemirror.net/addon/search/searchcursor.js"></script>
+    <script src="https://codemirror.net/addon/dragdrop/dragdrop.js"></script>
+    <script src="https://codemirror.net/addon/edit/history.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/search/search.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/search/jump-to-line.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/display/fullscreen.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/display/placeholder.min.js"></script>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/javascript-hint.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.4/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.4/addon/hint/html-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.4/addon/hint/css-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.4/addon/hint/javascript-hint.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.4/addon/hint/show-hint.min.js"></script>
+
+    <!-- Add-ons für spezifische Hints (HTML, CSS, JS, XML) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.4/addon/hint/xml-hint.min.js"></script>
+    <script src="https://codemirror.net/addon/edit/closetag.js"></script>
+    
+
+    <script>
+        let homebtnv = document.getElementById("homebtn");
+        homebtnv.addEventListener("click", function() {
+            window.location.href = "index.html";
+        });
+        let previewIsFullScreen = false;
+        function previewFullScreen() {
+            let preview = document.getElementById("preview");
+            let previewContainer = document.getElementById("preview-container");
+            let previewCross = document.getElementById("preview-cross");
+            /*
+            flex: 1;
+            height: 75vh;
+            width: 100vw;
+            border: none;
+            overflow: auto;
+            transition: 1s;
+            background-color: var(--editor-background-color);
+            border-radius: 5px;
+            */
+            if (previewIsFullScreen){
+                preview.style.height = "75vh";
+                preview.style.width = "100vw";
+                preview.style.position = "relative";
+                // remove left and top atributes
+                previewContainer.style.left = "0";
+                previewContainer.style.top = "0";
+                preview.style.zIndex = "1";
+                preview.style.borderRadius = "5px";
+                previewCross.style.display = "none";
+                previewIsFullScreen = false;
+            }else {
+                preview.style.height = "100%";
+                preview.style.width = "100%";
+                preview.style.position = "absolute";
+                preview.style.left = "0";
+                preview.style.top = "0";
+                preview.style.zIndex = "555";
+                preview.style.borderRadius = "5px";
+                previewCross.style.display = "block";
+                previewIsFullScreen = true;
+            }
+        }
+        const iframeE = document.getElementById('preview');
+        const loadElement = document.getElementById('load');
+
+        // Funktion zum Anzeigen des Lade-Elements, wenn das iframe anfängt zu laden
+        function startLoading() {
+            loadElement.style.display = 'flex';  // Lade-Element anzeigen
+        }
+        
+        // Funktion zum Verbergen des Lade-Elements, wenn das iframe fertig geladen ist
+        function finishLoading() {
+            loadElement.style.display = 'none';   // Lade-Element ausblenden
+        }
+
+        // Zeige das "Lade"-Element an, wenn das iframe die Quelle ändert (also neu lädt)
+        /*iframeE.addEventListener('loadstart', startLoading); // Für alte Browser kann man es manuell triggern
+        iframeE.addEventListener('load', finishLoading);*/
+        let UploadFile = document.getElementById('UploadFile');
+        let fileInputv = document.getElementById('fileInput');
+        let allimages = {};
+        UploadFile.addEventListener('click', () => {
+            fileInputv.click();
+        });
+        let currentFile = "index.html";
+        let filenames = [];
+
+        let values = {
+            
+        };
+        let mode = {
+            
+        };
+
+        let cursorPositions = {
+        };
+
+        let indexfile = "index.html";
+
+        let filenamei = document.getElementById('filename');
+
+        filenamei.addEventListener('input', () => {
+            indexfile = filenamei.value;
+            if (filenamei == ''){
+                indexfile = "index.html";
+            }
+        });
+        filenamei.addEventListener('change', () => {
+            indexfile = filenamei.value;
+            if (filenamei == ''){
+                indexfile = "index.html";
+            }
+        });
+        
+
+        const editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+            mode: mode[currentFile],
+            lineNumbers: true,
+            theme: "mytheme",
+            indentUnit: 4,
+            tabSize: 4,
+            indentWithTabs: true,
+            lineWrapping: false,
+            matchBrackets: true,
+            styleActiveLine: true,
+            autoCloseTags: true,
+            matchTags: {bothTags: true},
+            foldGutter: true,  // Faltung aktivieren
+            viewportMargin: 30,
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"], // Faltungsgutter hinzufügen
+            scrollbarStyle: "native",
+            readOnly: false,
+            cursorHeight: 0.5,
+            extraKeys: {
+                "Ctrl-Space": "autocomplete",
+                "Tab": "autocomplete",
+                "Ctrl-D": "duplicateLine",
+                "Ctrl-/": "toggleComment"
+            },
+            highlightSelectionMatches: {showToken: /\w/, annotateScrollbar: true},
+            lint: true,  // Aktiviert Linting
+            lintOnChange: true,
+            showCursorWhenSelecting: true,
+            search: {
+                showMatchesOnScrollbar: true,
+                highlightMatches: true
+            },
+            dragDrop: true,
+            historyEventDelay: 1000,
+            undoDepth: 1000,
+            autoCloseBrackets: true,
+            autoCloseBrackets: {
+                pairs: "()[]{}''\"\"``",  // Define which pairs should auto-close
+                triples: "",
+                explode: "[]{}()",       // Customize how the closing behaves
+                override: ["]", "}"],    // Override default behavior for closing
+                closeAfter: "*",         // Customize the closing character
+                closeOnEnter: true,      // Close on Enter
+                closeBrackets: true,     // Close brackets automatically
+                ignoreParentheses: false, // Ignore parentheses
+                ignoreBrackets: false,    // Ignore brackets
+                ignoreTags: false,        // Ignore tags
+                ignoreComments: false,    // Ignore comments
+                ignoreStrings: false,     // Ignore strings
+                ignorePattern: "",        // Ignore patterns
+            },
+            hintOptions: {
+                hint: CodeMirror.hint.auto,
+                completeSingle: false,
+                closeOnUnfocus: true,
+            },
+            autoCloseTags: {
+              whenClosing: true, // Schließt Tags auch, wenn du einen schließenden Tag beginnst
+              indentTags: ['div', 'li', 'section', 'button', 'script', 'style', 'html'], // Tags, die nach dem Schließen eingerückt werden sollen
+            }
+        });
+
+        function goToLine() {
+            var line = parseInt(document.getElementById("lineNumber").value, 10);
+            if (!isNaN(line)) {
+              editor.scrollIntoView({line: line - 1, ch: 0}, 200);
+              editor.setCursor({line: line - 1, ch: 0});
+              editor.focus();
+            }
+        }
+
+        /*function showGhostText(cm, suggestion) {
+            const cursor = cm.getCursor();
+            const token = cm.getTokenAt(cursor);
+            const line = cm.getLine(cursor.line);
+            const textBeforeCursor = line.slice(token.start, cursor.ch);
+            const remainingText = suggestion.slice(textBeforeCursor.length);
+
+            // Bestimme die Position für den Ghost-Text
+            const ghostStart = { line: cursor.line, ch: token.start + textBeforeCursor.length };
+            const ghostEnd = { line: cursor.line, ch: ghostStart.ch + remainingText.length };
+
+            // Den Ghost-Text visuell darstellen, ohne ihn in den Code einzufügen
+            const ghostElement = document.createElement('span');
+            ghostElement.className = 'CodeMirror-ghost';
+            ghostElement.textContent = remainingText;
+
+            // Markiere den Bereich für den Ghost-Text
+            cm.markText(ghostStart, ghostEnd, {
+                replacedWith: ghostElement,
+                clearWhenEmpty: false
+            });
+        }
+
+        // Lösche vorhandene Ghost-Text-Markierungen
+        function clearGhostText(cm) {
+            const marks = cm.getAllMarks();
+            for (const mark of marks) {
+                if (mark.replacedWith && mark.replacedWith.className === 'CodeMirror-ghost') {
+                    mark.clear();
+                }
+            }
+        }
+
+        // Füge den Ghost-Text bei Tab ein
+        function applyGhostText(cm) {
+            const cursor = cm.getCursor();
+            const marks = cm.findMarksAt(cursor);
+
+            for (const mark of marks) {
+                if (mark.replacedWith && mark.replacedWith.className === 'CodeMirror-ghost') {
+                    const range = mark.find();
+                    const textToInsert = mark.replacedWith.textContent;
+                    cm.replaceRange(textToInsert, range.from, range.to, "+input");
+                    mark.clear();
+                    break;
+                }
+            }
+        }
+
+        // Erkenne den Modus des Editors und wähle die entsprechende Autocomplete-Funktion
+        function getHintFunction(cm) {
+            const mode = cm.getMode().name;
+            if (mode === 'htmlmixed') {
+                return CodeMirror.hint.html;
+            } else if (mode === 'css') {
+                return CodeMirror.hint.css;
+            } else if (mode === 'javascript') {
+                return CodeMirror.hint.javascript;
+            }
+            return CodeMirror.hint.anyword; // Fallback für alle anderen Modi
+        }
+
+        // Ereignislistener für inputRead, um den Ghost-Text anzuzeigen
+        editor.on("inputRead", function(cm, change) {
+            if (change.text.join("").length > 0) {
+                clearGhostText(cm); // Entferne vorherige Ghost-Text-Markierungen
+
+                const cursor = cm.getCursor();
+                const token = cm.getTokenAt(cursor);
+                const word = token.string;
+
+                // Autocomplete für den aktuellen Modus starten
+                const hintFunction = getHintFunction(cm);
+                CodeMirror.showHint(cm, hintFunction, {
+                    completeSingle: false
+                });
+
+                // Wenn Vorschläge vorhanden sind, den Ghost-Text anzeigen
+                const hint = hintFunction(cm);
+                if (hint && hint.list.length > 0) {
+                    showGhostText(cm, hint.list[0]);
+                }
+            }
+        });
+
+        // Ereignislistener für die Tab-Taste, um den Ghost-Text einzufügen
+        editor.addKeyMap({
+            'Tab': function(cm) {
+                applyGhostText(cm);
+            }
+        });*/
+        function showGhostText(cm, suggestion) {
+            const cursor = cm.getCursor();
+            const token = cm.getTokenAt(cursor);
+            const line = cm.getLine(cursor.line);
+            const textBeforeCursor = line.slice(token.start, cursor.ch);
+            const remainingText = suggestion.slice(textBeforeCursor.length);
+
+            // Bestimme die Position für den Ghost-Text
+            const ghostStart = { line: cursor.line, ch: token.start + textBeforeCursor.length };
+            const ghostEnd = { line: cursor.line, ch: ghostStart.ch + remainingText.length };
+
+            // Den Ghost-Text visuell darstellen, ohne ihn in den Code einzufügen
+            const ghostElement = document.createElement('span');
+            ghostElement.className = 'CodeMirror-ghost';
+            ghostElement.textContent = remainingText;
+
+            // Markiere den Bereich für den Ghost-Text
+            cm.markText(ghostStart, ghostEnd, {
+                replacedWith: ghostElement,
+                clearWhenEmpty: false
+            });
+        }
+
+        // Lösche vorhandene Ghost-Text-Markierungen
+        function clearGhostText(cm) {
+            const marks = cm.getAllMarks();
+            for (const mark of marks) {
+                if (mark.replacedWith && mark.replacedWith.className === 'CodeMirror-ghost') {
+                    mark.clear();
+                }
+            }
+        }
+
+        // Füge den Ghost-Text bei Tab ein
+        function applyGhostText(cm) {
+            const cursor = cm.getCursor();
+            const marks = cm.findMarksAt(cursor);
+
+            for (const mark of marks) {
+                if (mark.replacedWith && mark.replacedWith.className === 'CodeMirror-ghost') {
+                    const range = mark.find();
+                    const textToInsert = mark.replacedWith.textContent;
+                    cm.replaceRange(textToInsert, range.from, range.to, "+input");
+                    mark.clear();
+                    break;
+                }
+            }
+        }
+
+        // Erkenne den Modus des Editors und wähle die entsprechende Autocomplete-Funktion
+        function getHintFunction(cm) {
+            const mode = cm.getMode().name;
+            if (mode === 'htmlmixed') {
+                return CodeMirror.hint.html;
+            } else if (mode === 'css') {
+                return CodeMirror.hint.css;
+            } else if (mode === 'javascript') {
+                return CodeMirror.hint.javascript;
+            }
+            return CodeMirror.hint.anyword; // Fallback für alle anderen Modi
+        }
+
+        // Ereignislistener für inputRead, um den Ghost-Text anzuzeigen
+        editor.on("inputRead", function(cm, change) {
+            // Bei Leertaste den Ghost-Text entfernen
+            if (change.text.join("") === " ") {
+                clearGhostText(cm);
+                return;
+            }
+
+            if (change.text.join("").length > 0) {
+                clearGhostText(cm); // Entferne vorherige Ghost-Text-Markierungen
+
+                const cursor = cm.getCursor();
+                const token = cm.getTokenAt(cursor);
+                const word = token.string;
+
+                // Autocomplete für den aktuellen Modus starten
+                const hintFunction = getHintFunction(cm);
+                CodeMirror.showHint(cm, hintFunction, {
+                    completeSingle: false
+                });
+
+                // Wenn Vorschläge vorhanden sind, den Ghost-Text anzeigen
+                const hint = hintFunction(cm);
+                if (hint && hint.list.length > 0) {
+                    showGhostText(cm, hint.list[0]);
+                }
+            }
+            if (change.origin !== 'setValue' && cursorPositions[currentFile]) {
+                const cursorps = cm.getCursor();
+                cursorPositions[currentFile].line = cursorps.line;
+                cursorPositions[currentFile].column = cursorps.ch;
+            }
+        });
+
+        // Ereignislistener für die Tab-Taste, um den Ghost-Text einzufügen
+        editor.addKeyMap({
+            'Tab': function(cm) {
+                applyGhostText(cm);
+            },
+            'Space': function(cm) {
+                clearGhostText(cm); // Entferne den Ghost-Text bei Leertaste
+                cm.replaceSelection(" "); // Fügt das Leerzeichen ein
+            }
+        });
+        
+        // Option zur Linter-Integration in CodeMirror
+        /*CodeMirror.defineOption("lint", false, function(cm, val, old) {
+            if (old && old !== CodeMirror.Init) {
+                cm.off("renderLine", old);
+                cm.off("change", old);
+            }
+            if (val) {
+                cm.on("renderLine", function(cm, line, elem) {
+                    if (cm.somethingSelected()) return;
+                    const error = cm.getLintingErrors(line);
+                    if (error) {
+                        elem.className += " lint-error";
+                    }
+                });
+                cm.on("change", function() {
+                    cm.performLinting();
+                });
+            }
+        });*/
+
+        
+        CodeMirror.defineOption("lint", false, function(cm, val, old) {
+            if (old && old !== CodeMirror.Init) {
+                cm.off("renderLine", old);
+                cm.off("change", old);
+            }
+            if (val) {
+                cm.on("renderLine", function(cm, line, elem) {
+                    if (cm.somethingSelected()) return;
+                    const error = cm.getLintingErrors(line);
+                    if (error) {
+                        elem.className += " lint-error";
+                    }
+                });
+                cm.on("change", function() {
+                    cm.performLinting();
+                });
+            }
+        });
+
+        let isonpreview = false;
+
+        // set code mirror background color to black
+
+        function checkscreensizing() {
+            let preview = document.getElementById("preview-container");
+            let lineNumInputContainer = document.getElementById("line-number-input-container");
+            if (/*!allimages[currentFile] && */isonpreview){
+                editor.setSize("100%", "100%");
+                preview.style.display = "block";
+                // code  display none
+                
+                //document.getElementById("editor").style.display = "none";
+                document.getElementById("currentFileImg-container").style.display = "none";
+                lineNumInputContainer.style.display = "none";
+            }else if (!allimages[currentFile] && !isonpreview){
+                editor.setSize("100%", "100%");
+                preview.style.display = "none";
+                // editor display none
+                //document.getElementById("editor").style.display = "auto";
+                document.getElementById("currentFileImg-container").style.display = "none";
+                lineNumInputContainer.style.display = "flex";
+            }else if (allimages[currentFile]){
+                editor.setSize("100%", "100%");
+                preview.style.display = "none";
+                // editor display none
+                //document.getElementById("editor").style.display = "none";
+                document.getElementById("currentFileImg-container").style.display = "block";
+                // image = allimages[currentFile]
+                document.getElementById("currentFileImg").src = allimages[currentFile];
+                lineNumInputContainer.style.display = "none";
+            }
+        }
+
+        checkscreensizing();
+
+        let viewelement = document.querySelector(`.view`);
+
+        viewelement.addEventListener('click', () => {
+            document.querySelector('.index.highlight')?.classList.remove('highlight');
+            viewelement.classList.add(`highlight`);
+            isonpreview = true;
+            checkscreensizing();
+        });
+        /*function goToCursorLine(line) {
+            if (!isNaN(line)) {
+              editor.scrollIntoView({line: line - 1, ch: 0}, 200);
+              editor.setCursor({line: line - 1, ch: 0});
+              editor.focus();
+            }
+        }*/
+        function goToCursorLine(line, column) {
+            if (!isNaN(line) && line > 0) {
+                editor.scrollIntoView({line: line, ch: column}, 200);
+                editor.setCursor({line: line, ch: column});
+                editor.focus();
+            } else if (line === 0) {
+                editor.scrollIntoView({line: 0, ch: column}, 200);
+                editor.setCursor({line: 0, ch: column});
+                editor.focus();
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const addFileButton = document.getElementById('addFile');
+            const toggleSidebarButton = document.getElementById('toggleSidebar');
+            const fileList = document.getElementById('fileList');
+            const hidesidebar = document.getElementById('hidesidebar');
+            const files = document.getElementById('files');
+            const fileInput = document.getElementById('fileInput');
+
+            fileInput.addEventListener('change', (event) => {
+                const files = event.target.files;
+
+                Array.from(files).forEach(file => {
+                    const fileName = file.name;
+
+                    if (file.type === 'text/plain') {
+                        // Verarbeite Textdateien
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            addNewFile(fileName);
+                            values[fileName] = e.target.result;
+                            // Erstelle eine Datei-Element
+                        };
+                        reader.readAsText(file);
+                    } else if (file.type === 'text/html') {
+                        // Verarbeite Textdateien
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            addNewFile(fileName);
+                            values[fileName] = e.target.result;
+                            // Erstelle eine Datei-Element
+                        };
+                        reader.readAsText(file);
+                    } else if (file.type === 'text/css') {
+                        // Verarbeite Textdateien
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            addNewFile(fileName);
+                            values[fileName] = e.target.result;
+                            // Erstelle eine Datei-Element
+                        };
+                        reader.readAsText(file);
+                    } else if (file.type === 'text/js') {
+                        // Verarbeite Textdateien
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            addNewFile(fileName);
+                            values[fileName] = e.target.result;
+                            // Erstelle eine Datei-Element
+                        };
+                        reader.readAsText(file);
+                    } else if (file.type.startsWith('image/')) {
+                        // Verarbeite Bilddateien
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            allimages[fileName] = e.target.result;
+                            let newimageelement = createImgElement(fileName);
+                            fileList.appendChild(newimageelement);
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        console.error('Unsupported file type:', file.type);
+                    }
+                });
+            });
+
+            function createFileElement(namee) {
+                let name = namee;
+                if (filenames.includes(name)) {
+                    return;
+                }
+                let oldname = name;
+                filenames.push(name);
+
+                cursorPositions[name] = {
+                    line: 0,
+                    column: 0
+                };
+
+                if (name.includes(".html")) {
+                    mode[name] = "htmlmixed";
+                    values[name] = `
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AIlury Programming studio</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <script src="script.js"><\/script>
+    </body>
+</html>`;
+                } else if (name.includes(".js")) {
+                    mode[name] = "javascript";
+                    values[name] = `
+console.log("Hello World!");`;
+                } else if (name.includes(".css")) {
+                    mode[name] = "css";
+                    values[name] = `
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}`;
+                }
+
+                const fileElement = document.createElement('div');
+                fileElement.className = 'file';
+
+                let logoText = "✗";
+                if (name.includes(".html")){
+                    logoText = "Html";
+                }else if (name.includes(".js")){
+                    logoText = "Js";
+                }else if (name.includes(".css")){
+                    logoText = "Css";
+                }
+                const FileElementIcon = document.createElement('span');
+                FileElementIcon.className = "file-icon";
+                FileElementIcon.textContent = logoText;
+                FileElementIcon.style.fontWeight = "1500";
+                FileElementIcon.style.fontSize = "1em";
+                // text gradient
+                if (logoText == "✗"){
+                    FileElementIcon.style.background = "linear-gradient(to right, #ff0000, #ff00ff)";
+                }else {
+                    FileElementIcon.style.background = "linear-gradient(to right, #ff0077, #7700ff)";
+                }
+                FileElementIcon.style.backgroundClip = "text";
+                FileElementIcon.style.color = "transparent";
+
+                const fileNameInput = document.createElement('input');
+                fileNameInput.type = 'text';
+                fileNameInput.value = name;
+                fileNameInput.disabled = true;
+                fileElement.appendChild(FileElementIcon);
+                fileElement.appendChild(fileNameInput);
+
+                const options = document.createElement('div');
+                options.className = 'options';
+
+                const menuButton = document.createElement('span');
+                menuButton.className = 'menu-btn';
+                menuButton.textContent = '…';
+                menuButton.addEventListener('click', (event) => {
+                    const dropdown = event.currentTarget.nextElementSibling;
+                    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                });
+
+                const dropdown = document.createElement('div');
+                dropdown.className = 'dropdown';
+
+                const newfileforfiles = document.createElement('div');
+                newfileforfiles.className = 'index';
+                
+                newfileforfiles.textContent =  name;
+
+                newfileforfiles.addEventListener('click', () => {
+                    startLoading();
+                    //editor.setValue(values[name]);
+                    currentFile = name;
+                    editor.setOption('mode', mode[name]);
+                    editor.refresh();
+                    // update cursor position
+                    files.querySelector('.index.highlight')?.classList.remove('highlight');
+                    newfileforfiles.classList.add("highlight");
+                    isonpreview = false;
+                    checkscreensizing();
+                    editor.setValue(values[name]);
+                    if (cursorPositions[currentFile] && typeof cursorPositions[currentFile].line !== 'undefined') {
+                        goToCursorLine(cursorPositions[currentFile].line, cursorPositions[currentFile].column);
+                    }
+                    finishLoading();
+                });
+
+                files.appendChild(newfileforfiles);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.addEventListener('click', () => {
+                    const index = filenames.indexOf(name);
+                    if (index !== -1) filenames.splice(index, 1);
+                    delete mode[name];
+                    delete values[name];
+                    fileElement.remove();
+                    newfileforfiles.remove();
+                    menuButton.click();
+                    document.querySelector('.view').click();
+                });
+
+                const renameButton = document.createElement('button');
+                renameButton.textContent = 'Rename';
+                renameButton.addEventListener('click', () => {
+                    menuButton.click();
+                    if (fileNameInput.disabled) {
+                        fileNameInput.disabled = false;
+                        fileNameInput.focus();
+                        fileNameInput.classList.add('editing');
+
+                        fileNameInput.addEventListener('keydown', (event) => {
+                            if (event.key === 'Enter') {
+                                let newName = fileNameInput.value.trim();
+                                if (newName && newName !== name && !filenames.includes(newName)) {
+                                    const index = filenames.indexOf(name);
+                                    if (index !== -1) filenames[index] = newName;
+
+                                    mode[newName] = mode[name];
+                                    values[newName] = values[name];
+                                    cursorPositions[newName] = cursorPositions[name];
+
+                                    name = newName;
+                                    fileNameInput.value = name;
+                                    newfileforfiles.textContent = name;
+                                    oldname = name;
+                                    let logoText2 = "✗";
+                                    if (name.includes(".html")){
+                                        logoText2 = "Html";
+                                    }else if (name.includes(".js")){
+                                        logoText2 = "Js";
+                                    }else if (name.includes(".css")){
+                                        logoText2 = "Css";
+                                    }
+                                    if (logoText2 == "✗"){
+                                        FileElementIcon.style.background = "linear-gradient(to right, #ff0000, #af002d)";
+                                        FileElementIcon.style.backgroundClip = "text";
+                                        FileElementIcon.style.color = "transparent";
+                                    }else {
+                                        FileElementIcon.style.background = "linear-gradient(to right, #ff0077, #7700ff)";
+                                        FileElementIcon.style.backgroundClip = "text";
+                                        FileElementIcon.style.color = "transparent";
+                                    }
+                                    FileElementIcon.textContent = logoText2;
+                                    fileNameInput.disabled = true;
+                                    fileNameInput.classList.remove('editing');
+                                } else {
+                                    //alert('file name was declined');
+                                    fileNameInput.value = oldname;
+                                    newfileforfiles.textContent = oldname;
+                                    fileNameInput.disabled = true;
+                                    fileNameInput.classList.remove('editing');
+                                }
+                            }
+                        });
+
+                        fileNameInput.addEventListener('blur', () => {
+                            /*fileNameInput.disabled = true;
+                            fileNameInput.classList.remove('editing');*/
+                            let newName = fileNameInput.value.trim();
+                            if (newName && newName !== name && !filenames.includes(newName)) {
+                                const index = filenames.indexOf(name);
+                                if (index !== -1) filenames[index] = newName;
+
+                                mode[newName] = mode[name];
+                                values[newName] = values[name];
+                                cursorPositions[newName] = cursorPositions[name];
+
+                                name = newName;
+                                fileNameInput.value = name;
+                                newfileforfiles.textContent = name;
+                                oldname = name;
+                                let logoText2 = "✗";
+                                if (name.includes(".html")){
+                                    logoText2 = "Html";
+                                }else if (name.includes(".js")){
+                                    logoText2 = "Js";
+                                }else if (name.includes(".css")){
+                                    logoText2 = "Css";
+                                }
+                                if (logoText2 == "✗"){
+                                    FileElementIcon.style.background = "linear-gradient(to right, #ff0000, #af002d)";
+                                    FileElementIcon.style.backgroundClip = "text";
+                                    FileElementIcon.style.color = "transparent";
+                                }else {
+                                    FileElementIcon.style.background = "linear-gradient(to right, #ff0077, #7700ff)";
+                                    FileElementIcon.style.backgroundClip = "text";
+                                    FileElementIcon.style.color = "transparent";
+                                }
+                                FileElementIcon.textContent = logoText2;
+                                fileNameInput.disabled = true;
+                                fileNameInput.classList.remove('editing');
+                            }else {
+                                fileNameInput.disabled = true;
+                                fileNameInput.classList.remove('editing');
+                            }
+                        });
+                    }
+                });
+
+                const downloadButton = document.createElement('button');
+                downloadButton.textContent = 'Download';
+                function downloadFile(filename, content) {
+                    const blob = new Blob([content], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
+
+                downloadButton.addEventListener('click', () => {
+                    menuButton.click();
+                    downloadFile(name, values[name]);
+                    /*const blob = new Blob([values[name]], { type: 'text/plain' });
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = `${name}`;
+                    a.click();
+                    URL.revokeObjectURL(a.href);*/
+                });
+
+                const copyButton = document.createElement('button');
+                copyButton.textContent = 'Copy';
+                copyButton.addEventListener('click', () => {
+                    menuButton.click();
+                    const textarea = document.createElement('textarea');
+                    textarea.value = values[name];
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                });
+
+                let copyFilePathButton = document.createElement('button');
+                copyFilePathButton.textContent = 'path';
+                copyFilePathButton.addEventListener('click', () => {
+                    menuButton.click();
+                    const textarea = document.createElement('textarea');
+                    textarea.value = name;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                });
+
+                dropdown.appendChild(deleteButton);
+                dropdown.appendChild(renameButton);
+                dropdown.appendChild(downloadButton);
+                dropdown.appendChild(copyButton);
+                dropdown.appendChild(copyFilePathButton);
+                options.appendChild(menuButton);
+                options.appendChild(dropdown);
+                fileElement.appendChild(options);
+
+                return fileElement;
+            }
+
+            let imgType = {
+                
+            };
+            function createImgElement(namevv) {
+                let name = namevv;
+                let oldname = name;
+
+                // Bildbehandlung
+                if (name.includes(".png") || name.includes(".jpg") || name.includes(".jpeg") || name.includes(".gif")) {
+                    let imagetype = name.split('.');
+                    let topImageType = imagetype[imagetype.length - 1];
+                    imgType[name] = topImageType;
+                    if (filenames.includes(name)) {
+                        return;
+                    }
+                    filenames.push(name);
+                    
+                    const fileElement = document.createElement('div');
+                    fileElement.className = 'file';
+
+                    const FileElementIcon = document.createElement('span');
+                    FileElementIcon.className = "file-icon";
+                    FileElementIcon.textContent = "□";
+                    FileElementIcon.style.fontWeight = "1500";
+                    FileElementIcon.style.fontSize = "1em";
+                    // text gradient
+                    FileElementIcon.style.background = "linear-gradient(to right, #ff0077, #7700ff)";
+                    FileElementIcon.style.backgroundClip = "text";
+                    FileElementIcon.style.color = "transparent";
+                    
+
+                    const fileNameInput = document.createElement('input');
+                    fileNameInput.type = 'text';
+                    fileNameInput.value = name;
+                    fileNameInput.disabled = true;
+                    fileElement.appendChild(FileElementIcon);
+                    fileElement.appendChild(fileNameInput);
+
+                    const options = document.createElement('div');
+                    options.className = 'options';
+
+                    const menuButton = document.createElement('span');
+                    menuButton.className = 'menu-btn';
+                    menuButton.textContent = '…';
+                    menuButton.addEventListener('click', (event) => {
+                        const dropdown = event.currentTarget.nextElementSibling;
+                        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                    });
+
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'dropdown';
+
+                    const newfileforfiles = document.createElement('div');
+                    newfileforfiles.className = 'index';
+                    newfileforfiles.textContent = name;
+
+                    newfileforfiles.addEventListener('click', () => {
+                        editor.refresh();
+                        currentFile = name;
+                        files.querySelector('.index.highlight')?.classList.remove('highlight');
+                        newfileforfiles.classList.add("highlight");
+                        isonpreview = false;
+                        checkscreensizing();
+                    });
+
+                    files.appendChild(newfileforfiles);
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.addEventListener('click', () => {
+                        const index = filenames.indexOf(name);
+                        if (index !== -1) filenames.splice(index, 1);
+                        delete mode[name];
+                        delete values[name];
+                        fileElement.remove();
+                        newfileforfiles.remove();
+                        menuButton.click();
+                        document.querySelector('.view').click();
+                    });
+
+                    const renameButton = document.createElement('button');
+                    renameButton.textContent = 'Rename';
+                    renameButton.addEventListener('click', () => {
+                        menuButton.click();
+                        if (fileNameInput.disabled) {
+                            fileNameInput.disabled = false;
+                            fileNameInput.focus();
+                            fileNameInput.classList.add('editing');
+
+                            fileNameInput.addEventListener('keydown', (event) => {
+                                if (event.key === 'Enter') {
+                                    let newName = fileNameInput.value.trim();
+                                    if (newName && newName !== name && !filenames.includes(newName)) {
+                                        const index = filenames.indexOf(name);
+                                        if (index !== -1) filenames[index] = newName;
+
+                                        allimages[newName] = allimages[name];
+
+                                        name = newName;
+                                        fileNameInput.value = name;
+                                        newfileforfiles.textContent = name;
+                                        oldname = name;
+                                        fileNameInput.disabled = true;
+                                        fileNameInput.classList.remove('editing');
+                                    } else {
+                                        //alert('file name was declined');
+                                        fileNameInput.value = oldname;
+                                        newfileforfiles.textContent = name;
+                                        fileNameInput.disabled = true;
+                                        fileNameInput.classList.remove('editing');
+                                    }
+                                }
+                            });
+
+                            fileNameInput.addEventListener('blur', () => {
+                                /*fileNameInput.disabled = true;
+                                fileNameInput.classList.remove('editing');*/
+                                let newName = fileNameInput.value.trim();
+                                if (newName && newName !== name && !filenames.includes(newName)) {
+                                    const index = filenames.indexOf(name);
+                                    if (index !== -1) filenames[index] = newName;
+
+                                    allimages[newName] = allimages[name];
+
+                                    name = newName;
+                                    fileNameInput.value = name;
+                                    newfileforfiles.textContent = name;
+                                    oldname = name;
+                                    fileNameInput.disabled = true;
+                                    fileNameInput.classList.remove('editing');
+                                }else {
+                                    fileNameInput.value = oldname;
+                                    newfileforfiles.textContent = name;
+                                    fileNameInput.disabled = true;
+                                    fileNameInput.classList.remove('editing');
+                                }
+                            });
+                        }
+                    });
+
+
+                    const downloadButton = document.createElement('button');
+                    downloadButton.textContent = 'Download';
+                    downloadButton.addEventListener('click', () => {
+                        menuButton.click();
+                        const blob = new Blob([allimages[name]], { type: `image/${imgType[name]}` }); // Bildtyp anpassen, falls notwendig
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = name;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    });
+
+                    const copyFilePathButton = document.createElement('button');
+                    copyFilePathButton.textContent = 'path';
+                    copyFilePathButton.addEventListener('click', () => {
+                        menuButton.click();
+                        const textarea = document.createElement('textarea');
+                        textarea.value = name;
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                    });
+
+                    dropdown.appendChild(deleteButton);
+                    dropdown.appendChild(renameButton);
+                    dropdown.appendChild(downloadButton);
+                    dropdown.appendChild(copyFilePathButton);
+                    options.appendChild(menuButton);
+                    options.appendChild(dropdown);
+                    fileElement.appendChild(options);
+
+                    return fileElement;
+                }
+            }
+
+
+            function addNewFile(name = '') {
+                if (filenames.includes(name)) {
+                    alert('Eine Datei mit diesem Namen existiert bereits.');
+                    return;
+                }
+                const newFile = createFileElement(name || `in${filenames.length + 2}dex.html`);
+                fileList.appendChild(newFile);
+            }
+
+            addFileButton.addEventListener('click', () => {
+                const newfilename = "index" + (filenames.length + 1) + ".html";
+                addNewFile(newfilename);
+            });
+
+            toggleSidebarButton.addEventListener('click', () => {
+                sidebar.classList.toggle('show');
+            });
+
+            let consolebtn = document.getElementById("consolebtn");
+
+            consolebtn.addEventListener("click", () => {
+                document.querySelector(".resizable-draggable").classList.toggle('show');
+                document.getElementById('alert-icon').style.display = 'none';
+            });
+
+            hidesidebar.addEventListener('click', () => {
+                sidebar.classList.toggle('show');
+            });
+
+            addNewFile('index.html');
+            addNewFile('style.css');
+            addNewFile('script.js');
+        });
+        
+        function replacePaths(htmlString, allimages) {
+            // Ersetze Bildpfade in <img> Tags
+            /*function findVariableValue(code, variableName) {
+                // Suche nach Zuweisungen für die Variable
+                //const regex = new RegExp(`(?:var|let|const)?\\s+${variableName}\\s*=\\s*(['"]?)([^'"]+)\\1`, 'g');
+                const regex = new RegExp(`(?:var|let|const)?\\s+${variableName}\\s*=\\s*(['"\`]?)([^'"\`]+)\\1`, 'g');
+
+                const match = regex.exec(code);
+
+                if (match) {
+                    const value = match[2];
+
+                    // Prüfe, ob der Wert eine andere Variable ist
+                    const variableRegex = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/;
+                    if (variableRegex.test(value)) {
+                        // Suche nach dem Wert der Variablen
+                        return findVariableValue(code, value);
+                    }
+
+                    // Überprüfe auf Template Literals
+                    const templateLiteralRegex = /\$\{([^}]+)\}/g;
+                    if (templateLiteralRegex.test(value)) {
+                        return value.replace(templateLiteralRegex, (match, p1) => {
+                            // Ersetze die enthaltene Variable
+                            const innerValue = findVariableValue(code, p1);
+                            return innerValue !== undefined ? innerValue : p1;
+                        });
+                    }
+
+                    return value;
+                }
+
+                // Wenn keine Zuweisung gefunden wurde, gib einfach den ursprünglichen Namen zurück
+                return variableName;
+            }*/
+            function findVariableValue(code, variableName, seen = new Set()) {
+                if (seen.has(variableName)) return variableName;
+                seen.add(variableName);
+
+                const regex = new RegExp(`(?:var|let|const)?\\s+${variableName}\\s*=\\s*(['"\`]?)([^'"\`]+)\\1`, 'g');
+                const match = regex.exec(code);
+
+                if (match) {
+                    const value = match[2];
+
+                    const variableRegex = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/;
+                    if (variableRegex.test(value)) {
+                        return findVariableValue(code, value, seen);
+                    }
+
+                    const templateLiteralRegex = /\$\{([^}]+)\}/g;
+                    if (templateLiteralRegex.test(value)) {
+                        return value.replace(templateLiteralRegex, (match, p1) => {
+                            const innerValue = findVariableValue(code, p1, seen);
+                            return innerValue !== undefined ? innerValue : p1;
+                        });
+                    }
+
+                    return value;
+                }
+
+                return variableName;
+            }
+
+
+            htmlString = htmlString.replaceAll(/<img\s+[^>]*src=["']([^"']+)["'][^>]*>/g, (match, src) => {
+                if (allimages[src]) {
+                    return match.replaceAll(src, allimages[src]);
+                }
+                return match;
+            });
+
+            // Ersetze Bildpfade in CSS innerhalb von <style> Tags
+            htmlString = htmlString.replaceAll(/<style[^>]*>([\s\S]*?)<\/style>/g, (match, cssText) => {
+                Object.keys(allimages).forEach(key => {
+                    const regex = new RegExp(`url\\(['"]?${key}['"]?\\)`, 'g');
+                    cssText = cssText.replaceAll(regex, `url('${allimages[key]}')`);
+                });
+                return `<style>${cssText}</style>`;
+            });
+
+            // Ersetze Bildpfade in CSS, die direkt in style-Attributen von HTML-Elementen enthalten sind
+            htmlString = htmlString.replaceAll(/style=["']([^"']+)["']/g, (match, styleText) => {
+                Object.keys(allimages).forEach(key => {
+                    const regex = new RegExp(`url\\(['"]?${key}['"]?\\)`, 'g');
+                    styleText = styleText.replaceAll(regex, `url(\'${allimages[key]}\')`);
+                });
+                return `style="${styleText}"`;
+            });
+
+            // Ersetze Bildpfade in <script> Tags
+            /*/<script[^>]*>([\s\S]*?)<\/script>/g*/
+            htmlString = htmlString.replace(/<script(?![^>]*\ssrc)[\s\S]*?>([\s\S]*?)<\/script>/g, (match, code) => {
+                Object.keys(allimages).forEach(key => {
+                    
+                    const regexTemplateLiteral = new RegExp("\\${([^}]+)}", "g");
+                    
+                    code = code.replaceAll(regexTemplateLiteral, (match, p1) => {
+                        const p1split = p1.split("+");
+                        let p1result = "";
+                        p1split.forEach(p1key => {
+                            let p1_ = p1key.trim();
+                            const p1resultv = findVariableValue(code, p1_); 
+                            p1result += p1resultv;
+                        });
+                        return p1result;
+                    });
+
+                    const urlRegex = new RegExp(`url\\(['"]?${key}['"]?\\)`, 'g');
+
+                    let alsocheckedCode = findVariableValue(code, key);
+                    // Ersetze jede gefundene URL mit dem entsprechenden Wert aus der replacementMap
+                    code = code.replaceAll(urlRegex, (match, p1) => {
+                        return `url('${allimages[alsocheckedCode]}')`;
+                    });
+                    
+                    const regex = new RegExp(`(['"\`]?${key}['"\`]?)`, 'g');
+                    let checkedCode = findVariableValue(code, key);
+                    code = code.replaceAll(regex, `(\'${allimages[checkedCode]}\')`);
+                    //
+                    /*const regex2 = new RegExp(`Image\\.src\\s*=\\s*['"]${key}['"]`, 'g');
+                    if (code.includes(key)) {
+                        let checkedCode2 = findVariableValue(code, key);
+                        code = code.replaceAll(regex2, `Image.src = '${allimages[checkedCode2]}'`);
+                    }*/
+                    //
+                    /*const regex3 = new RegExp(`(${key})`, 'g');
+                    let checkedCode3 = findVariableValue(code, key);
+                    code = code.replaceAll(regex3, `('${allimages[checkedCode3]}')`);*/
+                    // Funktion, um spezielle Zeichen im key zu escapen, damit er sicher im RegEx verwendet werden kann
+                    
+                    //
+                    const regex8 = new RegExp(`\\s*=\\s*['"\`]?${key}['"\`]?`, 'g');
+                    let checkedCode8 = findVariableValue(code, key);
+                    code = code.replaceAll(regex8, (match) => {
+                        // Überprüfen, ob es sich um eine gültige URL handelt
+                        if (allimages[checkedCode8]) {
+                            return ` = '${allimages[checkedCode8]}'`;
+                        }
+                        // Falls keine passende URL gefunden wurde, gib den ursprünglichen Match zurück
+                        return match;
+                    });
+                    //
+                    //const regex4 = new RegExp(`\\.src\\s*=\\s*(?:['"\`]?url\\(?['"\`]?${key}['"\`]?\\)?|['"\`]?${key}['"\`]?)`, 'g');
+                    const regex4 = new RegExp(`.src\\s*=\\s*['"\`]?${key}['"\`]?`, 'g');
+                    let checkedCode4 = findVariableValue(code, key);
+                    code = code.replaceAll(regex4, (match) => {
+                        // Überprüfen, ob es sich um eine 'url()' handelt
+                        return `.src = '${allimages[checkedCode5]}'`;
+                    });
+                    //
+                    const regex5 = new RegExp(`Img\\s*=\\s*['"\`]?${key}['"\`]?`, 'g');
+
+                    // Finde den Wert der Variablen durch findVariableValue
+                    let checkedCode5 = findVariableValue(code, key);
+
+                    // Ersetze den Ausdruck abhängig davon, ob 'url()' vorhanden ist
+                    code = code.replaceAll(regex5, (match) => {
+                        // Überprüfen, ob es sich um eine 'url()' handelt
+                        return `Img = '${allimages[checkedCode5]}'`;
+                    });
+                });
+                const textureRegex = /new\s*THREE\.TextureLoader\(\)\.load\(['"`]?([^'"`]+)['"`]?\)/g;
+                code = code.replace(textureRegex, (match, p1) => {
+                    let checkedCode = findVariableValue(code, p1);
+                    return allimages[checkedCode] ? `new THREE.TextureLoader().load('${allimages[checkedCode]}')` : match;
+                });
+                return `<script>${code}<\/script>`;
+            });
+
+            return htmlString;
+        }
+
+        
+        const preview = document.getElementById('preview');
+        const runButton = document.getElementById('runbtn');
+        let running = false;
+
+        let filename = document.getElementById('filename');
+        function externalConsoleLog(message) {
+            let consoleOutput = document.getElementById('console');
+            consoleOutput.innerText += message + '\n';
+            consoleOutput.scrollTop = consoleOutput.scrollHeight; // Automatisches Scrollen nach unten
+        }
+        
+        function replaceLinksAndScripts(htmlString, values) {
+            // Verwende reguläre Ausdrücke, um CSS <link> Tags zu ersetzen
+            htmlString = htmlString.replace(/<link\s+[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+)["'][^>]*>/g, (match, href) => {
+                if (values[href]) {
+                    // Ersetze <link> durch ein <style> Tag mit dem CSS-Inhalt
+                    return `<style>\n${values[href]}\n</style>`;
+                }
+                return match;
+            });
+
+            // Verwende reguläre Ausdrücke, um <script> Tags zu ersetzen
+            htmlString = htmlString.replaceAll(/<script\s+[^>]*src=["']([^"']+)["'][^>]*><\/script>/g, (match, src) => {
+                if (values[src]) {
+                    // Ersetze <script src=""> durch ein <script> mit dem JS-Inhalt
+                    return `<script>\n${values[src]}\n<\/script>`;
+                }
+                return match;
+            });
+
+            return htmlString;
+        }
+
+        
+        function processHtmlMixedCode(htmlString) {
+            // Ersetze den Inhalt von <script> Tags ohne src
+            ///<script[^>]*>([\s\S]*?)<\/script>/g
+            htmlString = htmlString.replace(/<script(?![^>]*\ssrc)[\s\S]*?>([\s\S]*?)<\/script>/g, (match, scriptContent) => {
+                const wrappedScriptContent = `
+        try {
+            ${scriptContent.trim()}
+        } catch (error) {
+            window.parent.postMessage({
+                type: 'error',
+                message: \`\${error.name}: \${error.message}\n\`
+            }, '*');
+        }
+                `;
+                return `<script>${wrappedScriptContent}<\/script>`;
+            });
+
+            return htmlString;
+        }
+
+        
+        function processHtmlForWindowLocation(htmlMixedCode) {
+            //let editedHtmlMixedCode = htmlMixedCode.replace(/window\.location(?:\.href)?\s*=\s*(["'`]?)(\${?.*?}?|[^"'`;\s]+)\1\s*;/g, (match, quote, location) => {
+            /*let editedHtmlMixedCode = htmlMixedCode.replace(/window\.location(?:\.href)?\s*=\s*(\${[^}]+}|['"`]?[^'"`;\s]+['"`]?|[^;\s]+)\s*;/g, (match, quote, location) => {
+                // Wenn es sich um einen Template-String (mit ${}) handelt, lassen wir die Variable direkt
+                return `
+        window.parent.postMessage({
+            type: 'get window location',
+            message: ${location}
+        }, '*');
+                `;
+            });*/
+            let editedHtmlMixedCode = htmlMixedCode.replace(/window\.location(?:\.href)?\s*=\s*(?:`([^`]*)`|(['"`])([^'"`;\s]+)\2|([^;\s]+))\s*;/g, (match, templateLiteral, quote, quotedValue, unquotedValue) => {
+                // Bestimmen, ob wir einen Template-Literal, einen zitierten Wert oder einen unquoted Wert haben
+                const location = templateLiteral ? `\`${templateLiteral}\`` : (quote ? `${quote}${quotedValue}${quote}` : unquotedValue);
+
+                // Erstellen Sie die Ersetzungsnachricht
+                return `
+            window.parent.postMessage({
+                type: 'get window location',
+                message: ${location}
+            }, '*');
+                `;
+            });
+
+
+
+            // 2. Fügt ein <script>-Tag hinzu, das auf Änderungen von href überwacht
+            const monitorScript = `
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.body.addEventListener('click', function(event) {
+                    if (event.target.tagName === 'A' && event.target.href) {
+                        event.preventDefault();
+                        window.parent.postMessage({
+                            type: 'get window location',
+                            message: event.target.href
+                        }, '*');
+                    }
+                });
+            });
+            document.querySelectorAll('a[href]').forEach(function(link) {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    // Nachricht an das parent-Window senden
+                    window.parent.postMessage({
+                        type: 'get window location',
+                        message: this.href
+                    }, '*');
+                });
+            });
+        <\/script>\n
+            `;
+            const bodyTagPosition = editedHtmlMixedCode.lastIndexOf('</body>');
+            if (bodyTagPosition !== -1) {
+                editedHtmlMixedCode = editedHtmlMixedCode.slice(0, bodyTagPosition) + monitorScript + editedHtmlMixedCode.slice(bodyTagPosition);
+            } else {
+                // Falls kein </body>-Tag vorhanden ist, wird das Script einfach ans Ende hinzugefügt
+                editedHtmlMixedCode += monitorScript;
+            }
+
+            // Rückgabe des bearbeiteten HTML-Codes
+            return `${editedHtmlMixedCode}`;
+        }
+
+        function refreshFunction() {
+            running = false;
+            runbuttononclick();
+        }
+
+        function runbuttononclick() {
+            isonpreview = true;
+            document.querySelector('.index.highlight')?.classList.remove('highlight');
+            viewelement.classList.add(`highlight`);
+            isonpreview = true;
+            checkscreensizing();
+            values[currentFile] = editor.getValue();
+            let code = values[indexfile];
+            let consoleDiv = document.getElementById('console');
+            if (code && indexfile.includes('.html')){
+                /*if (indexfile.includes('.html')){
+                    code = replaceLinksAndScripts(code, values);
+                    code = replacePaths(code, allimages);
+                    code = processHtmlMixedCode(code);
+                    code = processHtmlForWindowLocation(code);
+                    code = replaceConsoleMethodsInCode(code);
+                    //values[indexfile] = code;
+                    //editor.setValue(values[indexfile]);
+                }*/
+                code = replaceLinksAndScripts(code, values);
+                code = replacePaths(code, allimages);
+                code = processHtmlMixedCode(code);
+                code = processHtmlForWindowLocation(code);
+                code = replaceConsoleMethodsInCode(code);
+                running = !running;
+                runButton.textContent = running ? "Stop" : "Test";
+                if (running){
+                    document.getElementById('filename').value = `${indexfile}`;
+                    startLoading();
+                    preview.srcdoc = code;
+                    finishLoading();
+                }else {
+                    startLoading();
+                    consoleDiv.innerHTML = '';
+                    document.getElementById('alert-icon').style.display = 'none';
+                    preview.srcdoc = "";
+                    finishLoading();
+                }
+            }else {
+                startLoading();
+                consoleDiv.innerHTML = '';
+                document.getElementById('alert-icon').style.display = 'none';
+                preview.srcdoc = "";
+                running = !running;
+                runButton.textContent = "Test";
+                finishLoading();
+            }
+        }
+        runButton.addEventListener('click', () => {
+            runbuttononclick();
+        });
+
+        const completesuggestion = {
+            '<html>': '</html>',
+            '<head>': '</head>',
+            '<body>': '</body>',
+            '<div>': '</div>',
+            '<script>': '<\/script>',
+            '<h1>': '</h1>',
+            '<h2>': '</h2>',
+            '<h3>': '</h3>',
+            '<h4>': '</h4>',
+            '<h5>': '</h5>',
+            '<h6>': '</h6>',
+            '<p>': '</p>',
+            '<a>': '</a>',
+            '<ul>': '</ul>',
+            '<li>': '</li>',
+            '<ol>': '</ol>',
+            '<table>': '</table>',
+            '<tr>': '</tr>',
+            '<td>': '</td>',
+            '<th>': '</th>',
+            '<form>': '</form>',
+            '<input>': '</input>',
+            '<textarea>': '</textarea>',
+            '<button>': '</button>',
+            '<select>': '</select>',
+            '<option>': '</option>',
+            '<label>': '</label>',
+            '<span>': '</span>',
+            '<header>': '</header>',
+            '<footer>': '</footer>',
+            '<nav>': '</nav>',
+            '<main>': '</main>',
+            '<section>': '</section>',
+            '<article>': '</article>',
+            '<aside>': '</aside>',
+            '<figure>': '</figure>',
+            '<figcaption>': '</figcaption>',
+            '<img>': '',
+            '<link>': '',
+            '<meta>': '',
+            '<title>': '</title>',
+            '<style>': '</style>'
+        };
+        const completionsbrackets = {
+            '(': ')',
+            '[': ']',
+            '{': '}',
+            '"': '"',
+            "'": "'"
+        };
+        editor.on('keyup', function(editor, event) {
+            /*if (event.key === '>' && currentFile.includes('.html')) {
+                const doc = editor.getDoc();
+                const cursor = doc.getCursor(); // Aktuelle Cursor-Position
+                const line = cursor.line;
+                const ch = cursor.ch;
+
+                const value = doc.getValue();
+                const lines = value.split('\n');
+
+                // Zeileninhalt an der Cursor-Position
+                const currentLine = lines[line];
+
+                // Suche nach allen öffnenden und schließenden Tags im gesamten Inhalt
+                const openTags = [];
+                const tagRegex = /<\/?\w+>/g;
+                let match;
+
+                // Durchlaufe den gesamten Inhalt
+                while (match = tagRegex.exec(value)) {
+                    const tag = match[0];
+                    if (tag.startsWith('</')) {
+                        // Entferne den letzten geöffneten Tag, wenn ein schließender Tag gefunden wird
+                        const lastOpenTag = openTags.pop();
+                        if (lastOpenTag && completesuggestion[lastOpenTag] !== tag) {
+                            // Wenn der Tag nicht passt, füge ihn wieder in die Liste der offenen Tags ein
+                            openTags.push(lastOpenTag);
+                        }
+                    } else {
+                        // Wenn es ein öffnender Tag ist, füge ihn der Liste der offenen Tags hinzu
+                        openTags.push(tag);
+                    }
+                }
+
+                // Erstelle den neuen Inhalt mit den geschlossenen Tags
+                let closedTags = '';
+                while (openTags.length > 0) {
+                    const tag = openTags.pop();
+                    const closingTag = completesuggestion[tag];
+                    if (closingTag) {
+                        closedTags += closingTag;
+                    }
+                }
+
+                // Setze den neuen Inhalt in der aktuellen Zeile
+                const closingTagSplit = closedTags.split('>')[0];
+                closedTags = closingTagSplit + '';
+                const newLineContent = currentLine.slice(0, ch) + closedTags + currentLine.slice(ch);
+                lines[line] = newLineContent;
+                const newValue = lines.join('\n');
+
+                // Setze den neuen Inhalt
+                doc.setValue(newValue);
+
+                // Setze den Cursor ans Ende des eingefügten Tags
+                const newCh = ch + closedTags.length;
+                doc.setCursor({ line: line, ch: newCh });
+                editor.focus();
+            }*/
+            /*if (event.key === '(' || event.key === '[' || event.key === '{' || event.key === '"' || event.key === '\'') {
+                const doc = editor.getDoc();
+                const cursor = doc.getCursor(); // Aktuelle Cursor-Position
+                const line = cursor.line;
+                const ch = cursor.ch;
+
+                // Finde das passende schließende Zeichen
+                const closingBracket = completionsbrackets[event.key];
+
+                if (closingBracket) {
+                    // Setze das schließende Zeichen direkt nach dem Cursor
+                    doc.replaceRange(closingBracket, { line: line, ch: ch });
+
+                    // Setze den Cursor wieder zwischen das öffnende und das schließende Zeichen
+                    doc.setCursor({ line: line, ch: ch });
+                }
+            }*/
+            values[currentFile] = editor.getValue();
+        });
+
+        function replaceConsoleMethodsInCode(code) {
+            // List of console methods to replace
+            const methods = ['log', 'error', 'warn', 'info', 'debug', 'table', 'trace', 'clear', 'group', 'groupEnd', 'assert', 'count', 'countReset', 'markTimeline', 'profile', 'profileEnd', 'time', 'timeEnd', 'timeStamp', 'dir', 'dirxml', 'groupCollapsed'];
+
+            // Create a regex pattern to match console method calls
+            const consolePattern = new RegExp(`console\\.(${methods.join('|')})\\s*\\(([^)]*)\\)`, 'g');
+
+            // Function to replace console methods in the code
+            const replacedCode = code.replace(consolePattern, (match, method, args) => {
+                // Replace each console method with window.parent.postMessage
+                return `console.${method}(${args});\nwindow.parent.postMessage({ type: '${method}', message: ${args} }, '*');`;
+            });
+
+            return replacedCode;
+        }
+
+        editor.on('text-change', () => {
+            values[currentFile] = editor.getValue();
+            const doc = editor.getDoc();
+            const cursor = doc.getCursor(); // Current cursor position
+            const line = cursor.line;
+            const ch = cursor.ch;
+
+            // Find the matching closing bracket
+            const closingBracket = completionsbrackets[event.key];
+
+            if (closingBracket) {
+                // Insert the closing bracket right after the cursor
+                doc.replaceRange(closingBracket, { line: line, ch: ch });
+
+                // Move the cursor back between the opening and closing bracket
+                doc.setCursor({ line: line, ch: ch });
+            }
+
+            // cursor positions 
+            if (cursorPositions[currentFile]){
+                cursorPositions[currentFile].line = line;
+                cursorPositions[currentFile].column = ch;
+            }
+        
+        });
+        editor.on('inputRead', () => {
+            values[currentFile] = editor.getValue();
+        });
+
+        /*function processHtmlMixedCode(htmlMixedCode) {
+            // Erstellen eines temporären DOM-Elements, um den HTML-Code zu analysieren
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlMixedCode;
+
+            // Alle Skript-Tags sammeln
+            const scriptTags = tempDiv.querySelectorAll('script');
+            let combinedScriptContent = '';
+
+            scriptTags.forEach(scriptTag => {
+                combinedScriptContent += scriptTag.innerHTML + '\n';
+                scriptTag.remove(); // Entfernt das ursprüngliche Skript-Tag
+            });
+
+            // Erstellen des try...catch-wrapped JavaScript-Codes
+            const wrappedScriptContent = `
+                try {
+                    ${combinedScriptContent}
+                } catch (error) {
+                    window.parent.postMessage({
+                        type: 'error',
+                        message: \`\${error.name}: \${error.message}\n\`
+                    }, '*');
+                }
+            `;
+
+            // Erstellen eines neuen Skript-Tags mit dem Wrapped Content
+            const newScriptTag = document.createElement('script');
+            newScriptTag.textContent = wrappedScriptContent;
+
+            // Hinzufügen des neuen Skript-Tags zum DOM
+            const tempBody = tempDiv.querySelector('body');
+
+            // Falls ein Body vorhanden ist, Skript dort einfügen
+            if (tempBody) {
+                tempBody.appendChild(newScriptTag);
+            } else {
+                // Falls kein Body vorhanden ist, füge es direkt zum tempDiv hinzu
+                tempDiv.appendChild(newScriptTag);
+            }
+
+            // Rückgabe des modifizierten HTML-Mixed-Codes
+            return `${htmlMixedCode}`;
+        }*/
+        /*function processHtmlMixedCode(htmlMixedCode) {
+            // Erstellen eines temporären DOM-Elements, um den HTML-Code zu analysieren
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlMixedCode;
+
+            // Alle Skript-Tags sammeln
+            const scriptTags = tempDiv.querySelectorAll('script');
+
+            scriptTags.forEach(scriptTag => {
+                // Den Inhalt des aktuellen Skript-Tags holen
+                const scriptContent = scriptTag.innerHTML.trim();
+
+                // Erstellen des try...catch-wrapped JavaScript-Codes
+                const wrappedScriptContent = `
+                    try {
+                        ${scriptContent}
+                    } catch (error) {
+                        window.parent.postMessage({
+                            type: 'error',
+                            message: \`\${error.name}: \${error.message}\n\`
+                        }, '*');
+                    }
+                `;
+
+                // Den alten Inhalt des Skript-Tags durch den neuen Inhalt ersetzen
+                scriptTag.innerHTML = wrappedScriptContent;
+            });
+
+            // Rückgabe des modifizierten HTML-Mixed-Codes
+            return tempDiv.innerHTML;
+        }*/
+
+
+
+
+        function processHtmlMixedCode2(htmlMixedCode) {
+            // Extrahiere den Inhalt des ersten <script>-Tags
+            const scriptStart = htmlMixedCode.indexOf('<script>');
+            const scriptEnd = htmlMixedCode.indexOf('<\/script>', scriptStart);
+
+            if (scriptStart === -1 || scriptEnd === -1) {
+                // Wenn kein <script>-Tag gefunden wurde, gib den vollständigen Code zurück
+                return htmlMixedCode;
+            }else {
+                const scriptContent = htmlMixedCode.substring(scriptStart + 8, scriptEnd);
+
+                // Definiere den Fehler-Handler
+                // postMessage error type, line number, and message
+                // message: \`Error: \${event.message} at \${event.filename}:\${event.lineno}:\${event.colno} URL: \${window.location.href} \${event.error && event.error.stack ? '\\nStacktrace:\\n' + event.error.stack : ''}\` 
+                /*const errorHandlingCode = `
+                    window.addEventListener('error', function(event) {
+                        window.parent.postMessage({ 
+                            type: 'error', 
+                            message: \`Error: \${event.message}\nLine: \${event.lineno}\nStack: \${event.error && event.error.stack ? '\\nStacktrace:\\n' + event.error.stack : ''}\`
+                        }, '*');
+                    });
+                `;*/
+                const errorHandlingCode = `
+                    window.addEventListener('error', function(event) {
+                        const errorType = event.error && event.error.name ? event.error.name : 'Error';
+                        const fileName = event.filename || 'unknown file';
+                        const lineNumber = event.lineno || 'unknown';
+                        const columnNumber = event.colno || 'unknown';
+                        const errorMessage = event.message || 'An unknown error occurred';
+
+                        const formattedMessage = \`\${event} \`;
+
+                        window.parent.postMessage({ 
+                            type: 'error', 
+                            message: formattedMessage 
+                        }, '*');
+                    });
+                `;
+
+
+
+
+                // Kombiniere den Fehler-Handler mit dem ursprünglichen Script-Inhalt
+                const updatedScriptContent = errorHandlingCode + scriptContent;
+
+                // Füge den aktualisierten Script-Inhalt zurück in den HTML-Mixed-Code ein
+                const updatedHtmlMixedCode = 
+                    htmlMixedCode.substring(0, scriptStart + 8) + 
+                    updatedScriptContent + 
+                    htmlMixedCode.substring(scriptEnd);
+
+                return updatedHtmlMixedCode;
+            }
+        }
+        const consoleDiv = document.getElementById('console');
+        const consoleMethods = [
+            'log', 'error', 'warn', 'info', 'debug', 'trace', 'dir', 'dirxml', 'group', 'groupEnd', 
+            'time', 'timeEnd', 'assert', 'count', 'markTimeline', 'profile', 'profileEnd', 
+            'clearTimeline', 'countReset', 'memory', 'memoryProfile', 'memoryUsage', 
+            'timeStamp', 'timeStampEnd', 'timeOrigin', 'timeOriginEnd', 'timeOriginStart', 'clear'
+        ];
+
+        function captureConsoleWithEvents(consoleDivId) {
+            // Originale Konsole speichern
+            var originalConsole = {};
+
+            // Sicherstellen, dass alle vorhandenen Methoden gesichert werden
+            ['log', 'error', 'warn', 'info', 'debug', 'table', 'trace', 'clear', 'group', 'groupEnd', 'assert', 'count', 'countReset', 'markTimeline', 'profile', 'profileEnd', 'time', 'timeEnd', 'timeStamp', 'dir', 'dirxml', 'groupCollapsed'].forEach(method => {
+                if (typeof console[method] === 'function') {
+                    originalConsole[method] = console[method];
+                }
+            });
+
+            // Div-Element für die Konsole holen
+
+            function appendToConsoleDiv(type, message) {
+                var newElement = document.createElement('div');
+                newElement.className = type;  // Klasse entsprechend dem Typ setzen
+                if (type == 'warn'){
+                    newElement.textContent = '⚠ ' + message;
+                }else if (type == 'error'){
+                    newElement.textContent = '⊗ ' + message;
+                    document.getElementById('alert-icon').style.display = 'inline';
+                }else if (type == 'info'){
+                    newElement.textContent = 'ⓘ ' + message;
+                }else if (type == 'table'){
+                    newElement.textContent = '□ ' + message;
+                }else if (type == 'debug'){
+                    newElement.textContent = '◆ ' + message;
+                }else if (type == 'trace'){
+                    newElement.textContent = '☉ ' + message;
+                }else if (type == 'table'){
+                    newElement.textContent = '□ ' + message;
+                }else if (type == 'time'){
+                    newElement.textContent = '○ ' + message;
+                }else if (type == 'timeEnd'){
+                    newElement.textContent = '○ ' + message;
+                }else if (type == 'log'){
+                    newElement.textContent = '✎ ' + message;
+                }else {
+                    newElement.textContent = message;
+                }
+                consoleDiv.appendChild(newElement);
+            }
+
+            function dispatchConsoleEvent(type, message) {
+                var event = new CustomEvent('consoleActivity', {
+                    detail: { type: type, message: message }
+                });
+                window.dispatchEvent(event);
+            }
+
+            // Neue Konsole erstellen
+            if (originalConsole.log) {
+                console.log = function(...args) {
+                    appendToConsoleDiv('log', args.join(' '));
+                    dispatchConsoleEvent('log', args.join(' '));
+                    originalConsole.log.apply(console, args);
+                };
+            }
+
+            if (originalConsole.error) {
+                console.error = function(...args) {
+                    appendToConsoleDiv('error', args.join(' '));
+                    dispatchConsoleEvent('error', args.join(' '));
+                    originalConsole.error.apply(console, args);
+                };
+            }
+
+            if (originalConsole.warn) {
+                console.warn = function(...args) {
+                    appendToConsoleDiv('warn', args.join(' '));
+                    dispatchConsoleEvent('warn', args.join(' '));
+                    originalConsole.warn.apply(console, args);
+                };
+            }
+
+            if (originalConsole.info) {
+                console.info = function(...args) {
+                    appendToConsoleDiv('info', args.join(' '));
+                    dispatchConsoleEvent('info', args.join(' '));
+                    originalConsole.info.apply(console, args);
+                };
+            }
+
+            if (originalConsole.debug) {
+                console.debug = function(...args) {
+                    appendToConsoleDiv('debug', args.join(' '));
+                    dispatchConsoleEvent('debug', args.join(' '));
+                    originalConsole.debug.apply(console, args);
+                };
+            }
+
+            if (originalConsole.table) {
+                console.table = function(...args) {
+                    appendToConsoleDiv('table', JSON.stringify(args, null, 2));
+                    dispatchConsoleEvent('table', JSON.stringify(args, null, 2));
+                    originalConsole.table.apply(console, args);
+                };
+            }
+
+            if (originalConsole.trace) {
+                console.trace = function(...args) {
+                    appendToConsoleDiv('trace', new Error().stack);
+                    dispatchConsoleEvent('trace', new Error().stack);
+                    originalConsole.trace.apply(console, args);
+                };
+            }
+
+            if (originalConsole.clear) {
+                console.clear = function() {
+                    consoleDiv.innerHTML = '';  // Leert das consoleDiv
+                    dispatchConsoleEvent('clear', 'Console cleared');
+                    originalConsole.clear.apply(console);
+                };
+            }
+
+            if (originalConsole.group) {
+                console.group = function(...args) {
+                    appendToConsoleDiv('group', args.join(' '));
+                    dispatchConsoleEvent('group', args.join(' '));
+                    originalConsole.group.apply(console, args);
+                };
+            }
+
+            if (originalConsole.groupEnd) {
+                console.groupEnd = function(...args) {
+                    appendToConsoleDiv('groupEnd', 'Group End');
+                    dispatchConsoleEvent('groupEnd', 'Group End');
+                    originalConsole.groupEnd.apply(console, args);
+                };
+            }
+
+            if (originalConsole.assert) {
+                console.assert = function(...args) {
+                    appendToConsoleDiv('assert', args.join(' '));
+                    dispatchConsoleEvent('assert', args.join(' '));
+                    originalConsole.assert.apply(console, args);
+                };
+            }
+
+            if (originalConsole.count) {
+                console.count = function(...args) {
+                    appendToConsoleDiv('count', args.join(' '));
+                    dispatchConsoleEvent('count', args.join(' '));
+                    originalConsole.count.apply(console, args);
+                };
+            }
+
+            if (originalConsole.countReset) {
+                console.countReset = function(...args) {
+                    appendToConsoleDiv('countReset', args.join(' '));
+                    dispatchConsoleEvent('countReset', args.join(' '));
+                    originalConsole.countReset.apply(console, args);
+                };
+            }
+
+            if (originalConsole.markTimeline) {
+                console.markTimeline = function(...args) {
+                    appendToConsoleDiv('markTimeline', args.join(' '));
+                    dispatchConsoleEvent('markTimeline', args.join(' '));
+                    originalConsole.markTimeline.apply(console, args);
+                };
+            }
+
+            if (originalConsole.profile) {
+                console.profile = function(...args) {
+                    appendToConsoleDiv('profile', args.join(' '));
+                    dispatchConsoleEvent('profile', args.join(' '));
+                    originalConsole.profile.apply(console, args);
+                };
+            }
+
+            if (originalConsole.profileEnd) {
+                console.profileEnd = function(...args) {
+                    appendToConsoleDiv('profileEnd', args.join(' '));
+                    dispatchConsoleEvent('profileEnd', args.join(' '));
+                    originalConsole.profileEnd.apply(console, args);
+                };
+            }
+
+            if (originalConsole.time) {
+                console.time = function(...args) {
+                    appendToConsoleDiv('time', args.join(' '));
+                    dispatchConsoleEvent('time', args.join(' '));
+                    originalConsole.time.apply(console, args);
+                };
+            }
+
+            if (originalConsole.timeEnd) {
+                console.timeEnd = function(...args) {
+                    appendToConsoleDiv('timeEnd', args.join(' '));
+                    dispatchConsoleEvent('timeEnd', args.join(' '));
+                    originalConsole.timeEnd.apply(console, args);
+                };
+            }
+
+            if (originalConsole.timeStamp) {
+                console.timeStamp = function(...args) {
+                    appendToConsoleDiv('timeStamp', args.join(' '));
+                    dispatchConsoleEvent('timeStamp', args.join(' '));
+                    originalConsole.timeStamp.apply(console, args);
+                };
+            }
+
+            if (originalConsole.timeStampEnd) {
+                console.timeStampEnd = function(...args) {
+                    appendToConsoleDiv('timeStampEnd', args.join(' '));
+                    dispatchConsoleEvent('timeStampEnd', args.join(' '));
+                    originalConsole.timeStampEnd.apply(console, args);
+                };
+            }
+
+            if (originalConsole.timeOrigin) {
+                console.timeOrigin = function(...args) {
+                    appendToConsoleDiv('timeOrigin', args.join(' '));
+                    dispatchConsoleEvent('timeOrigin', args.join(' '));
+                    originalConsole.timeOrigin.apply(console, args);
+                };
+            }
+
+            if (originalConsole.timeOriginEnd) {
+                console.timeOriginEnd = function(...args) {
+                    appendToConsoleDiv('timeOriginEnd', args.join(' '));
+                    dispatchConsoleEvent('timeOriginEnd', args.join(' '));
+                    originalConsole.timeOriginEnd.apply(console, args);
+                };
+            }
+
+            if (originalConsole.timeOriginStart) {
+                console.timeOriginStart = function(...args) {
+                    appendToConsoleDiv('timeOriginStart', args.join(' '));
+                    dispatchConsoleEvent('timeOriginStart', args.join(' '));
+                    originalConsole.timeOriginStart.apply(console, args);
+                };
+            }
+
+            if (originalConsole.dir) {
+                console.dir = function(...args) {
+                    appendToConsoleDiv('dir', JSON.stringify(args, null, 2));
+                    dispatchConsoleEvent('dir', JSON.stringify(args, null, 2));
+                    originalConsole.dir.apply(console, args);
+                };
+            }
+
+            if (originalConsole.dirxml) {
+                console.dirxml = function(...args) {
+                    appendToConsoleDiv('dirxml', JSON.stringify(args, null, 2));
+                    dispatchConsoleEvent('dirxml', JSON.stringify(args, null, 2));
+                    originalConsole.dirxml.apply(console, args);
+                };
+            }
+
+            if (originalConsole.groupCollapsed) {
+                console.groupCollapsed = function(...args) {
+                    appendToConsoleDiv('groupCollapsed', args.join(' '));
+                    dispatchConsoleEvent('groupCollapsed', args.join(' '));
+                    originalConsole.groupCollapsed.apply(console, args);
+                };
+            }
+        }
+
+
+        /*function runCodeFromTextarea(CODE) {
+            function removeScriptFromHtml(html) {
+                const scriptRegex = /<script[^>]*>([\s\S]*?)<\/script>/gi;
+                let scriptCode = "";
+                let match;
+
+                // Findet und extrahiert alle <script>-Tags
+                while ((match = scriptRegex.exec(html)) !== null) {
+                    scriptCode += match[1] + "\n"; // Fügt den Inhalt jedes <script>-Tags hinzu
+                }
+
+                // Der gesamte JS-Code wird in eine Variable eingefasst
+                const wrappedCode = `
+                    (function() {
+                        ${scriptCode}
+                    })();
+                `;
+
+                return wrappedCode.trim() || null;
+            }
+            if (indexfile.includes('.html')){
+                var code = removeScriptFromHtml(CODE);
+                try {
+                    new Function(code)();
+                } catch (error) {
+                    console.error(error);
+                }
+            }else if (indexfile.includes('.js')){
+                var code = CODE;
+                try {
+                    new Function(code)();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        }
+        function runCodeInSandbox(htmlCode) {
+            // Erstelle ein neues window-Objekt
+            var sandbox = document.createElement('iframe');
+            sandbox.style.display = 'none';  // Das iframe wird nicht angezeigt
+            document.body.appendChild(sandbox);
+            var sandboxWindow = sandbox.contentWindow;
+            var sandboxDocument = sandbox.contentDocument;
+
+            // Schreibe den HTML-Code in das Dokument des iframes
+            sandboxDocument.open();
+            sandboxDocument.write(htmlCode);
+            sandboxDocument.close();
+
+            // Funktion zur Überwachung der Konsole
+            function interceptConsole() {
+                const originalConsole = {};
+                ['log', 'error', 'warn', 'info', 'debug', 'table', 'trace', 'clear', 'group', 'groupEnd', 'assert', 'count', 'countReset', 'markTimeline', 'profile', 'profileEnd'].forEach(function(method) {
+                    originalConsole[method] = sandboxWindow.console[method];
+                    sandboxWindow.console[method] = function(...args) {
+                        // Hier kannst du die Konsolenaktivität weiterverarbeiten
+                        console.log(`[Sandbox ${method}]`, ...args);
+                        originalConsole[method].apply(sandboxWindow.console, args);
+                    };
+                });
+            }
+
+            // Rufe die Funktion zur Überwachung der Konsole auf
+            interceptConsole();
+        }*/
+
+        // Event Listener für Konsolenaktivitäten hinzufügen
+        /*window.addEventListener('consoleActivity', function(event) {
+            console.log('Console event:', event.detail.type, event.detail.message);
+        });*/
+        // Funktion aufrufen und Konsolenausgaben abfangen
+        captureConsoleWithEvents('consoleDiv');
+        window.addEventListener('message', (event) => {
+            // Überprüfe die Herkunft der Nachricht
+            const { type, message } = event.data;
+
+            // Verarbeite die Konsolennachricht
+            if (type && message !== undefined && type != 'get window location') {
+                // Hier kannst du die empfangenen Nachrichten behandeln, z.B. in der Konsole ausgeben
+                console[type](message);
+            }else if (type && message !== undefined && type == 'get window location'){
+                let presrcdoc = document.getElementById('preview');
+                let cmessagee = message;
+                /*if (message.includes('/')){*/
+                let cmessageel = message.split('/');
+                cmessagee = cmessageel[cmessageel.length - 1];
+                
+                if (values[`${cmessagee}`] == undefined){
+                    // preview srcdoc content ''
+                    presrcdoc.srcdoc = '';
+                }else if (values[`${cmessagee}`] != undefined){
+                    indexfile = `${cmessagee}`;
+                    //fileInputv.value = `${cmessagee}`;
+                    runbuttononclick();
+                    runbuttononclick();
+                }
+            }
+        });
+
+        // Button-Ereignis für das Ausführen des Codes
+        /*document.getElementById('runbtn').addEventListener('click', function() {
+            // code mirror text
+            if (running){
+                runCodeFromTextarea();
+            }else {
+                consoleDiv.innerHTML = '';
+            }
+        });*/
+
+
+        function addToConsole2(message, type) {
+            const newMessage = document.createElement('div');
+            newMessage.className = type;
+            newMessage.textContent = message;
+            consoleDiv.appendChild(newMessage);
+            consoleDiv.scrollTop = consoleDiv.scrollHeight; // Scroll to the bottom
+        }
+        /*window.addEventListener('error', function(event) {
+            addToConsole2(`Error: ${event.message} at ${event.filename}:${event.lineno}:${event.colno}`, 'error');
+        });*/
+        /*let iframee = document.getElementById('preview');
+        iframee.addEventListener('error', function(event) {
+            addToConsole2(`Error: ${event.message} at ${event.filename}:${event.lineno}:${event.colno}`, 'error');
+        });*/
+        // Draggable functionality
+        const relement = document.getElementById('resizable-element');
+        const move_button = document.querySelector('.move-button');
+        let isMouseDown = false;
+        let offsetX, offsetY;
+
+        move_button.addEventListener('mousedown', function(e) {
+            isMouseDown = true;
+            offsetX = e.clientX - relement.offsetLeft;
+            offsetY = e.clientY - relement.offsetTop;
+        });
+
+        document.addEventListener('mouseup', function() {
+            isMouseDown = false;
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (isMouseDown) {
+                relement.style.left = `${e.clientX - offsetX}px`;
+                relement.style.top = `${e.clientY - offsetY}px`;
+            }
+        });
+
+        move_button.addEventListener('touchstart', function(e) {
+            isMouseDown = true;
+            const touch = e.touches[0];
+            offsetX = touch.clientX - relement.offsetLeft;
+            offsetY = touch.clientY - relement.offsetTop;
+        });
+
+        document.addEventListener('touchend', function() {
+            isMouseDown = false;
+        });
+
+        document.addEventListener('touchmove', function(e) {
+            if (isMouseDown) {
+                const touch = e.touches[0];
+                relement.style.left = `${touch.clientX - offsetX}px`;
+                relement.style.top = `${touch.clientY - offsetY}px`;
+            }
+        });
+
+        // Close functionality
+        function closeElement() {
+            document.querySelector(".resizable-draggable").classList.toggle('show');
+        }
+
+        let warningelement = document.getElementById('warning');
+        let errorelement = document.getElementById('error');
+        let infoelement = document.getElementById('info');
+        let debugelement = document.getElementById('debug');
+        let loggelement = document.getElementById('log');
+        let allelement = document.getElementById('all');
+        
+
+        warningelement.addEventListener('click', () => {
+            document.querySelectorAll('.warn').forEach(child => child.style.display = 'block');
+            document.querySelectorAll('.error').forEach(child => child.style.display = 'none');
+            document.querySelectorAll('.info').forEach(child => child.style.display = 'none');
+            document.querySelectorAll('.log').forEach(child => child.style.display = 'none');
+            document.querySelector('.console-setting-btn.enabled')?.classList.remove('enabled');
+            warningelement.classList.add("enabled");
+        });
+        errorelement.addEventListener('click', () => {
+            document.querySelectorAll('.warn').forEach(child => child.style.display = 'none');
+            document.querySelectorAll('.error').forEach(child => child.style.display = 'block');
+            document.querySelectorAll('.info').forEach(child => child.style.display = 'none');
+            document.querySelectorAll('.log').forEach(child => child.style.display = 'none');
+            document.querySelector('.console-setting-btn.enabled')?.classList.remove('enabled');
+            errorelement.classList.add("enabled");
+        });
+        infoelement.addEventListener('click', () => {
+            document.querySelectorAll('.warn').forEach(child => child.style.display = 'none');
+            document.querySelectorAll('.error').forEach(child => child.style.display = 'none');
+            document.querySelectorAll('.info').forEach(child => child.style.display = 'block');
+            document.querySelectorAll('.log').forEach(child => child.style.display = 'none');
+            document.querySelector('.console-setting-btn.enabled')?.classList.remove('enabled');
+            infoelement.classList.add("enabled");
+        });
+        loggelement.addEventListener('click', () => {
+            document.querySelectorAll('.warn').forEach(child => child.style.display = 'none');
+            document.querySelectorAll('.error').forEach(child => child.style.display = 'none');
+            document.querySelectorAll('.info').forEach(child => child.style.display = 'none');
+            document.querySelectorAll('.log').forEach(child => child.style.display = 'block');
+            document.querySelector('.console-setting-btn.enabled')?.classList.remove('enabled');
+            loggelement.classList.add("enabled");
+        });
+        allelement.addEventListener('click', () => {
+            document.querySelectorAll('.warn').forEach(child => child.style.display = 'block');
+            document.querySelectorAll('.error').forEach(child => child.style.display = 'block');
+            document.querySelectorAll('.info').forEach(child => child.style.display = 'block');
+            document.querySelectorAll('.log').forEach(child => child.style.display = 'block');
+            document.querySelector('.console-setting-btn.enabled')?.classList.remove('enabled');
+            allelement.classList.add("enabled");
+        });
+        function isDarkMode() {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                changeFavicon('AIlurylogo2.ico');
+                //return true;
+            } else {
+                changeFavicon('AIlurylogo.ico');
+                //return false;
+            }
+        }
+        function changeFavicon(faviconurl) {
+            let favilink = document.getElementById("faviconico");
+    
+            if (favilink) {
+                favilink.href = faviconurl;
+            } else {
+                // Fallback, falls das Element nicht existiert
+                favilink = document.createElement('link');
+                favilink.id = 'faviconico';
+                favilink.rel = 'icon';
+                favilink.href = faviconurl;
+                favilink.type = 'image/x-icon';
+                document.head.appendChild(favilink);
+            }
+        }
+
+        // Function to update the mode information
+        function updateModeInfo() {
+            isDarkMode();
+        }
+
+        // Call the function initially
+        updateModeInfo();
+
+        // Listen for changes in mode preference
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateModeInfo);
+
+    </script>
+</body>
+</html>
