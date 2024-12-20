@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="AIlurylogo.ico" type="image/x-icon">
+    <title>AIlury</title>
+    <style>
+        :root{
+            --theme-color: rgba(255, 255, 255, 0.5);
+        }
+        .dark-theme{
+            --theme-color: rgba(0, 0, 0, 0.5);
+        }
+        body {
+            margin: 0;
+            height: 100vh;
+            width: 100vw;
+            animation: BodyfadeIn 1s;
+            transition: 1s;
+        }
+        canvas { display: block; }
+        button {
+            width: 100px;
+            height: 50px;
+            font-size: 16px;
+            margin-left: 5px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+            background: var(--theme-color);
+            -webkit-backdrop-filter: blur(70px);
+            opacity: 1;
+        }
+        #sizeRange1{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 10px;
+            left: 120px;
+        }
+        #sizeRange2{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 10px;
+            left: 240px;
+        }
+        #sizeRange3{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 10px;
+            left: 360px;
+        }
+        #sizeRange4{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 70px;
+            left: 120px;
+        }
+        #sizeRange5{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 70px;
+            left: 240px;
+        }
+        #sizeRange6{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 70px;
+            left: 360px;
+        }
+        #sizeRange7{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 130px;
+            left: 120px;
+        }
+        #sizeRange8{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 130px;
+            left: 240px;
+        }
+        #sizeRange9{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 130px;
+            left: 360px;
+        }
+        #sizeRange10{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 190px;
+            left: 120px;
+        }
+        #sizeRange11{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 190px;
+            left: 240px;
+        }
+        #sizeRange12{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 190px;
+            left: 360px;
+        }
+        #addwall {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        #addchair {
+            position: absolute;
+            top: 70px;
+            left: 10px;
+        }
+        #addtable {
+            position: absolute;
+            top: 130px;
+            left: 10px;
+        }
+        #addbed {
+            position: absolute;
+            top: 190px;
+            left: 10px;
+        }
+        /*.allchairs {
+            position: absolute;
+            flex: 1;
+            overflow-y: auto;
+            height: 500px;
+        }
+        .allwalls {
+            position: absolute;
+            flex: 1;
+            overflow-y: auto;
+            height: 500px;
+
+        }*/
+        /*#wall1 {
+
+        }*/
+        /*#chair1 {
+            position: absolute;
+            top: 190px;
+        }*/
+        #flipwall{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 10px;
+            left: 500px;
+        }
+        #flipchair{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            left: 500px;
+            top: 70px;
+        }
+        #fliptable{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            left: 500px;
+            top: 130px;
+        }
+        #flipbed{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 190px;
+            left: 500px;
+        }
+        #walldeleteButton{
+            position: absolute;
+            left: 670px;
+        }
+        #chairdeleteButton{
+            position: absolute;
+            left: 670px;
+            top: 70px;
+        }
+        #updateChairTexture1{
+            position: absolute;
+            left: 780px;
+            top: 70px;
+        }
+        #tabledeleteButton{
+            position: absolute;
+            left: 670px;
+            top: 130px;
+        }
+        #updateTableTexture1{
+            position: absolute;
+            left: 780px;
+            top: 130px;
+        }
+        #beddeleteButton{
+            position: absolute;
+            left: 670px;
+            top: 190px;
+        }
+        #updateBedTexture1{
+            position: absolute;
+            left: 780px;
+            top: 190px;
+        }
+        .chaircontrols{
+            display: none;
+        }
+        .tablecontrols{
+            display: none;
+        }
+        .bedcontrols{
+            display: none;
+        }
+        img{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            height: 30px;
+            width: 30px;
+            background-size: cover;
+            border-radius: 50%;
+            border: 2px solid black;
+        }
+        #wallcolor1{
+            border: 2px solid red;
+        }
+        #wallcolor2{
+            position: absolute;
+            top: 50px;
+        }
+        #wallcolor3{
+            position: absolute;
+            top: 90px;
+        }
+        #wallcolor4{
+            position: absolute;
+            top: 130px;
+        }
+        #wallcolor5{
+            position: absolute;
+            top: 170px;
+        }
+        #wallcolor6{
+            position: absolute;
+            top: 210px;
+        }
+        #uploadedImage{
+            position: absolute;
+            top: 250px;
+        }
+        #addImage{
+            position: absolute;
+            top: 290px;
+        }
+        .allwalls{
+            display: none;
+            position: absolute;
+            height: 80%;
+            width: 50%;
+            border: none;
+            border-radius: 20px;
+            background: var(--theme-color);
+            -webkit-backdrop-filter: blur(70px);
+            padding: 5px;
+            right: 50px;
+            top: 10%;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: white white;
+            opacity: 1;
+        }
+        .allchairs{
+            display: none;
+            position: absolute;
+            height: 80%;
+            width: 50%;
+            border: none;
+            border-radius: 20px;
+            background: var(--theme-color);
+            -webkit-backdrop-filter: blur(70px);
+            padding: 5px;
+            right: 50px;
+            top: 10%;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: white white;
+            opacity: 1;
+        }
+        .alltables{
+            display: none;
+            position: absolute;
+            height: 80%;
+            width: 50%;
+            border: none;
+            border-radius: 20px;
+            background: var(--theme-color);
+            -webkit-backdrop-filter: blur(70px);
+            padding: 5px;
+            right: 50px;
+            top: 10%;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: white white;
+            opacity: 1;
+        }
+        .allbeds{
+            display: none;
+            position: absolute;
+            height: 80%;
+            width: 50%;
+            border: none;
+            border-radius: 20px;
+            background: var(--theme-color);
+            -webkit-backdrop-filter: blur(70px);
+            padding: 5px;
+            right: 50px;
+            top: 10%;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: white white;
+            opacity: 1;
+        }
+        #wallop{
+            height: 30px;
+            width: 90px;
+            background: var(--theme-color);
+            -webkit-backdrop-filter: blur(70px);
+            border: 2px solid red;
+            border-radius: 5px;
+            color: white;
+            margin-left: 20px;
+            opacity: 1;
+        }
+        #chairop{
+            height: 30px;
+            width: 90px;
+            background: var(--theme-color);
+            -webkit-backdrop-filter: blur(70px);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            margin-left: 5px;
+            opacity: 1;
+        }
+        #tableop{
+            height: 30px;
+            width: 90px;
+            background: var(--theme-color);
+            -webkit-backdrop-filter: blur(70px);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            margin-left: 5px;
+            opacity: 1;
+        }
+        #bedop{
+            height: 30px;
+            width: 90px;
+            background: var(--theme-color);
+            -webkit-backdrop-filter: blur(70px);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            margin-left: 5px;
+            opacity: 1;
+        }
+        #elements{
+            position: absolute;
+            top: 250px;
+            left: 10px;
+        }
+        .cross {
+          display: block;
+          position: absolute;
+          width: 5px;
+          height: 30px;
+          right: 23px;
+          top: 5px;
+          background-color: white;
+          border-radius: 2px;
+          transition: 1s;
+          /* rotate 90 deg*/
+          transform: rotate(45deg);
+          opacity: 1;
+        }
+
+        .cross::after {
+          content: '';
+          position: absolute;
+          width: 5px;
+          height: 30px;
+          background-color: white;
+          border-radius: 2px;
+          transition: 1s;
+          /* rotate 90 deg*/
+          transform: rotate(90deg);
+          opacity: 1;
+        }
+        #rotationRange{
+            position: absolute;
+            left: 35%;
+            bottom: 5px;
+            width: 350px;
+        }
+        #floorTU{
+            position: absolute;
+            top: 310px;
+            left: 10px;
+        }
+        #back{
+            position: absolute;
+            top: 370px;
+            left: 10px;
+        }
+        @keyframes BodyfadeIn{
+          0%{
+            opacity: 0;
+          }
+          100%{
+            opacity: 1;
+          }
+        }
+    </style>
+</head>
+<body>
+    <input type="range" id="rotationRange" min="0" max="360" value="0">
+    <div class="wallcontrols">
+      <input type="range" min="-50" max="50" value="0" id="sizeRange1">
+      <input type="range" min="0" max="10" value="1" id="sizeRange2">
+      <input type="range" min="-50" max="50" value="-5" id="sizeRange3">
+      <!--<button id="flipwall">flip</button>-->
+      <input type="range" min="0" max="360" value="0" id="flipwall">
+      <button id="walldeleteButton">delete</button>
+    </div>
+    <div class="chaircontrols">
+      <input type="range" min="-50" max="50" value="0" id="sizeRange4">
+      <input type="range" min="0" max="10" value="0" id="sizeRange5">
+      <input type="range" min="-50" max="50" value="-5" id="sizeRange6">
+      <!--<button id="flipchair">flip</button>-->
+      <input type="range" min="0" max="360" value="0" id="flipchair">
+      <button id="chairdeleteButton">delete</button>
+      <button id="updateChairTexture1" onclick="updateChairTexture()">update texture</button>
+    </div>
+    <div class="tablecontrols">
+      <input type="range" min="-50" max="50" value="0" id="sizeRange7">
+      <input type="range" min="0" max="10" value="0" id="sizeRange8">
+      <input type="range" min="-50" max="50" value="-5" id="sizeRange9">
+      <!--<button id="fliptable">flip</button>-->
+      <input type="range" min="0" max="360" value="0" id="fliptable">
+      <button id="tabledeleteButton">delete</button>
+      <button id="updateTableTexture1" onclick="updateTableTexture()">update texture</button>
+    </div>
+    <div class="bedcontrols">
+      <input type="range" min="-50" max="50" value="0" id="sizeRange10">
+      <input type="range" min="0" max="10" value="0" id="sizeRange11">
+      <input type="range" min="-50" max="50" value="-5" id="sizeRange12">
+      <!--<button id="flipbed">flip</button>-->
+      <input type="range" min="0" max="360" value="0" id="flipbed">
+      <button id="beddeleteButton">delete</button>
+      <button id="updateBedTexture1" onclick="updateBedTexture()">update texture</button>
+    </div>
+    <button id="addwall">add wall</button>
+    <button id="addchair">add chair</button>
+    <button id="addtable">add table</button>
+    <button id="addbed">add bed</button>
+    <button id="elements">elements</button>
+    <button id="floorTU">floor material</button>
+    <a href="AIluryApps.html"><button id="back">back</button></a>
+    <img src="Whitewall.png" id="wallcolor1">
+    <img src="Bluewall.png" id="wallcolor2">
+    <img src="Woodwall.png" id="wallcolor3">
+    <img src="Zementwall.png" id="wallcolor4">
+    <img src="LightWoodWall.png" id="wallcolor5">
+    <img src="DarkWoodWall.png" id="wallcolor6">
+    <input type="file" id="imageUpload" name="imageUpload" accept="image/*" style="display: none;"/>
+    <div class="pics">
+        <label for="imageUpload"><img id="uploadedImage" src="" alt="Hochgeladenes Bild"></label>
+    </div>
+    <label for="imageUpload"><img id="addImage" src="PlusImg.png" alt="Hochgeladenes Bild"></label>
+    <div class="allwalls">
+        <div class="cross" id="clossop1"></div>
+        <button id="wallop" class="wallop" onclick="op1click()">walls</button>
+        <button id="chairop" class="chairop" onclick="op2click()">chairs</button>
+        <button id="tableop" class="tableop" onclick="op3click()">tables</button>
+        <button id="bedop" class="bedop" onclick="op4click()">beds</button><br><br>
+        <button id="wall1">wall1</button>
+    </div>
+    <div class="allchairs">
+        <div class="cross" id="clossop1"></div>
+        <button id="wallop" class="wallop" onclick="op1click()">walls</button>
+        <button id="chairop" class="chairop" onclick="op2click()">chairs</button>
+        <button id="tableop" class="tableop" onclick="op3click()">tables</button>
+        <button id="bedop" class="bedop" onclick="op4click()">beds</button><br><br>
+        <!--<button id="chair1">chair1</button>-->
+    </div>
+    <div class="alltables">
+        <div class="cross" id="clossop1"></div>
+        <button id="wallop" class="wallop" onclick="op1click()">walls</button>
+        <button id="chairop" class="chairop" onclick="op2click()">chairs</button>
+        <button id="tableop" class="tableop" onclick="op3click()">tables</button>
+        <button id="bedop" class="bedop" onclick="op4click()">beds</button><br><br>
+        <!--<button id="chair1">table1</button>-->
+    </div>
+    <div class="allbeds">
+        <div class="cross" id="clossop1"></div>
+        <button id="wallop" class="wallop" onclick="op1click()">walls</button>
+        <button id="chairop" class="chairop" onclick="op2click()">chairs</button>
+        <button id="tableop" class="tableop" onclick="op3click()">tables</button>
+        <button id="bedop" class="bedop" onclick="op4click()">beds</button><br><br>
+        <!--<button id="chair1">table1</button>-->
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+
+
+        // Setup der Szene, Kamera und Renderer
+        let backgroundimg1 = "Whitewall.png";
+
+        let floorbackground = "Whitewall.png";
+        let wallbackground = "Whitewall.png";
+        let chairbackground = "Whitewall.png";
+        let tablebackground = "Whitewall.png";
+        let bedbackground = "Whitewall.png";
+
+
+        let wallcolor1 = document.getElementById("wallcolor1");
+        let wallcolor2 = document.getElementById("wallcolor2");
+        let wallcolor3 = document.getElementById("wallcolor3");
+        let wallcolor4 = document.getElementById("wallcolor4");
+        let wallcolor5 = document.getElementById("wallcolor5");
+        let wallcolor6 = document.getElementById("wallcolor6");
+        let elements = document.getElementById("elements");
+        let op1 = document.querySelectorAll(".wallop");
+        let op2 = document.querySelectorAll(".chairop");
+        let op3 = document.querySelectorAll(".tableop");
+        let op4 = document.querySelectorAll(".bedop");
+        let cross = document.querySelectorAll(".cross");
+        let imageUpload = document.getElementById("imageUpload");
+        let iuimage = "";
+        let imgElement = document.getElementById('uploadedImage');
+        let addImage = document.getElementById("addImage");
+        let pics = document.querySelector(".pics");
+        let curentidnum = 1;
+        let curenttop = 250;
+        let uploadedImage = document.getElementById("uploadedImage");
+        let imageelementlist = [uploadedImage];
+        let imagelimit = 12;
+        let curentimages = 1;
+        addImage.addEventListener("click", () => {
+            if (curentimages <= imagelimit){
+                let newlabel = document.createElement("label");
+                /* newlabel target */
+                newlabel.setAttribute("for", "imageUpload");
+                let newelement = document.createElement("img");
+                curentimages += 1;
+                const idnum = "uploadedImage" + (curentidnum + 1);
+                curentidnum += 1;
+                newelement.id = idnum;
+                imgElement = newelement;
+                newelement.style.position = "absolute";
+                newelement.style.top = (curenttop + 40) + "px";
+                curenttop += 40;
+                pics.appendChild(newlabel);
+                newlabel.appendChild(newelement);
+                addImage.style.position = "absolute";
+                addImage.style.top = (curenttop + 40) + "px";
+                imageelementlist.push(newelement);
+                document.getElementById(newelement.id).addEventListener("click", () => {
+                    imgElement = document.getElementById(newelement.id);
+                    wallcolor1.style.border = "2px solid black";
+                    wallcolor2.style.border = "2px solid black";
+                    wallcolor3.style.border = "2px solid black";
+                    wallcolor4.style.border = "2px solid black";
+                    wallcolor5.style.border = "2px solid black";
+                    wallcolor6.style.border = "2px solid black";
+                    imageelementlist.forEach((element) => {
+                        element.style.border = "2px solid black";
+                    });
+                    document.getElementById(newelement.id).style.border = "2px solid red";
+                    backgroundimg1 = document.getElementById(newelement.id).src;
+                });
+            }else {
+                alert("you have reached the image limit");
+            }
+        });
+        document.getElementById('imageUpload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    // Bild in einer Variablen speichern
+                    const imageData = e.target.result;
+
+                    // Bild anzeigen
+                    imgElement.src = imageData;
+                    iuimage = imageData;
+                    imgElement.style.display = 'block';
+
+                    console.log("Bild erfolgreich geladen:", imageData);
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+
+        cross.forEach(element => {
+            element.addEventListener("click", () => {
+                let allwalls = document.querySelector(".allwalls");
+                let allchairs = document.querySelector(".allchairs");
+                let alltables = document.querySelector(".alltables");
+                let allbeds = document.querySelector(".allbeds");
+                allwalls.style.display = "none";
+                allchairs.style.display = "none";
+                alltables.style.display = "none";
+                allbeds.style.display = "none";
+            });
+        });
+
+
+        elements.addEventListener("click", () => {
+            let allwalls = document.querySelector(".allwalls");
+            let allchairs = document.querySelector(".allchairs");
+            let alltables = document.querySelector(".alltables");
+            let allbeds = document.querySelector(".allbeds");
+            allwalls.style.display = "block";
+            allchairs.style.display = "none";
+            alltables.style.display = "none";
+            allbeds.style.display = "none";
+            op1.forEach(element => {
+                element.style.border = "2px solid red";
+            });
+            op2.forEach(element => {
+                element.style.border = "none";
+            });
+            op3.forEach(element => {
+                element.style.border = "none";
+            });
+            op4.forEach(element => {
+                element.style.border = "none";
+            });
+        });
+        function op1click() {
+            let allwalls = document.querySelector(".allwalls");
+            let allchairs = document.querySelector(".allchairs");
+            let alltables = document.querySelector(".alltables");
+            let allbeds = document.querySelector(".allbeds");
+            allwalls.style.display = "block";
+            allchairs.style.display = "none";
+            alltables.style.display = "none";
+            allbeds.style.display = "none";
+            op1.forEach(element => {
+                element.style.border = "2px solid red";
+            });
+            op2.forEach(element => {
+                element.style.border = "none";
+            });
+            op3.forEach(element => {
+                element.style.border = "none";
+            });
+            op4.forEach(element => {
+                element.style.border = "none";
+            });
+        }
+        function op2click() {
+            let allwalls = document.querySelector(".allwalls");
+            let allchairs = document.querySelector(".allchairs");
+            let alltables = document.querySelector(".alltables");
+            let allbeds = document.querySelector(".allbeds");
+            allwalls.style.display = "none";
+            allchairs.style.display = "block";
+            alltables.style.display = "none";
+            allbeds.style.display = "none";
+            op1.forEach(element => {
+                element.style.border = "none";
+            });
+            op2.forEach(element => {
+                element.style.border = "2px solid red";
+            });
+            op3.forEach(element => {
+                element.style.border = "none";
+            });
+            op4.forEach(element => {
+                element.style.border = "none";
+            });
+        }
+        function op3click() {
+            let allwalls = document.querySelector(".allwalls");
+            let allchairs = document.querySelector(".allchairs");
+            let alltables = document.querySelector(".alltables");
+            let allbeds = document.querySelector(".allbeds");
+            allwalls.style.display = "none";
+            allchairs.style.display = "none";
+            alltables.style.display = "block";
+            allbeds.style.display = "none";
+            op1.forEach(element => {
+                element.style.border = "none";
+            });
+            op2.forEach(element => {
+                element.style.border = "none";
+            });
+            op3.forEach(element => {
+                element.style.border = "2px solid red";
+            });
+            op4.forEach(element => {
+                element.style.border = "none";
+            });
+        }
+
+        function op4click() {
+            let allwalls = document.querySelector(".allwalls");
+            let allchairs = document.querySelector(".allchairs");
+            let alltables = document.querySelector(".alltables");
+            let allbeds = document.querySelector(".allbeds");
+            allwalls.style.display = "none";
+            allchairs.style.display = "none";
+            alltables.style.display = "none";
+            allbeds.style.display = "block";
+            op1.forEach(element => {
+                element.style.border = "none";
+            });
+            op2.forEach(element => {
+                element.style.border = "none";
+            });
+            op3.forEach(element => {
+                element.style.border = "none";
+            });
+            op4.forEach(element => {
+                element.style.border = "2px solid red";
+            });
+        }
+
+        wallcolor1.addEventListener("click", function() {
+            wallcolor1.style.border = "2px solid red";
+            wallcolor2.style.border = "2px solid black";
+            wallcolor3.style.border = "2px solid black";
+            wallcolor4.style.border = "2px solid black";
+            wallcolor5.style.border = "2px solid black";
+            wallcolor6.style.border = "2px solid black";
+            uploadedImage.style.border = "2px solid black";
+            imageelementlist.forEach((element) => {
+                element.style.border = "2px solid black";
+            });
+            backgroundimg1 = "Whitewall.png";
+        });
+
+        wallcolor2.addEventListener("click", function() {
+            wallcolor1.style.border = "2px solid black";
+            wallcolor2.style.border = "2px solid red";
+            wallcolor3.style.border = "2px solid black";
+            wallcolor4.style.border = "2px solid black";
+            wallcolor5.style.border = "2px solid black";
+            wallcolor6.style.border = "2px solid black";
+            uploadedImage.style.border = "2px solid black";
+            imageelementlist.forEach((element) => {
+                element.style.border = "2px solid black";
+            });
+            backgroundimg1 = "Bluewall.png";
+        });
+
+        wallcolor3.addEventListener("click", function() {
+            wallcolor1.style.border = "2px solid black";
+            wallcolor2.style.border = "2px solid black";
+            wallcolor3.style.border = "2px solid red";
+            wallcolor4.style.border = "2px solid black";
+            wallcolor5.style.border = "2px solid black";
+            wallcolor6.style.border = "2px solid black";
+            uploadedImage.style.border = "2px solid black";
+            imageelementlist.forEach((element) => {
+                element.style.border = "2px solid black";
+            });
+            backgroundimg1 = "Woodwall.png";
+        });
+
+        wallcolor4.addEventListener("click", function() {
+            wallcolor1.style.border = "2px solid black";
+            wallcolor2.style.border = "2px solid black";
+            wallcolor3.style.border = "2px solid black";
+            wallcolor4.style.border = "2px solid red";
+            wallcolor5.style.border = "2px solid black";
+            wallcolor6.style.border = "2px solid black";
+            uploadedImage.style.border = "2px solid black";
+            imageelementlist.forEach((element) => {
+                element.style.border = "2px solid black";
+            });
+            backgroundimg1 = "Zementwall.png";
+        });
+
+        wallcolor5.addEventListener("click", function() {
+            wallcolor1.style.border = "2px solid black";
+            wallcolor2.style.border = "2px solid black";
+            wallcolor3.style.border = "2px solid black";
+            wallcolor4.style.border = "2px solid black";
+            wallcolor5.style.border = "2px solid red";
+            wallcolor6.style.border = "2px solid black";
+            uploadedImage.style.border = "2px solid black";
+            imageelementlist.forEach((element) => {
+                element.style.border = "2px solid black";
+            });
+            backgroundimg1 = "LightWoodWall.png";
+        });
+        wallcolor6.addEventListener("click", function() {
+            wallcolor1.style.border = "2px solid black";
+            wallcolor2.style.border = "2px solid black";
+            wallcolor3.style.border = "2px solid black";
+            wallcolor4.style.border = "2px solid black";
+            wallcolor5.style.border = "2px solid black";
+            wallcolor6.style.border = "2px solid red";
+            uploadedImage.style.border = "2px solid black";
+            imageelementlist.forEach((element) => {
+                element.style.border = "2px solid black";
+            });
+            backgroundimg1 = "DarkWoodWall.png";
+        });
+        uploadedImage.addEventListener("click", function() {
+            imgElement = uploadedImage;
+            wallcolor1.style.border = "2px solid black";
+            wallcolor2.style.border = "2px solid black";
+            wallcolor3.style.border = "2px solid black";
+            wallcolor4.style.border = "2px solid black";
+            wallcolor5.style.border = "2px solid black";
+            wallcolor6.style.border = "2px solid black";
+            uploadedImage.style.border = "2px solid red";
+            imageelementlist.forEach((element) => {
+                element.style.border = "2px solid black";
+            });
+            backgroundimg1 = uploadedImage.src;
+        });
+
+        let Eheight = 10;
+        let Ewidth = 10;
+        let wallNum = "1";
+        let chairNum = 0;
+        let left_richt = 0;
+        let top_bottom = 5;
+        let back_front = -5;
+        let scaleX = 10;
+        let addwall = document.getElementById("addwall");
+        let wallbutton1 = document.getElementById("wall1");
+        let addchair = document.getElementById("addchair");
+        let addtable = document.getElementById("addtable");
+        //let allchairs = document.querySelector(".allchairs");
+        let selectedTable = null;
+        let tableNum = 0;
+        let selectedBed = null;
+        let bedNum = 0;
+
+        let sizeRange1 = document.getElementById("sizeRange1");
+        let sizeRange2 = document.getElementById("sizeRange2");
+        let sizeRange3 = document.getElementById("sizeRange3");
+        let sizeRange4 = document.getElementById("sizeRange4");
+        let sizeRange5 = document.getElementById("sizeRange5");
+        let sizeRange6 = document.getElementById("sizeRange6");
+        let sizeRange7 = document.getElementById("sizeRange7");
+        let sizeRange8 = document.getElementById("sizeRange8");
+        let sizeRange9 = document.getElementById("sizeRange9");
+        let sizeRange10 = document.getElementById("sizeRange10");
+        let sizeRange11 = document.getElementById("sizeRange11");
+        let sizeRange12 = document.getElementById("sizeRange12");
+        let wallcontrols = document.querySelector(".wallcontrols");
+        let chaircontrols = document.querySelector(".chaircontrols");
+        let tablecontrols = document.querySelector(".tablecontrols");
+        let bedcontrols = document.querySelector(".bedcontrols");
+        let nofloor = true;
+        const textureLoader = new THREE.TextureLoader();
+        //const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x93e3fd); // Hellblau (Hex-Wert)
+        renderer.shadowMap.enabled = true; // Aktiviere Schatten
+        document.body.appendChild(renderer.domElement);
+
+        let floor1;
+
+        let laenge = 1;
+        let breite = 1;
+        function createfloor() {
+            const floorTexture = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(breite, laenge);
+            });
+            if (nofloor == true){
+                const floorGeometry = new THREE.PlaneGeometry(100, 100);
+                //const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x808080, side: THREE.DoubleSide });
+                /*const floorTexture = textureLoader.load(backgroundimg1, (texture) => {
+                    texture.wrapS = THREE.RepeatWrapping;
+                    texture.wrapT = THREE.RepeatWrapping;
+                    texture.repeat.set(1, 1);
+                });*/
+                const floorMaterial = new THREE.MeshStandardMaterial({ map: floorTexture });
+                const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+                floor.rotation.x = -Math.PI / 2;
+                floor.receiveShadow = true; // Boden empfängt Schatten
+                //floor.castShadow = true;
+                scene.add(floor);
+                nofloor = false;
+                floor1 = floor;
+            }else {
+                floor1.material.map = floorTexture;
+                floor1.material.needsUpdate = true;
+            }
+        }
+        createfloor();
+
+        document.getElementById("floorTU").addEventListener("click", () => {
+            /* change the floor texture */
+
+            createfloor();
+        });
+
+
+
+        /*light.shadow.mapSize.width = 1024;
+        light.shadow.mapSize.height = 1024;
+        light.shadow.camera.near = 0.5;
+        light.shadow.camera.far = 15; // Entfernung der Schattenkamera erhöhen, um den gesamten Boden abzudecken
+        light.shadow.bias = -0.001;*/
+
+        // Wände mit Schatten und Tiefe
+        const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xbbbcba, side: THREE.DoubleSide });
+
+
+        const walls = [];
+
+        // -|+
+
+        // || |_| {_}[1]
+        let wall1; // Variable für die Wand
+        let selectedElement = null;
+        let selectedChair = null;
+        let topm = 10;
+        let wall1element;
+        let wallgroupname = "wall1";
+        function createWall() {
+            const wallTexture = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
+
+            const wallMaterial = new THREE.MeshStandardMaterial({ map: wallTexture });
+            //wallMaterial1.castShadow = true;
+            const wall = new THREE.Mesh(new THREE.BoxGeometry(Ewidth, Eheight, 0.5), wallMaterial);
+            wall.position.set(left_richt, top_bottom, back_front);
+            wall.receiveShadow = true;
+            wall.castShadow = true;
+            wallNum = parseInt(wallNum) + 1;
+            wall.name = "wall" + wallNum;
+            scene.add(wall);
+            walls.push(wall);
+
+            // Create element button
+            const button = document.createElement("button");
+            button.textContent = wall.name;
+            //button.style.position = "absolute";
+            button.style.marginTop = `${topm}px`;
+            //button.style.top = `${topm + 60}px`;
+            //topm = topm + 60;
+            let body = document.querySelector(".allwalls");
+            button.id = wall.name;
+            wallgroupname = wall.name;
+            body.appendChild(button);
+
+            // Add event listener to the button
+            button.addEventListener("click", () => {
+                chaircontrols.style.display = "none";
+                tablecontrols.style.display = "none";
+                wallcontrols.style.display = "block";
+                bedcontrols.style.display = "none";
+                wallgroupname = wall.name;
+                selectedElement = wall;
+            });
+            /*wallbutton1.addEventListener("click", () => {
+                chaircontrols.style.display = "none";
+                tablecontrols.style.display = "none";
+                wallcontrols.style.display = "block";
+                selectedElement = wall1element;
+                sizeRange1.value = wall1element.position.x;
+                //sizeRange2 is the walls width
+                sizeRange2.value = wall1element.geometry.parameters.width;
+                //sizeRange3 is the walls y position
+                sizeRange3.value = wall1element.position.y;
+            });*/
+
+            selectedElement = wall;
+        }
+        wallbutton1.addEventListener("click", () => {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            wallcontrols.style.display = "block";
+            selectedElement = wall1element;
+            wallgroupname = "wall1";
+            /*sizeRange1.value = wall1element.position.x;
+            //sizeRange2 is the walls width
+            sizeRange2.value = wall1element.geometry.parameters.width;
+            //sizeRange3 is the walls y position
+            sizeRange3.value = wall1element.position.y;*/
+        });
+        addchair.addEventListener("click", () => {
+            chaircontrols.style.display = "block";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            createChair();
+        });
+        /*flipwall.addEventListener("click", () => {
+            if (selectedElement){
+                if (selectedElement.rotation.y == 0){
+                    selectedElement.rotation.y = Math.PI / 2;
+                }else {
+                    selectedElement.rotation.y = 0;
+                }
+            }
+        });*/
+        flipwall.addEventListener("input", function(event) {
+            /*rotateBed();*/
+            if (selectedElement){
+                const rotationDegree = event.target.value;
+                selectedElement.rotation.y = THREE.Math.degToRad(rotationDegree);
+            }
+        });
+
+        function removeWall() {
+            if (selectedElement.length > 0) {
+                const selectedElement = walls.pop();
+                scene.remove(wall);
+                wall.geometry.dispose();
+                wall.material.dispose();
+            }
+        }
+
+        function allwalls() {
+            // Lade die Textur und aktualisiere die Wandmaterialien
+            const wallTexture1 = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
+
+            if (selectedElement) {
+                // Aktualisiere die Textur und Position der vorhandenen Wand
+                selectedElement.material.map = wallTexture1;
+                selectedElement.material.needsUpdate = true;
+                selectedElement.position.set(left_richt, top_bottom, back_front);
+                selectedElement.castShadow = true;
+                selectedElement.scale.x = scaleX;
+            } else {
+                // Erstelle die Wand nur einmal
+                const wallMaterial1 = new THREE.MeshStandardMaterial({ map: wallTexture1 });
+                //wallMaterial1.castShadow = true;
+                wall1 = new THREE.Mesh(new THREE.BoxGeometry(Ewidth, Eheight, 0.5), wallMaterial1);
+                wall1.position.set(left_richt, top_bottom, back_front);
+                wall1.receiveShadow = true;
+                wall1.castShadow = true;
+                scene.add(wall1);
+                selectedElement = wall1;
+                wall1element = wall1;
+            }
+        }
+        const chairs = [];
+
+        /*function moveSelectedChair() {
+            let sizeRangex = parseFloat(sizeRange4.value);
+            let sizeRangey = parseFloat(sizeRange5.value);
+            let sizeRangez = parseFloat(sizeRange6.value);
+            if (selectedChair) {
+                selectedChair.position.set(sizeRangex, sizeRangey, sizeRangez);
+            }
+        }*/
+        function moveSelectedChair() {
+            let sizeRangex = parseFloat(sizeRange4.value);
+            let sizeRangey = parseFloat(sizeRange5.value);
+            let sizeRangez = parseFloat(sizeRange6.value);
+
+            /*const seatTexture1 = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });*/
+
+            if (selectedChair) {
+                selectedChair.position.set(sizeRangex, sizeRangey, sizeRangez);
+
+                /*selectedChair.traverse((child) => {
+                    if (child instanceof THREE.Mesh) {
+                        child.material.map = seatTexture1;
+                        child.material.needsUpdate = true;
+                        child.castShadow = true;
+                    }
+                });*/
+            }
+        }
+        function updateChairTexture() {
+            const seatTexture1 = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
+
+            if (selectedChair) {
+                selectedChair.traverse((child) => {
+                    if (child instanceof THREE.Mesh) {
+                        child.material.map = seatTexture1;
+                        child.material.needsUpdate = true;
+                        child.castShadow = true;
+                    }
+                });
+            }
+        }
+
+
+        let chairgroupname;
+        function createChair() {
+            const chairGroup = new THREE.Group();
+
+            // Sitzfläche
+
+            // Tischplatte
+            const seatGeometry = new THREE.BoxGeometry(2, 0.5, 2);
+            const seatTexture = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
+            const seatMaterial = new THREE.MeshStandardMaterial({ map: seatTexture });
+            //const seatGeometry = new THREE.BoxGeometry(2, 0.5, 2);
+            //const seatMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+            const seat = new THREE.Mesh(seatGeometry, seatMaterial);
+            seat.position.set(0, 1, 0);
+            seat.castShadow = true;
+            chairGroup.add(seat);
+
+            // Rückenlehne
+            const backrestGeometry = new THREE.BoxGeometry(2, 2, 0.5);
+            const backrest = new THREE.Mesh(backrestGeometry, seatMaterial);
+            backrest.position.set(0, 2.25, -0.75);
+            backrest.castShadow = true;
+            chairGroup.add(backrest);
+
+            // Beine
+            const legGeometry = new THREE.BoxGeometry(0.2, 1, 0.2);
+            for (let i = -1; i <= 1; i += 2) {
+                for (let j = -1; j <= 1; j += 2) {
+                    const leg = new THREE.Mesh(legGeometry, seatMaterial);
+                    leg.position.set(i * 0.8, 0.5, j * 0.8);
+                    leg.castShadow = true;
+                    chairGroup.add(leg);
+                }
+            }
+
+            chairGroup.name = "chair" + (parseInt(chairNum) + 1);
+
+            const button = document.createElement("button");
+            button.textContent = chairGroup.name;
+            //button.style.position = "absolute";
+            button.style.marginTop = `${topm}px`;
+            //topm += 60;
+            let body = document.querySelector(".allchairs");
+            button.id = chairGroup.name;
+            chairgroupname = chairGroup.name;
+            body.appendChild(button);
+
+            button.addEventListener("click", () => {
+                chaircontrols.style.display = "block";
+                tablecontrols.style.display = "none";
+                wallcontrols.style.display = "none";
+                bedcontrols.style.display = "none";
+                chairgroupname = chairGroup.name;
+                selectedChair = chairGroup;
+            });
+            selectedChair = chairGroup;
+
+            scene.add(chairGroup);
+            chairs.push(chairGroup);
+            chairNum++;
+        }
+        /* table start */
+        function rotateChair() {
+            if (selectedChair) {
+                if (selectedChair.rotation.y == 0){
+                    selectedChair.rotation.y += Math.PI / 1;
+                }else if (selectedChair.rotation.y == Math.PI / 1){
+                    selectedChair.rotation.y += Math.PI / 2;
+                }else if (selectedChair.rotation.y == Math.PI / 2){
+                    selectedChair.rotation.y += Math.PI / 3;
+                }else if (selectedChair.rotation.y == Math.PI / 3){
+                    selectedChair.rotation.y += Math.PI / 4;
+                }else {
+                    selectedChair.rotation.y = 0;
+                }
+            }
+        }
+        const tables = [];
+
+        function moveSelectedTable() {
+            let sizeRangex = parseFloat(sizeRange7.value);
+            let sizeRangey = parseFloat(sizeRange8.value);
+            let sizeRangez = parseFloat(sizeRange9.value);
+            /*const tableTexture1 = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });*/
+            if (selectedTable) {
+                selectedTable.position.set(sizeRangex, sizeRangey, sizeRangez);
+                /*selectedTable.traverse((child) => {
+                    if (child instanceof THREE.Mesh) {
+                        child.material.map = tableTexture1;
+                        child.material.needsUpdate = true;
+                        child.castShadow = true;
+                    }
+                });*/
+            }
+        }
+
+        function updateTableTexture() {
+            const tableTexture1 = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
+            if (selectedTable) {
+                selectedTable.traverse((child) => {
+                    if (child instanceof THREE.Mesh) {
+                        child.material.map = tableTexture1;
+                        child.material.needsUpdate = true;
+                        child.castShadow = true;
+                    }
+                });
+            }
+        }
+
+        let tablegroupname;
+        function createTable() {
+            const tableGroup = new THREE.Group();
+
+            // Tischplatte
+            const tabletopGeometry = new THREE.BoxGeometry(4, 0.2, 2);
+            const tableTexture = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
+            const tabletopMaterial = new THREE.MeshStandardMaterial({ map: tableTexture });
+            //const tabletopMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+            const tabletop = new THREE.Mesh(tabletopGeometry, tabletopMaterial);
+            tabletop.position.set(0, 2, 0);
+            tabletop.castShadow = true;
+            tableGroup.add(tabletop);
+
+            // Tischbeine
+            const legGeometry = new THREE.BoxGeometry(0.2, 2, 0.2);
+            for (let i = -1; i <= 1; i += 2) {
+                for (let j = -1; j <= 1; j += 2) {
+                    const leg = new THREE.Mesh(legGeometry, tabletopMaterial);
+                    leg.position.set(i * 1.8, 1, j * 0.8);
+                    leg.castShadow = true;
+                    tableGroup.add(leg);
+                }
+            }
+
+            tableGroup.name = "table" + (parseInt(tableNum) + 1);
+
+            const button = document.createElement("button");
+            button.textContent = tableGroup.name;
+            //button.style.position = "absolute";
+            button.style.marginTop = `${topm}px`;
+            //topm += 60;
+            let body = document.querySelector(".alltables");
+            button.id = tableGroup.name;
+            tablegroupname = tableGroup.name;
+            body.appendChild(button);
+            button.addEventListener("click", () => {
+                chaircontrols.style.display = "none";
+                tablecontrols.style.display = "block";
+                wallcontrols.style.display = "none";
+                bedcontrols.style.display = "none";
+                tablegroupname = tableGroup.name;
+                selectedTable = tableGroup;
+            });
+            selectedTable = tableGroup;
+            scene.add(tableGroup);
+            tables.push(tableGroup);
+            tableNum++;
+        }
+        function rotateTable() {
+            if (selectedTable) {
+                if (selectedTable.rotation.y == 0){
+                    selectedTable.rotation.y += Math.PI / 2;
+                }else {
+                    selectedTable.rotation.y = 0;
+                }
+            }
+        }
+        addtable.addEventListener("click", () => {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "block";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            createTable();
+        });
+        /* bed start */
+        const beds = [];
+
+        function moveSelectedBed() {
+            let sizeRangex = parseFloat(sizeRange10.value);
+            let sizeRangey = parseFloat(sizeRange11.value);
+            let sizeRangez = parseFloat(sizeRange12.value);
+            /*const bedTexture1 = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });*/
+            if (selectedBed) {
+                selectedBed.position.set(sizeRangex, sizeRangey, sizeRangez);
+                /*selectedBed.traverse((child) => {
+                    if (child instanceof THREE.Mesh) {
+                        if (child instanceof THREE.Mesh && child.name !== "mattress") {
+                            child.material.map = bedTexture1;
+                            child.material.needsUpdate = true;
+                            child.castShadow = true;
+                        }
+                    }
+                });*/
+            }
+        }
+
+        function updateBedTexture() {
+            const bedTexture1 = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
+            if (selectedBed) {
+                selectedBed.traverse((child) => {
+                    if (child instanceof THREE.Mesh) {
+                        if (child instanceof THREE.Mesh && child.name !== "mattress") {
+                            child.material.map = bedTexture1;
+                            child.material.needsUpdate = true;
+                            child.castShadow = true;
+                        }
+                    }
+                });
+            }
+        }
+
+        function rotateBed() {
+            if (selectedBed) {
+                if (selectedBed.rotation.y == 0){
+                    selectedBed.rotation.y += Math.PI / 1;
+                }else if (selectedBed.rotation.y == Math.PI / 1){
+                    selectedBed.rotation.y += Math.PI / 2;
+                }else if (selectedBed.rotation.y == Math.PI / 2){
+                    selectedBed.rotation.y += Math.PI / 3;
+                }else if (selectedBed.rotation.y == Math.PI / 3){
+                    selectedBed.rotation.y += Math.PI / 4;
+                }else {
+                    selectedBed.rotation.y = 0;
+                }
+            }
+        }
+        let bedgroupname;
+        function createBed() {
+            const bedGroup = new THREE.Group();
+
+            // Bettgestell
+            const frameGeometry = new THREE.BoxGeometry(4.5, 0.5, 4.0);
+            const frameTexture = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
+            const frameMaterial = new THREE.MeshStandardMaterial({ map: frameTexture });
+            //const frameMaterial = new THREE.MeshStandardMaterial({ color: 0x6e501e });
+            const frame = new THREE.Mesh(frameGeometry, frameMaterial);
+            frame.position.set(0, 0.75, 0);
+            frame.castShadow = true;
+            bedGroup.add(frame);
+
+            // Kopfteil
+            const headboardGeometry = new THREE.BoxGeometry(4.5, 1.5, 0.2);
+            const headboard = new THREE.Mesh(headboardGeometry, frameMaterial);
+            headboard.position.set(0, 1.2, -1.9);
+            headboard.castShadow = true;
+            bedGroup.add(headboard);
+
+            // Matratze
+            const mattressGeometry = new THREE.BoxGeometry(3.9, 0.3, 3.5); //1.8
+            const mattressMaterial = new THREE.MeshStandardMaterial({ color: 0xfffafa });
+            const mattress = new THREE.Mesh(mattressGeometry, mattressMaterial);
+            mattress.position.set(0, 1.1, 0);
+            mattress.castShadow = true;
+            mattress.name = "mattress";
+            bedGroup.add(mattress);
+
+            // Beine
+            const legGeometry = new THREE.BoxGeometry(0.2, 1, 0.2);
+            for (let i = -1; i <= 1; i += 2) {
+                for (let j = -1; j <= 1; j += 2) {
+                    const leg = new THREE.Mesh(legGeometry, frameMaterial);
+                    leg.position.set(i * 2.3, 0.5, j * 1.5); // 0.8
+                    leg.castShadow = true;
+                    bedGroup.add(leg);
+                }
+            }
+
+            bedGroup.name = "bed" + (parseInt(bedNum) + 1);
+
+            const button = document.createElement("button");
+            button.textContent = bedGroup.name;
+            //button.style.position = "absolute";
+            button.style.marginTop = `${topm}px`;
+            //topm += 60;
+            let body = document.querySelector(".allbeds");
+            button.id = bedGroup.name;
+            body.appendChild(button);
+            bedgroupname = bedGroup.name;
+
+            button.addEventListener("click", () => {
+                chaircontrols.style.display = "none";
+                tablecontrols.style.display = "none";
+                wallcontrols.style.display = "none";
+                bedcontrols.style.display = "block";
+                bedgroupname = bedGroup.name;
+                selectedBed = bedGroup;
+            });
+            selectedBed = bedGroup;
+            scene.add(bedGroup);
+            beds.push(bedGroup);
+            bedNum++;
+        }
+        const walldeleteButton = document.getElementById('walldeleteButton');
+        walldeleteButton.addEventListener("click", () => {
+            if (selectedElement) {
+                // Entferne das Bett aus der Szene
+                scene.remove(selectedElement);
+
+                let bgn = document.getElementById(wallgroupname);
+                // if the bgn has an eventlistener remove it
+                bgn.removeEventListener("click", () => {
+                    chaircontrols.style.display = "none";
+                    tablecontrols.style.display = "none";
+                    wallcontrols.style.display = "block";
+                    bedcontrols.style.display = "none";
+                    wallgroupname = wall.name;
+                    selectedElement = wall;
+                });
+                bgn.remove();
+                document.querySelector(".wallcontrols").style.display = "none";
+
+
+                // Optional: Speicherbereinigungen vornehmen
+                /*selectedBed.geometry.dispose();
+                selectedBed.material.dispose();*/
+
+                // Entferne das Bett aus dem Speicher
+                selectedElement = null;
+            }
+        });
+        const tabledeleteButton = document.getElementById('tabledeleteButton');
+        tabledeleteButton.addEventListener("click", () => {
+            if (selectedTable) {
+                // Entferne das Bett aus der Szene
+                scene.remove(selectedTable);
+
+                let bgn = document.getElementById(tablegroupname);
+                bgn.removeEventListener("click", () => {
+                    chaircontrols.style.display = "none";
+                    tablecontrols.style.display = "block";
+                    wallcontrols.style.display = "none";
+                    bedcontrols.style.display = "none";
+                    tablegroupname = tableGroup.name;
+                    selectedTable = tableGroup;
+                });
+                bgn.remove();
+
+
+                // Optional: Speicherbereinigungen vornehmen
+                /*selectedBed.geometry.dispose();
+                selectedBed.material.dispose();*/
+
+                // Entferne das Bett aus dem Speicher
+                selectedTable= null;
+            }
+        });
+        const chairdeleteButton = document.getElementById('chairdeleteButton');
+        chairdeleteButton.addEventListener("click", () => {
+            if (selectedChair) {
+                // Entferne das Bett aus der Szene
+                scene.remove(selectedChair);
+
+                let bgn = document.getElementById(chairgroupname);
+                bgn.removeEventListener("click", () => {
+                    chaircontrols.style.display = "block";
+                    tablecontrols.style.display = "none";
+                    wallcontrols.style.display = "none";
+                    bedcontrols.style.display = "none";
+                    chairgroupname = chairGroup.name;
+                    selectedChair = chairGroup;
+                });
+                bgn.remove();
+
+
+                // Optional: Speicherbereinigungen vornehmen
+                /*selectedBed.geometry.dispose();
+                selectedBed.material.dispose();*/
+
+                // Entferne das Bett aus dem Speicher
+                selectedChair = null;
+            }
+        });
+        const beddeleteButton = document.getElementById('beddeleteButton');
+        beddeleteButton.addEventListener("click", () => {
+            if (selectedBed) {
+                // Entferne das Bett aus der Szene
+                scene.remove(selectedBed);
+
+                let bgn = document.getElementById(bedgroupname);
+                bgn.removeEventListener("click", () => {
+                    chaircontrols.style.display = "none";
+                    tablecontrols.style.display = "none";
+                    wallcontrols.style.display = "none";
+                    bedcontrols.style.display = "block";
+                    bedgroupname = bedGroup.name;
+                    selectedBed = bedGroup;
+                });
+                bgn.remove();
+
+
+                // Optional: Speicherbereinigungen vornehmen
+                /*selectedBed.geometry.dispose();
+                selectedBed.material.dispose();*/
+
+                // Entferne das Bett aus dem Speicher
+                selectedBed = null;
+            }
+        });
+
+        addbed.addEventListener("click", () => {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "block";
+            createBed();
+        });
+        /*document.getElementById("flipbed").addEventListener("click", () => {
+            rotateBed();
+        });*/
+
+        document.getElementById("flipbed").addEventListener("input", function(event) {
+            /*rotateBed();*/
+            if (selectedBed){
+                const rotationDegree = event.target.value;
+                selectedBed.rotation.y = THREE.Math.degToRad(rotationDegree);
+            }
+        });
+
+        sizeRange10.addEventListener("input", function() {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "block";
+            moveSelectedBed();
+        });
+
+        sizeRange11.addEventListener("input", function() {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "block";
+            moveSelectedBed();
+        });
+
+        sizeRange12.addEventListener("input", function() {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "block";
+            moveSelectedBed();
+        });
+
+        // Beispielhafter Button zum Drehen des Bettes
+        /* bed end */
+        /*document.getElementById("fliptable").addEventListener("click", () => {
+            rotateTable();
+        });*/
+        document.getElementById("fliptable").addEventListener("input", function(event) {
+            /*rotateBed();*/
+            if (selectedTable){
+                const rotationDegree = event.target.value;
+                selectedTable.rotation.y = THREE.Math.degToRad(rotationDegree);
+            }
+        });
+
+        /*document.getElementById("flipchair").addEventListener("click", () => {
+            rotateChair();
+        });*/
+        document.getElementById("flipchair").addEventListener("input", function(event) {
+            /*rotateBed();*/
+            if (selectedChair){
+                const rotationDegree = event.target.value;
+                selectedChair.rotation.y = THREE.Math.degToRad(rotationDegree);
+            }
+        });
+
+        sizeRange7.addEventListener("input", function() {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "block";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            moveSelectedTable();
+        });
+
+        sizeRange8.addEventListener("input", function() {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "block";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            moveSelectedTable();
+        });
+
+        sizeRange9.addEventListener("input", function() {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "block";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            moveSelectedTable();
+        });
+        /* table end */
+
+        sizeRange4.addEventListener("input", function() {
+            chaircontrols.style.display = "block";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            moveSelectedChair();
+        });
+
+        sizeRange5.addEventListener("input", function() {
+            chaircontrols.style.display = "block";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            moveSelectedChair();
+        });
+
+        sizeRange6.addEventListener("input", function() {
+            chaircontrols.style.display = "block";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            moveSelectedChair();
+        });
+
+        allwalls();
+        addwall.addEventListener("click", () => {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "block";
+            bedcontrols.style.display = "none";
+            createWall();
+        });
+        sizeRange1.addEventListener("input", function() {
+            left_richt = sizeRange1.value;
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "block";
+            bedcontrols.style.display = "none";
+            allwalls();
+        });
+        sizeRange2.addEventListener("input", function() {
+            Ewidth = sizeRange2.value;
+            scaleX = sizeRange2.value;
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "block";
+            bedcontrols.style.display = "none";
+            allwalls();
+        });
+        sizeRange3.addEventListener("input", function() {
+            back_front = sizeRange3.value;
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "block";
+            bedcontrols.style.display = "none";
+            allwalls();
+        });
+
+        // Licht hinzufügen
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(5, 23, 5);
+        directionalLight.castShadow = true; // Licht wirft Schatten
+
+        directionalLight.shadow.mapSize.width = 9000; //2048;
+        directionalLight.shadow.mapSize.height = 9000; //2048;
+
+        // Aktiviere Weichzeichnung der Schatten
+        directionalLight.shadow.radius = 2;
+        directionalLight.shadow.camera.left = -100; // Linke Grenze der Schattenkamera
+        directionalLight.shadow.camera.right = 100; // Rechte Grenze der Schattenkamera
+        directionalLight.shadow.camera.top = 100; // Obere Grenze der Schattenkamera
+        directionalLight.shadow.camera.bottom = -100; // Untere Grenze der Schattenkamera
+        directionalLight.shadow.camera.near = 0.5; // Nahe Grenze der Schattenkamera
+        directionalLight.shadow.camera.far = 100; // Ferne Grenze der Schattenkamera
+
+
+        scene.add(directionalLight);
+        // Kamera-Position und Steuerung
+        camera.position.set(0, 5, 5);
+
+
+        function rotateCamera90Degrees() {
+            camera.rotation.y += Math.PI / 2; // 90 Grad in Radiant
+        }
+        /*function checkCollision(newPos) {
+            let collision = false;
+
+            // Aktualisieren der Kamera-Bounding-Box
+            camera.updateMatrixWorld(); // Sicherstellen, dass die Kameramatrix aktualisiert ist
+            const cameraBox = new THREE.Box3().setFromObject(camera);
+
+            // Anpassen der Bounding-Box-Positionen basierend auf newPos
+            const newCameraBox = cameraBox.clone();
+            newCameraBox.min.add(newPos).sub(camera.position);
+            newCameraBox.max.add(newPos).sub(camera.position);
+
+            // Schleife durch die Wände und überprüfe Kollision
+            for (const wall of walls) {
+                // Aktualisieren der Wand-Bounding-Box
+                wall.updateMatrixWorld(); // Sicherstellen, dass die Wandmatrix aktualisiert ist
+                const wallBox = new THREE.Box3().setFromObject(wall);
+
+                // Überprüfe auf Kollision
+                if (newCameraBox.intersectsBox(wallBox)) {
+                    collision = true;
+                    console.log("Kollision erkannt!");
+                    //break;
+                }
+            }
+            return collision;
+        }*/
+        function checkCollision(newPos) {
+            camera.updateMatrixWorld(); // Sicherstellen, dass die Kameramatrix aktualisiert ist
+            const cameraBox = new THREE.Box3().setFromObject(camera);
+
+            // Anpassen der Bounding-Box-Positionen basierend auf newPos
+            const newCameraBox = cameraBox.clone();
+            newCameraBox.min.add(newPos).sub(camera.position);
+            newCameraBox.max.add(newPos).sub(camera.position);
+
+            // Schleife durch die Wände und überprüfe Kollision
+            for (const wall of walls) {
+                wall.updateMatrixWorld(); // Sicherstellen, dass die Wandmatrix aktualisiert ist
+                const wallBox = new THREE.Box3().setFromObject(wall);
+
+                // Überprüfe auf Kollision
+                if (newCameraBox.intersectsBox(wallBox)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        document.addEventListener('touchstart', (event) => {
+            touchStartX = event.touches[0].clientX;
+            touchStartY = event.touches[0].clientY;
+        });
+        /*document.addEventListener('mousestert', (event) => {
+            touchStartX = event.clientX;
+            touchStartY = event.clientY;
+        });*/
+
+
+        /*document.addEventListener('touchmove', (event) => {
+            const touchX = event.touches[0].clientX;
+            const touchY = event.touches[0].clientY;
+
+            const deltaX = (touchX - touchStartX) / window.innerWidth;
+            const deltaY = (touchY - touchStartY) / window.innerHeight;
+
+            const direction = new THREE.Vector3(deltaX, 0, deltaY).normalize();
+            const moveVector = direction.multiplyScalar(moveSpeed);
+
+            const newPos = camera.position.clone().add(moveVector);
+
+            // Überprüfe Kollision vor dem Bewegen der Kamera
+            if (!checkCollision(newPos)) {
+                camera.position.copy(newPos);
+            }
+
+            touchStartX = touchX;
+            touchStartY = touchY;
+        });
+        document.addEventListener('touchmove', (event) => {
+            const touchX = event.touches[0].clientX;
+            const touchY = event.touches[0].clientY;
+
+            const deltaX = (touchX - touchStartX) / window.innerWidth;
+            const deltaY = (touchY - touchStartY) / window.innerHeight;
+
+            const direction = new THREE.Vector3(deltaX, 0, deltaY).normalize();
+            const moveVector = direction.multiplyScalar(moveSpeed);
+
+            targetPos.add(moveVector); // Zielposition basierend auf der Bewegungsrichtung
+
+            touchStartX = touchX;
+            touchStartY = touchY;
+        });*/
+        // Kamera-Position und Steuerung
+        camera.position.set(0, 10, 5);
+        //camera.lookAt(0, 0, 0);
+        const moveSpeed = 0.5; // Reduzierte Geschwindigkeit
+        const interpolationFactor = 0.005; // Interpolationsfaktor für sanfte Bewegung
+
+        let targetPos = camera.position.clone();
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        const rotationSpeed = 0.002; // Reduzierte Geschwindigkeit der Drehung
+        document.addEventListener('touchmove', (event) => {
+            const touchX = event.touches[0].clientX;
+            const touchY = event.touches[0].clientY;
+
+            const deltaX = (touchX - touchStartX) / window.innerWidth;
+            const deltaY = (touchY - touchStartY) / window.innerHeight;
+
+            const direction = new THREE.Vector3(deltaX, 0, deltaY).normalize();
+            const moveVector = direction.multiplyScalar(moveSpeed);
+
+            const newPos = camera.position.clone().add(moveVector);
+            if (!checkCollision(newPos)) {
+                camera.position.copy(newPos);
+            }
+            raycaster.setFromCamera(mouse, camera);
+            //const intersects = raycaster.intersectObjects(scene.children, true);
+            const intersects = raycaster.intersectObjects(wall1, true);
+
+            if (intersects.length > 0) {
+                // Ein Objekt wurde getroffen, führe hier deine Aktion aus
+                alert('Objekt wurde geklickt!');
+            }
+
+            touchStartX = touchX;
+            touchStartY = touchY;
+        });
+        function onDocumentMouseMove(event) {
+            event.preventDefault();
+
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            //raycaster.setFromCamera(mouse, camera);
+
+            const intersects = raycaster.intersectObjects(chairGroup.children);
+
+            if (intersects.length > 0) {
+                const selectedObject = intersects[0].object;
+
+                // Hier kannst du festlegen, was bei der Mausbewegung passieren soll
+                selectedObject.rotation.y += 0.01; // Rotiert das ausgewählte Objekt
+            }
+        }
+        //document.addEventListener('mousemove', onDocumentMouseMove);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            // Interpoliere die Kamera-Position sanft zur Zielposition
+            //camera.position.lerp(targetPos, interpolationFactor);
+
+            // Drehung der Kamera basierend auf der Bewegungsrichtung
+            //camera.lookAt(targetPos.clone().add(new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion)));
+
+            // Überprüfe Kollision vor dem Bewegen der Kamera
+            if (checkCollision(targetPos)) {
+                targetPos.copy(camera.position); // Kamera bleibt an der aktuellen Position bei Kollision
+            }
+            renderer.render(scene, camera);
+        }
+        function camara_look_left() {
+            // camara face left
+            camera.rotation.y += Math.PI / 2; // 90 Grad nach links
+
+        }
+        document.getElementById('rotationRange').addEventListener('input', function(event) {
+            const rotationDegree = event.target.value;
+            camera.rotation.y = THREE.Math.degToRad(rotationDegree); // Grad in Bogenmaß umwandeln
+        });
+        animate();
+        function change_mood(){
+          document.body.classList.toggle("dark-theme");
+        }
+        function isDarkMode() {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // Function to update the mode information
+        function updateModeInfo() {
+            if (isDarkMode()) {
+                change_mood();
+            }
+            /*else {
+                change_mood();
+            }*/
+        }
+
+        // Call the function initially
+        updateModeInfo();
+
+        // Listen for changes in mode preference
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateModeInfo);
+    </script>
+</body>
+</html>
