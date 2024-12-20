@@ -1,0 +1,92 @@
+[
+    {
+        "Level": "easy",
+        "Frage": "translate: hello",
+        "Antwort": "hallo"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: never",
+        "Antwort": "nie"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: food",
+        "Antwort": "essen"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: cat",
+        "Antwort": "katze"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: food",
+        "Antwort": "essen"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: dog",
+        "Antwort": "hund"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: you",
+        "Antwort": "du"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: you are",
+        "Antwort": "du bist"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: phone",
+        "Antwort": "telefon"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: file",
+        "Antwort": "datei"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: picture",
+        "Antwort": "bild"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: cats",
+        "Antwort": "katzen"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: light",
+        "Antwort": "licht"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: window",
+        "Antwort": "fenster"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: easy",
+        "Antwort": "leicht"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: nice",
+        "Antwort": "schön"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: chair",
+        "Antwort": "stuhl"
+    },
+    {
+        "Level": "easy",
+        "Frage": "translate: plant",
+        "Antwort": "pflanze"
+    }
+]
