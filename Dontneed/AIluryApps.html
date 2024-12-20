@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="icon" href="AIlurylogo.ico" type="image/x-icon">
+  <title>AIlury</title>
+  <style>
+    :root{
+      --theme-color: rgba(255, 255, 255, 0.5);
+      --theme-color2: white;
+      --theme-shadow: black;
+    }
+    .dark-theme{
+      --theme-color: rgba(0, 0, 0, 0.5);
+      --theme-color2: black;
+      --theme-shadow: white;
+    }
+    body{
+      background-image: url(AIluryBackground.jpg);
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      height: 100vh;
+      width: 100vw;
+      animation: BodyfadeIn 1s;
+      transition: 1s;
+    }
+    a {
+      border: none;
+      background: transparent;
+    }
+    .app{
+      width: 100px;
+      height: 100px;
+      border-radius: 20px;
+      background: var(--theme-color);
+      -webkit-backdrop-filter: blur(70px);
+      margin-left: 25px;
+      margin-bottom: 50px;
+      margin-right: 25px;
+      margin-top: 50px;
+      text-align: center;
+      position: relative;
+      color: var(--theme-color2);
+      box-shadow: 0px 0px 10px var(--theme-shadow);
+      border: none;
+      animation: fadeInDown 1s;
+      transition: 1s;
+    }
+    .app .text {
+      position: relative;
+      top: 65px;
+      font-size: 20px;
+      font-weight: bold;
+      self-align: center;
+      text-shadow: 0px 0px 10px var(--theme-shadow);
+      border: none;
+      transition: 1s;
+    }
+    @media(max-width: 750px) {
+      #RoomBuilderLink{
+        display: none;
+      }
+    }
+    @keyframes fadeInDown{
+      0%{
+        opacity: 0;
+        transform: translateY(-100px);
+      }
+      100%{
+        opacity: 1;
+        transform: translateY(0px);
+      }
+    }
+    @keyframes BodyfadeIn{
+      0%{
+        opacity: 0;
+      }
+      100%{
+        opacity: 1;
+      }
+    }
+    .clock {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background-color: transparent;
+        color: var(--theme-color2);
+        text-shadow: 0px 0px 10px var(--theme-shadow);
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 1em;
+        animation: fadeInDown 1s;
+        font-family: 'Arial', sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="clock" class="clock"></div>
+  <a href="AIlury.html"><button class="app">
+    <div class="text">AIlury</div>
+  </button></a>
+
+  <a id="RoomBuilderLink" href="3DRoomBuilder.html"><button class="app">
+    <div class="text">3D RB</div><!--hast meinen text bekommen-->
+  </button></a>
+
+  <a href="calculator.html"><button class="app">
+    <div class="text">calculator</div>
+  </button></a>
+
+  <a href="index.html"><button class="app">
+    <div class="text">Home</div>
+  </button></a>
+
+  <a href="start.html"><button class="app">
+    <div class="text">Account</div>
+  </button></a>
+
+  <input type="file" id="bimage" accept="image/*" style="display: none;">
+  <label for="bimage"><button id="imagelabel" class="app">
+    <div class="text">background</div>
+  </button></label>
+  
+  <a href="TicTacToe.html"><button class="app">
+    <div class="text">TicTacToe</div>
+  </button></a>
+
+  <a href="Memory.html"><button class="app">
+    <div class="text">Memory</div>
+  </button></a>
+
+  <a href="CardGame.html"><button class="app">
+    <div class="text">CardGame</div>
+  </button></a>
+
+  <a href="chess.html"><button class="app">
+    <div class="text">chess</div>
+  </button></a>
+
+  <a href="TileTumble.html"><button class="app">
+    <div class="text">TileTumble</div>
+  </button></a>
+  <script>
+    function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds}`;
+
+            document.getElementById('clock').textContent = timeString;
+    }
+
+    // Update the clock every second
+    setInterval(updateClock, 1000);
+
+    // Initialize the clock immediately
+    updateClock();
+    /* dom load */
+    let imagelabel = document.getElementById("imagelabel");
+    imagelabel.addEventListener("click", () => {
+      document.getElementById("bimage").click();
+    });
+    let bodyb = document.querySelector('body');
+    document.addEventListener("DOMContentLoaded", () => {
+        let image = localStorage.getItem('backgroundImage');
+        if (image) {
+            bodyb.style.backgroundImage = `url(${image})`;
+        }
+    });
+
+    let bimageInput = document.getElementById('bimage');
+
+    function saveUserProfile(backgroundimg) {
+        localStorage.setItem('backgroundImage', backgroundimg);
+        bodyb.style.backgroundImage = `url(${backgroundimg})`;
+    }
+
+    bimageInput.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const backgroundimg = reader.result;
+                saveUserProfile(backgroundimg);
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+    function change_mood(){
+      document.body.classList.toggle("dark-theme");
+    }
+    function isDarkMode() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Function to update the mode information
+    function updateModeInfo() {
+        if (isDarkMode()) {
+            change_mood();
+        }
+        /*else {
+            change_mood();
+        }*/
+    }
+
+    // Call the function initially
+    updateModeInfo();
+
+    // Listen for changes in mode preference
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateModeInfo);
+  </script>
+</body>
+
+</html>
