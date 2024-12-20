@@ -1,0 +1,482 @@
+[
+    {
+        "Level": "schwer",
+        "Frage": "Was ist die Hauptstadt von Kasachstan?",
+        "Antwort": "astana"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer hat Penicillin entdeckt?",
+        "Antwort": "fleming"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist die Ordnungszahl von Technetium?",
+        "Antwort": "43"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer hat 'Die Beständigkeit der Erinnerung' gemalt?",
+        "Antwort": "dali"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist die Hauptstadt von Bhutan?",
+        "Antwort": "thimphu"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist das häufigste Gas in der Erdatmosphäre?",
+        "Antwort": "stickstoff"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer hat 'Die göttliche Komödie' geschrieben?",
+        "Antwort": "dante"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist der längste Fluss in Asien?",
+        "Antwort": "jangtse"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer gilt als der Vater der Geometrie?",
+        "Antwort": "euklid"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist die kleinste Primzahl?",
+        "Antwort": "2"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer hat 'Über die Entstehung der Arten' geschrieben?",
+        "Antwort": "darwin"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist das chemische Symbol für Wolfram?",
+        "Antwort": "w"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist die Währung von Südkorea?",
+        "Antwort": "won"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer ist der griechische Kriegsgott?",
+        "Antwort": "ares"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist die Hauptstadt von Uganda?",
+        "Antwort": "kampala"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist die am meisten gesprochene Sprache der Welt?",
+        "Antwort": "mandarin"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer hat das Gravitationsgesetz entdeckt?",
+        "Antwort": "newton"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist der höchste Berg in Afrika?",
+        "Antwort": "kilimandscharo"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer hat 'Krieg und Frieden' geschrieben?",
+        "Antwort": "tolstoi"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist die Lichtgeschwindigkeit im Vakuum (km/s)?",
+        "Antwort": "299792"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist das chemische Symbol für Kalium?",
+        "Antwort": "k"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer ist der römische Meeresgott?",
+        "Antwort": "neptun"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist die größte Wüste der Welt?",
+        "Antwort": "sahara"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist das kleinste Land der Welt?",
+        "Antwort": "vatikan"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer hat das Telefon erfunden?",
+        "Antwort": "bell"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist der längste Knochen im menschlichen Körper?",
+        "Antwort": "femur"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer hat die Decke der Sixtinischen Kapelle gemalt?",
+        "Antwort": "michelangelo"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist die Hauptstadt von Madagaskar?",
+        "Antwort": "antananarivo"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist die Währung von Ägypten?",
+        "Antwort": "pfund"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer hat 'Hundert Jahre Einsamkeit' geschrieben?",
+        "Antwort": "marquez"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist das chemische Symbol für Silber?",
+        "Antwort": "ag"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer ist der griechische Gott der Weisheit?",
+        "Antwort": "athene"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist die größte Insel der Welt?",
+        "Antwort": "grönland"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer hat 'Sternennacht' gemalt?",
+        "Antwort": "van gogh"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist die Ordnungszahl von Helium?",
+        "Antwort": "2"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist die Hauptstadt von Brunei?",
+        "Antwort": "bandar seri begawan"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer hat 'Stolz und Vorurteil' geschrieben?",
+        "Antwort": "austen"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist das chemische Symbol für Eisen?",
+        "Antwort": "fe"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer ist der nordische Gott des Unfugs?",
+        "Antwort": "loki"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist der größte Ozean der Welt?",
+        "Antwort": "pazifik"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer hat 'Schuld und Sühne' geschrieben?",
+        "Antwort": "dostojewski"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist die Hauptstadt von Island?",
+        "Antwort": "reykjavik"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer hat die Relativitätstheorie entdeckt?",
+        "Antwort": "einstein"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist der höchste Wasserfall der Welt?",
+        "Antwort": "engel"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer hat das Gesetz der Schwerkraft entdeckt?",
+        "Antwort": "newton"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer ist der römische Gott der Meere?",
+        "Antwort": "neptun"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Wer hat 'Die Elenden' geschrieben?",
+        "Antwort": "hugo"
+    },
+    {
+        "Level": "schwer",
+        "Frage": "Was ist das chemische Symbol für Gold?",
+        "Antwort": "au"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist die Hauptstadt von Kasachstan?",
+        "Antwort": "astana"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer hat Penicillin entdeckt?",
+        "Antwort": "fleming"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist die Ordnungszahl von Technetium?",
+        "Antwort": "43"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer hat 'Die Beständigkeit der Erinnerung' gemalt?",
+        "Antwort": "dali"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist die Hauptstadt von Bhutan?",
+        "Antwort": "thimphu"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist das häufigste Gas in der Erdatmosphäre?",
+        "Antwort": "stickstoff"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer hat 'Die göttliche Komödie' geschrieben?",
+        "Antwort": "dante"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist der längste Fluss in Asien?",
+        "Antwort": "jangtse"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer gilt als der Vater der Geometrie?",
+        "Antwort": "euklid"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist die kleinste Primzahl?",
+        "Antwort": "2"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer hat 'Über die Entstehung der Arten' geschrieben?",
+        "Antwort": "darwin"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist das chemische Symbol für Wolfram?",
+        "Antwort": "w"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist die Währung von Südkorea?",
+        "Antwort": "won"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer ist der griechische Kriegsgott?",
+        "Antwort": "ares"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist die Hauptstadt von Uganda?",
+        "Antwort": "kampala"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist die am meisten gesprochene Sprache der Welt?",
+        "Antwort": "mandarin"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer hat das Gravitationsgesetz entdeckt?",
+        "Antwort": "newton"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist der höchste Berg in Afrika?",
+        "Antwort": "kilimandscharo"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer hat 'Krieg und Frieden' geschrieben?",
+        "Antwort": "tolstoi"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist die Lichtgeschwindigkeit im Vakuum (km/s)?",
+        "Antwort": "299792"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist das chemische Symbol für Kalium?",
+        "Antwort": "k"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer ist der römische Meeresgott?",
+        "Antwort": "neptun"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist die größte Wüste der Welt?",
+        "Antwort": "sahara"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist das kleinste Land der Welt?",
+        "Antwort": "vatikan"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer hat das Telefon erfunden?",
+        "Antwort": "bell"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist der längste Knochen im menschlichen Körper?",
+        "Antwort": "femur"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer hat die Decke der Sixtinischen Kapelle gemalt?",
+        "Antwort": "michelangelo"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist die Hauptstadt von Madagaskar?",
+        "Antwort": "antananarivo"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist die Währung von Ägypten?",
+        "Antwort": "pfund"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer hat 'Hundert Jahre Einsamkeit' geschrieben?",
+        "Antwort": "marquez"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist das chemische Symbol für Silber?",
+        "Antwort": "ag"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer ist der griechische Gott der Weisheit?",
+        "Antwort": "athene"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist die größte Insel der Welt?",
+        "Antwort": "grönland"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer hat 'Sternennacht' gemalt?",
+        "Antwort": "van gogh"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist die Ordnungszahl von Helium?",
+        "Antwort": "2"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist die Hauptstadt von Brunei?",
+        "Antwort": "bandar seri begawan"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer hat 'Stolz und Vorurteil' geschrieben?",
+        "Antwort": "austen"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist das chemische Symbol für Eisen?",
+        "Antwort": "fe"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer ist der nordische Gott des Unfugs?",
+        "Antwort": "loki"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist der größte Ozean der Welt?",
+        "Antwort": "pazifik"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer hat 'Schuld und Sühne' geschrieben?",
+        "Antwort": "dostojewski"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist die Hauptstadt von Island?",
+        "Antwort": "reykjavik"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer hat die Relativitätstheorie entdeckt?",
+        "Antwort": "einstein"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist der höchste Wasserfall der Welt?",
+        "Antwort": "engel"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer hat das Gesetz der Schwerkraft entdeckt?",
+        "Antwort": "newton"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer ist der römische Gott der Meere?",
+        "Antwort": "neptun"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Wer hat 'Die Elenden' geschrieben?",
+        "Antwort": "hugo"
+    },
+    {
+        "Level": "mittel",
+        "Frage": "Was ist das chemische Symbol für Gold?",
+        "Antwort": "au"
+    }
+]
