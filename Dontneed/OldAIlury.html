@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIlury 1.8</title>
+  <link rel="icon" type="image/ico" href="templates/favicon.ico">
+  <style>
+      :root{
+        --primary-color: black;
+        --sekundary-color: white;
+        --grey-color: #ccc;
+        --darkgrey-color: #fff;
+        --lightcyan-color: lightcyan;
+        --cyan-color: cyan;
+        --white-color: black;
+        --bcolor-color: #ccc;
+        --ngrey-color: #ccc;
+        --232323-color: #BCBCBC;
+        --676767-color: #FBFBFB;
+      }
+      /* #5c3884 */
+      .dark-theme{
+        --primary-color: white;
+        --sekundary-color: black;
+        --grey-color: #0f87ff;
+        --darkgrey-color: #000;
+        --lightcyan-color: #7d9eff;
+        --cyan-color: darkcyan;
+        --white-color: lightgrey;
+        --bcolor-color: blue;
+        --ngrey-color: #1a1f2c;
+        --232323-color: #232323;
+        --676767-color: #676767;
+      }
+      @media(min-width: 750px){
+            body {
+              font-family: Arial, sans-serif;
+              background-color: var(--ngrey-color);
+              margin: 0;
+              transition: 1s;
+            }
+            .chat{
+                display: flex;
+                justify-content: space-between;
+            }
+            .bigscreenbtns{
+              display: block;
+            }
+            .smallscreenbtns{
+              display: none;
+            }
+
+            .chat-container {
+              width: 900px;
+              border: 1px solid var(--darkgrey-color);
+              border-radius: 10px;
+              background-color: var(--darkgrey-color);
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+              display: flex;
+              flex-direction: column;
+              /* make it go on the right corner */
+              height: 100vh; /* Volle Höhe des Viewports */
+              transition: 1s;
+            }
+            .chat-container:hover{
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            }
+
+            .chat-messages {
+              flex: 1; /* Füllt den verfügbaren Platz aus */
+              overflow-y: auto;
+              padding: 10px;
+            }
+
+            .bigscreenbtns a{
+               background-color: #367af6;/*#82be5d;*/
+               color: var(--232323-color);
+               border: none;
+               padding: 5px 10px;
+               cursor: pointer;
+               border-radius: 5px;
+               font-size: 25px;
+               font-weight: bold;
+               margin-left: 5px;
+               transition: background-color 0.3s;
+            }
+
+            .message {
+              margin-bottom: 10px;
+              padding: 15px 20px;
+              border-radius: 30px;
+              max-width: 60%;
+              word-wrap: break-word;
+            }
+
+            .sent {
+              background-color: var(--232323-color);
+              align-self: flex-end;
+              text-align: left;
+              font-size: 40px;
+              margin-left: 30%;
+              color: var(--primary-color);
+              /*max-width: 50%;
+              margin-left: 30%;*/
+              transition: 0.5s;
+              animation: blop2 0.5s;
+            }
+            .sent:hover{
+              box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
+            }
+
+            .received {
+              background-color: var(--232323-color);
+              align-self: flex-start;
+              text-align: left;
+              color: var(--primary-color);
+              /*max-width: 50%;*/
+              font-size: 40px;
+              transition: 0.5s;
+              animation: blop 0.5s;
+            }
+            .received:hover{
+              box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
+            }
+
+            .chat-input {
+              display: flex;
+              align-items: center;
+              padding: 10px;
+              /*border-top: 1px solid var(--grey-color);*/
+              border-radius: 20px;
+            }
+
+            .chat-input input {
+              flex: 1;
+              padding: 15px;
+              margin-right: 10px;
+              border: none;
+              border-radius: 10px;
+              color: var(--primary-color);
+              background-color: var(--232323-color);
+              font-size: 35px;
+              font-weight: bold;
+              transition: 1s;
+            }
+
+            .chat-input button {
+              padding: 8px 15px;
+              border: none;
+              background-color: var(--232323-color);
+              color: var(--primary-color);
+              border-radius: 10px;
+              cursor: pointer;
+              height: 72px;
+              transition: 1s;
+            }
+            .user-input{
+              color: var(--white-color);
+            }
+            .chat-input input:focus{
+              outline: none;
+            }
+            ::placeholder{
+              color: #676767;
+            }
+            .nav-links{
+              flex: 1;
+              text-align: right;
+              cursor: pointer;
+              display: none;
+            }
+            .nav-links ul li{
+              list-style: none;
+              display: inline-block;
+              padding: 8px 12px;
+              position: relative;
+            }
+            .nav-links ul li a{
+              color: var(--primary-color);
+              text-decoration: none;
+              font-size: 20px;
+              transition: 1s;
+            }
+            .nav-links ul li::after{
+              content: '';
+              width: 0%;
+              height: 2px;
+              background: var(--cyan-color);
+              display: block;
+              margin: auto;
+              transition: 0.5s;
+            }
+            .bcft{
+              background-color: var(--grey-color);
+              border-radius: 10px;
+              padding: 10px;
+
+            }
+            #button1 img{
+              height: 50px;
+            }
+            #einstellungen{
+              display: none;
+              /*width: 70px;
+              height: 70px;
+              margin-left: 80%;
+              margin-top: 10px;
+              cursor: pointer;
+              transition: 1s;
+              font-size: 70px;
+              color: var(--primary-color);*/
+            }
+            #button2{
+              display: none;
+              transition: 1s;
+            }
+            #button3{
+              display: none;
+              margin-left: 5px;
+              background-color: orange;
+              transition: 1s;
+            }
+            .bcft1{
+              background-color: var(--grey-color);
+              border-radius: 10px;
+              padding: 10px;
+              height: 30px;
+            }
+            #nmy{
+              transition: 0.5s;
+            }
+            #nmy:hover{
+              box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
+            }
+            #messageE {
+
+            }
+            @keyframes blop{
+              from{
+                width: 0px;
+                font-size: 0px;
+              }
+              to{
+                width: 100%;
+                font-size: 40px;
+              }
+            }
+            @keyframes blop2{
+              from{
+                margin-left: 100%;
+                width: 0px;
+                font-size: 0px;
+              }
+              to{
+                margin-left: 30%;
+                width: 100%;
+                font-size: 40px;
+              }
+            }
+            .intro{
+              position: fixed;
+              z-index: 1;
+              left: 0;
+              top: 0;
+              width: 100%;
+              height: 100vh;
+              background-color: #161616;
+              transition: 1s;
+            }
+            .logo-header{
+              position: absolute;
+              top: 40%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              color: #fff;
+            }
+            .logo{
+              position: relative;
+              display: inline-block;
+              bottom: -20px;
+              opacity: 0;
+            }
+            .logo.active{
+              bottom: 0;
+              opacity: 1;
+              transition: ease-in-out 0.5s;
+            }
+            .logo.fade{
+              bottom: 150px;
+              opacity: 0;
+              transition: ease-in-out 0.5s;
+            }
+            .container{
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              transition: 1s;
+            }
+            .user-profile {
+                /* make all items be under each other*/
+                /* make every item have a space on top and bottom */
+                
+                border-radius: 10px;
+                background-color: var(--232323-color);
+                color: var(--676767-color);
+                max-width: 400px;
+                height: 100vh;
+                border: none;
+                text-align: center;
+                padding: 45px;
+                align-items: center;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+                transition: 1s;
+            }
+            #username-display{
+                margin-top: 10px;
+                font-size: 24px;
+                font-weight: bold;
+                text-align: center;
+                transition: 1s;
+            }
+
+            .user-profile img {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                margin-top: 15%;
+                /* make so the image doesnt strech in its frame*/
+                object-fit: cover;
+            }
+            #logout{
+              margin-top: 20%;
+              background-color: #367af6;
+              color: var(--232323-color);
+              border: none;
+              padding: 5px 10px;
+              cursor: pointer;
+              font-size: 25px;
+              border-radius: 5px;
+              font-weight: bold;
+              transition: background-color 0.3s;
+            }
+            #username-display{
+              font-weight: bold;
+              font-size: 40px;
+              transition: 1s;
+            }
+            #Löschbtn {
+              display: none;
+              background-color: var(--232323-color);/*var(--bcolor-color);*/
+              color: var(--primary-color);
+              border: none;
+              border-radius: 10px;
+              text-align: center;
+              height: 30px;
+              width: 100%;
+              margin-top: 10px;
+              transition: 1s;
+            }
+            #Editbtn {
+              display: none;
+              background-color: var(--232323-color);/*var(--bcolor-color);*/
+              color: var(--primary-color);
+              border: none;
+              border-radius: 10px;
+              text-align: center;
+              height: 30px;
+              width: 100%;
+              margin-top: 10px;
+              transition: 1s;
+            }
+            #Breakbtn {
+              display: none;
+              background-color: var(--232323-color);/*var(--bcolor-color);*/
+              color: var(--primary-color);
+              border: none;
+              border-radius: 10px;
+              text-align: center;
+              height: 30px;
+              width: 100%;
+              margin-top: 10px;
+              transition: 1s;
+            }
+            #speakon {
+              background-color: #367af6;/*#82be5d;*/
+              color: var(--232323-color);
+              border: none;
+              padding: 5px 10px;
+              cursor: pointer;
+              border-radius: 5px;
+              font-size: 25px;
+              font-weight: bold;
+              margin-left: 5px;
+              transition: background-color 0.3s;
+            }
+            .RandomQuestion {
+              background-color: #367af6;/*#82be5d;*/
+              color: var(--232323-color);
+              border: none;
+              padding: 5px 10px;
+              cursor: pointer;
+              border-radius: 5px;
+              font-size: 25px;
+              font-weight: bold;
+              margin-left: 5px;
+              transition: background-color 0.3s;
+            }
+            #inscructionlink{
+                  background-color: var(--232323-color);/*#ff5722;*/
+                  color: var(--sekundary-color);
+                  border: none;
+                  padding: 5px 10px;
+                  cursor: pointer;
+                  border-radius: 5px;
+                  font-size: 15px;
+                  font-weight: bold;
+                  margin-left: 5px;
+                  transition: background-color 0.3s;
+            }
+      }
+      @media(max-width: 750px){
+            body {
+              font-family: Arial, sans-serif;
+              background-color: var(--ngrey-color);
+              margin: 0;
+              transition: 1s;
+            }
+            .bigscreenbtns{
+              display: none;
+            }
+            .smallscreenbtns{
+              display: block;
+            }
+            #button1 img{
+              height: 35px;
+            }
+
+            .chat-container {
+              max-width: 600px;
+              margin: 20px auto;
+              border: 1px solid transparent;
+              border-radius: 10px;
+              background-color: var(--darkgrey-color);
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+              display: flex;
+              flex-direction: column;
+              height: 100vh; /* Volle Höhe des Viewports */
+              transition: 1s;
+            }
+            .chat-container:hover{
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            }
+
+            .chat-messages {
+              flex: 1; /* Füllt den verfügbaren Platz aus */
+              overflow-y: auto;
+              padding: 10px;
+            }
+
+            .message {
+              margin-bottom: 10px;
+              padding: 10px;
+              border-radius: 10px;
+              max-width: 80%;
+              word-wrap: break-word;
+            }
+
+            .sent {
+              background-color: var(--232323-color);
+              align-self: flex-end;
+              text-align: right;
+              color: var(--primary-color);
+              /*max-width: 50%;
+              margin-left: 30%;*/
+              transition: 0.5s;
+              animation: blop2 0.5s;
+            }
+            .sent:hover{
+              box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
+            }
+
+            .received {
+              background-color: var(--232323-color);
+              align-self: flex-start;
+              text-align: left;
+              color: var(--primary-color);
+              /*max-width: 50%;*/
+              transition: 0.5s;
+              animation: blop 0.5s;
+            }
+            .received:hover{
+              box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
+            }
+
+            .chat-input {
+              display: flex;
+              align-items: center;
+              padding: 10px;
+              border-top: 1px solid transparent;
+            }
+
+            .chat-input input {
+              flex: 1;
+              padding: 15px;
+              margin-right: 10px;
+              border: none;
+              border-radius: 10px;
+              color: var(--primary-color);
+              background-color: var(--232323-color);
+              font-size: 20px;
+              font-weight: bold;
+              transition: 1s;
+            }
+
+            .chat-input button {
+              padding: 8px 15px;
+              border: none;
+              background-color: lightgrey;
+              color: var(--darkgrey-color);
+              border-radius: 10px;
+              cursor: pointer;
+              transition: 1s;
+            }
+            .user-input{
+              color: var(--white-color);
+            }
+            .chat-input input:focus{
+              outline: 2px solid #0f87ff;
+            }
+            .nav-links{
+              flex: 1;
+              text-align: right;
+              cursor: pointer;
+              display: none;
+            }
+            .nav-links ul li{
+              list-style: none;
+              display: inline-block;
+              padding: 8px 12px;
+              position: relative;
+            }
+            .nav-links ul li a{
+              color: var(--primary-color);
+              text-decoration: none;
+              font-size: 20px;
+              transition: 1s;
+            }
+            .nav-links ul li::after{
+              content: '';
+              width: 0%;
+              height: 2px;
+              background: var(--cyan-color);
+              display: block;
+              margin: auto;
+              transition: 0.5s;
+            }
+            .bcft{
+              background-color: var(--grey-color);
+              border-radius: 10px;
+              padding: 10px;
+
+            }
+            #einstellungen{
+              width: 70px;
+              height: 70px;
+              margin-left: 80%;
+              margin-top: 10px;
+              cursor: pointer;
+              transition: 1s;
+              font-size: 70px;
+              color: var(--primary-color);
+            }
+            #button2{
+              display: none;
+              transition: 1s;
+            }
+            #button3{
+              display: none;
+              margin-left: 5px;
+              background-color: orange;
+              transition: 1s;
+            }
+            .bcft1{
+              background-color: var(--grey-color);
+              border-radius: 10px;
+              padding: 10px;
+              height: 30px;
+            }
+            #nmy{
+              transition: 0.5s;
+            }
+            #nmy:hover{
+              box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
+            }
+            #messageE {
+
+            }
+            @keyframes blop{
+              from{
+                width: 0px;
+                font-size: 0px;
+              }
+              to{
+                width: 100%;
+                font-size: 20px;
+              }
+            }
+            @keyframes blop2{
+              from{
+                margin-left: 100%;
+                width: 0px;
+                font-size: 0px;
+              }
+              to{
+                margin-left: 0;
+                width: 100%;
+                font-size: 20px;
+              }
+            }
+            .intro{
+              position: fixed;
+              z-index: 1;
+              left: 0;
+              top: 0;
+              width: 100%;
+              height: 100vh;
+              background-color: #161616;
+              transition: 1s;
+            }
+            .logo-header{
+              position: absolute;
+              top: 40%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              color: #fff;
+            }
+            .logo{
+              position: relative;
+              display: inline-block;
+              bottom: -20px;
+              opacity: 0;
+            }
+            .logo.active{
+              bottom: 0;
+              opacity: 1;
+              transition: ease-in-out 0.5s;
+            }
+            .logo.fade{
+              bottom: 150px;
+              opacity: 0;
+              transition: ease-in-out 0.5s;
+            }
+            .container{
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-top: 20px;
+            }
+            .user-profile {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 20px;
+                padding: 20px;
+                border-radius: 10px;
+                background-color: var(--sekundary-color);
+                color: var(--primary-color);
+                width: 580px;
+                border: 1px solid transparent;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+                transition: 1s;
+            }
+            #username-display{
+                font-size: 24px;
+                font-weight: bold;
+                text-align: center;
+                transition: 1s;
+            }
+
+            .user-profile img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                margin-right: 20px;
+            }
+            #logout{
+              background-color: #367af6;
+              color: #fff;
+              border: none;
+              padding: 5px 10px;
+              cursor: pointer;
+              border-radius: 5px;
+              transition: background-color 0.3s;
+            }
+            #username-display{
+              font-weight: bold;
+              font-size: 40px;
+              transition: 1s;
+            }
+            #Löschbtn {
+              display: none;
+              background-color: var(--bcolor-color);
+              color: var(--primary-color);
+              border: none;
+              border-radius: 10px;
+              text-align: center;
+              height: 30px;
+              width: 100%;
+              margin-top: 10px;
+              transition: 1s;
+            }
+            #Editbtn {
+              display: none;
+              background-color: var(--bcolor-color);
+              color: var(--primary-color);
+              border: none;
+              border-radius: 10px;
+              text-align: center;
+              height: 30px;
+              width: 100%;
+              margin-top: 10px;
+              transition: 1s;
+            }
+            #Breakbtn {
+              display: none;
+              background-color: var(--bcolor-color);
+              color: var(--primary-color);
+              border: none;
+              border-radius: 10px;
+              text-align: center;
+              height: 30px;
+              width: 100%;
+              margin-top: 10px;
+              transition: 1s;
+            }
+            #speakon {
+              background-color: #367af6;/*#ff5722;*/
+              color: #fff;
+              border: none;
+              padding: 5px 10px;
+              cursor: pointer;
+              border-radius: 5px;
+              font-size: 15px;
+              margin-left: 5px;
+              transition: background-color 0.3s;
+            }
+            #inscructionlink{
+                  background-color: #367af6;/*#ff5722;*/
+                  color: #fff;
+                  border: none;
+                  padding: 5px 10px;
+                  cursor: pointer;
+                  border-radius: 5px;
+                  font-size: 15px;
+                  margin-left: 5px;
+                  transition: background-color 0.3s;
+            }
+      }
+  </style>
+</head>
+
+<body>
+  <div class="intro">
+      <h1 class="logo-header">
+        <span class="logo">A</span><span class="logo">I</span><span class="logo">l</span><span class="logo">u</span><span class="logo">r</span><span class="logo">y</span>
+      </h1>
+  </div>
+  <script>
+    let intro = document.querySelector('.intro');
+    let logo = document.querySelector('.logo-header');
+    let logoSpan = document.querySelectorAll('.logo');
+    window.addEventListener('DOMContentLoaded', ()=>{
+      setTimeout(()=>{
+        logoSpan.forEach((span, idx)=>{
+          setTimeout(()=>{
+            span.classList.add('active');
+          }, (idx + 1) * 200)
+        })
+        setTimeout(()=>{
+          logoSpan.forEach((span, idx)=>{
+            setTimeout(()=>{
+              span.classList.remove('active');
+            }, (idx + 1) * 50)
+          })
+        },2000)
+        setTimeout(()=>{
+          intro.style.top = '-100vh';
+        },3000)
+      })
+    })
+  </script>
+  <div class="chat">
+      <div class="container">
+            <div class="user-profile" id="user-profile">
+                <div>
+                    <img src="default_avatar.png" alt="User Avatar" id="user-avatar">
+                    <br>
+                    <br>
+                    <span id="username-display">Guest</span>
+                    <div class="smallscreenbtns">
+                      <a id="logout" href="index.html">log out</a>
+                      <button class="speakon" id="speakon">speak: off</button>
+                    </div>
+                    <div class="bigscreenbtns">
+                      <br>
+                      <br>
+                      <a id="logout" href="index.html">log out</a>
+                      <br>
+                      <br>
+                      <button class="speakon" id="speakon">speak: off</button>
+                      <br>
+                      <br>
+                      <a class="changetheme" id="changetheme" onclick="change_mood()">Dark theme</a>
+                      <br>
+                      <br>
+                      <a class="RandomQuestion" onclick="setinputvalue()">Random</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chat-container">
+          <h1 id="einstellungen" onclick="showmenu()">#</h1>
+          <div class="nav-links" id="navlinks">
+            <ul>
+              <li><a class="bcft" style="color: var(--primary-color);" onclick="change_mood()">Dark theme</a></li>
+              <br>
+              <br>
+              <li><a class="bcft" style="color: var(--primary-color);" onclick="setinputvalue()">Random</a></li>
+              <br>
+              <br>
+              <li><a class="bcft" id="btn3" style="color: var(--primary-color);" onclick="helpbtn()">Help</a></li>
+              <br>
+              <br>
+              <li><a class="bcft" id="fontS" style="color: var(--primary-color);" onclick="showfonts()">Font size ></a></li>
+              <br>
+              <br>
+              <li><a class="bcft1" id="btnone" style="color: var(--primary-color);display: none;" onclick="font1()">big</a></li>
+              <br>
+              <li><a class="bcft1" id="btnthree" style="color: var(--primary-color);display: none;" onclick="font3()">small</a></li>
+
+            </ul>
+          </div>
+
+          <div class="chat-messages" id="chat-messages">
+            <h2 id="nmy" style="text-align: center;color: var(--primary-color);">no messages yet<a href="instructions.html" id="inscructionlink">instructions</a></h2>
+            <!-- nmy Hier werden die Chat-Nachrichten eingefügt -->
+          </div>
+          <button id="Breakbtn">Break</button>
+          <button id="Löschbtn">Trash</button>
+          <button id="Editbtn">Edit</button>
+          <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="button1" onclick="sendMassaga()"><img src="SendSign.heic"></button>
+            <button id="button2" onclick="newknowledge()">Teach</button>
+            <button id="button3" onclick="learnnonewthing()">Skip</button>
+          </div>
+        </div>
+  </div>
+  <script>
+          document.addEventListener("DOMContentLoaded", function () {
+              const userProfile = document.getElementById("user-profile");
+              const usernameDisplay = document.getElementById("username-display");
+              const userAvatar = document.getElementById("user-avatar");
+
+
+              // Load user profile from localStorage
+              loadUserProfile();
+
+              function loadUserProfile() {
+                  const savedUsername = localStorage.getItem("username");
+                  const savedAvatar = localStorage.getItem("avatar");
+
+                  if (savedUsername) {
+                      usernameDisplay.textContent = savedUsername;
+                  }
+
+                  if (savedAvatar) {
+                      userAvatar.src = savedAvatar;
+                  }
+              }
+          });
+
+  </script>
+  <script>
+    const myInput = document.getElementById('user-input');
+    if(myInput.value == ''){
+      document.getElementById('button1').style.backgroundColor = "var(--232323-color)";
+      document.getElementById('button2').style.backgroundColor = "var(--232323-color)";
+
+    }
+    if (myInput.value !== ''){
+      document.getElementById('button1').style.backgroundColor = "var(--232323-color)";
+      document.getElementById('button2').style.backgroundColor = "var(--232323-color)";
+    }
+
+
+    /*keydown*/
+    myInput.addEventListener('keyup', () =>{
+      if (myInput.value !== ''){
+        document.getElementById('button1').style.backgroundColor = "var(--676767-color)";
+        document.getElementById('button2').style.backgroundColor = "var(--676767-color)";
+
+
+      }else{
+        document.getElementById('button1').style.backgroundColor = "var(--232323-color)";
+        document.getElementById('button2').style.backgroundColor = "var(--232323-color)";
+
+
+      }
+
+    })
+  </script>
+  <h6 style="color: transparent;" id="remember"></h6>
+  <h6 style="color: transparent;" id="bot-response"></h6>
+  <h6 style="color: transparent;" id="idk">I dont know the answer. Please enter my answer to that question</h6>
+  <script>
+    let theoldanswer = "";
+    let theoldanswer2 = "";
+    let thequestion2 = "nothing";
+    let theanswer2 = "nothing";
+    let theoldmathanswer = "";
+    let themathanswer = "";
+    let themathquestion = "";
+    let chalange = "nothing";
+    let thequestion = "nothing";
+    let theanswer = "nothing";
+    function clean() {
+        theoldanswer = "";
+        theoldanswer2 = "";
+        thequestion2 = "nothing";
+        theanswer2 = "nothing";
+        theoldmathanswer = "";
+        themathanswer = "";
+        themathquestion = "";
+        thequestion = "nothing";
+        theanswer = "nothing";
+    }
+    // Function to handle message element click
+    let ivif = document.getElementById('user-input');
+    let button1 = document.getElementById('button1');
+    let teach = document.getElementById('button2');
+    let skip = document.getElementById('button3');
+    ivif.addEventListener('keydown', () => {
+      // Check if the Enter key is pressed
+      if (event.key === 'Enter'){
+        // click the send btn
+        if (button1.style.display == "block"){
+          button1.click();
+        }else if (button1.style.display == "none"){
+          teach.click();
+        }else {
+          skip.click();
+        }
+      }
+    })
+    function handleEditMessage(event) {
+        const clickedElement = event.target;
+        const backgroundColor = window.getComputedStyle(clickedElement).getPropertyValue('background-color').toLowerCase();
+        if (clickedElement.classList.contains('sent')) {
+            if (clickedElement.style.border == '2px solid var(--primary-color)'){
+              clickedElement.style.border = 'none';
+            }else {
+              clickedElement.style.border = '2px solid var(--primary-color)';
+            }
+            const messageContent = clickedElement.textContent;
+            const messageID = clickedElement.dataset.id;
+            const löschbtn = document.getElementById('Löschbtn');
+            const editbtn = document.getElementById('Editbtn');
+            const Breakbtn = document.getElementById('Breakbtn');
+            löschbtn.style.display = 'block';
+            löschbtn.addEventListener('click', () => {
+                if (clickedElement.style.border == '2px solid var(--primary-color)'){
+                  clickedElement.remove();
+                  löschbtn.style.display = 'none';
+                  editbtn.style.display = 'none';
+                  Breakbtn.style.display = 'none';
+                  clickedElement.style.border = 'none';
+                }
+            });
+            editbtn.style.display = 'block';
+            editbtn.addEventListener('click', () => {
+              if (clickedElement.style.border == '2px solid var(--primary-color)'){
+                const inputElement = document.createElement('input');
+                inputElement.type = 'text';
+                inputElement.value = messageContent;
+
+                // Replace the text content with an input field for editing
+                clickedElement.textContent = '';
+                clickedElement.appendChild(inputElement);
+
+                inputElement.focus();
+
+                // Add event listener to save the edited message on input blur
+                inputElement.addEventListener('blur', function() {
+                    saveEditedMessage(clickedElement, inputElement);
+                });
+                löschbtn.style.display = 'none';
+                editbtn.style.display = 'none';
+                Breakbtn.style.display = 'none';
+
+                //for each clickedElement border = 'none' 
+                for (const element of document.querySelectorAll('.sent')) {
+                  element.style.border = 'none';
+                }
+                for (const element2 of document.querySelectorAll('.received')) {
+                  element2.style.border = 'none';
+                }
+              }
+            });
+            Breakbtn.style.display = 'block';
+            Breakbtn.addEventListener('click', () => {
+              löschbtn.style.display = 'none';
+              editbtn.style.display = 'none';
+              Breakbtn.style.display = 'none';
+              clickedElement.style.border = 'none';
+            });
+            if (clickedElement.style.border == '2px solid var(--primary-color)'){
+              clickedElement.style.border = '2px solid var(--primary-color)';
+              löschbtn.style.display = 'block';
+              editbtn.style.display = 'block';
+              Breakbtn.style.display = 'block';
+            }else {
+              clickedElement.style.border = 'none';
+            }
+        }else {
+          if (clickedElement.style.border == '2px solid var(--primary-color)'){
+            clickedElement.style.border = 'none';
+          }else {
+            clickedElement.style.border = '2px solid var(--primary-color)';
+          }
+          const messageContent = clickedElement.textContent;
+          const messageID = clickedElement.dataset.id;
+          const löschbtn = document.getElementById('Löschbtn');
+          const editbtn = document.getElementById('Editbtn');
+          const Breakbtn = document.getElementById('Breakbtn');
+          löschbtn.style.display = 'block';
+          löschbtn.addEventListener('click', () => {
+              if (clickedElement.style.border == '2px solid var(--primary-color)'){
+                clickedElement.remove();
+                löschbtn.style.display = 'none';
+                editbtn.style.display = 'none';
+                Breakbtn.style.display = 'none';
+                clickedElement.style.border = 'none';
+              }
+          });
+          editbtn.style.display = 'none';
+          Breakbtn.style.display = 'block';
+          Breakbtn.addEventListener('click', () => {
+            löschbtn.style.display = 'none';
+            editbtn.style.display = 'none';
+            Breakbtn.style.display = 'none';
+            clickedElement.style.border = 'none';
+          });
+          if (clickedElement.style.border == '2px solid var(--primary-color)'){
+            clickedElement.style.border = '2px solid var(--primary-color)';
+            löschbtn.style.display = 'block';
+            editbtn.style.display = 'none';
+            Breakbtn.style.display = 'block';
+          }else {
+            clickedElement.style.border = 'none';
+          }
+        }
+    }
+
+    function saveEditedMessage(messageElement, inputElement) {
+        const editedMessage = inputElement.value;
+
+        messageElement.textContent = editedMessage;
+    }
+    document.addEventListener('click', function(event) {
+        const clickedElement = event.target;
+
+        if (clickedElement.classList.contains('message')) {
+            console.log('Nachricht angeklickt!');
+            handleEditMessage(event);
+            // Hier können Sie weitere Aktionen ausführen, die beim Klicken einer Nachricht durchgeführt werden sollen
+        }
+    });
+    const messageElements = document.querySelectorAll('.message');
+    messageElements.forEach(messageElement => {
+        messageElement.addEventListener('click', handleEditMessage);
+    });
+    // real v
+    function sendMassaga(){
+        document.getElementById('button1').style.backgroundColor = "var(--232323-color)";
+        document.getElementById('button2').style.backgroundColor = "var(--232323-color)";
+        document.getElementById("remember").textContent = document.getElementById("user-input").value;
+        document.getElementById("nmy").style.display = "none";
+        //say();
+
+
+        setTimeout(sendMessage, 100);
+    }
+
+    function sendMessage() {
+        var userInput = document.getElementById('user-input');
+        var userMessage = userInput.value.trim();
+        if (userMessage !== '') {
+            addMessage(userMessage, 'sent');
+
+            // Simulierte Antwort vom Bot
+            getBotResponse(userMessage)
+                .then(response => {
+
+                    setTimeout(addMessage, 500, response, 'received')
+                    document.getElementById('bot-response').textContent = response;
+                    // Hier wird der Wert des <h1>-Elements aktualisiert
+                    // Scrollen zum Ende der Chat-Nachrichten
+                    var chatMessages = document.getElementById('chat-messages');
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                })
+                .catch(error => console.error('Bot response error:', error));
+
+            userInput.value = '';
+
+
+
+        }
+    }
+
+
+    /*function getBotResponse(userMessage) {
+        return fetch('/process_input', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ user_input: userMessage })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(response => {
+            if (response.message.indexOf("I dont know the answer. Please enter my answer to that question") !== -1) {
+              learnnewthing();
+            }
+            else if (response.message.indexOf("Sorry but i dont know your Name") !== -1) {
+              let name = document.getElementById("username-display");
+              return name.textContent;
+            }
+            else if (response.message.indexOf("Yes (Username)") !== -1) {
+              let name = document.getElementById("username-display");
+              let text = "yes " + name.textContent;
+              return text;
+            }
+            else if (response.message.indexOf("hello (Username)") !== -1) {
+              let name = document.getElementById("username-display");
+              let text = "hello " + name.textContent;
+              return text;
+            }
+            else if (response.message.indexOf("(Username)") !== -1) {
+              let name = document.getElementById("username-display");
+              let text = name.textContent;
+              return text;
+            }
+            else if (response.message.indexOf("hallo (Username)") !== -1) {
+              let name = document.getElementById("username-display");
+              let text = "hallo " + name.textContent;
+              return text;
+            }
+            return response.message;
+
+        })
+        .catch(error => {
+            console.error('Error fetching bot response:', error);
+            return 'Sorry, I encountered an error. Please try again.';
+        });
+    }*/
+    async function loadKnowledgeBase(filePath) {
+      const response = await fetch(filePath);
+      const data = await response.json();
+      return data;
+    }
+
+    // Funktion zum Speichern der Wissensbasis in einer JSON-Datei (nicht im reinen Browser-JavaScript möglich)
+
+    // Funktion zur besten Übereinstimmung
+    function findBestMatch(userQuestion, questions) {
+      // Simulierte Funktion für Übereinstimmungsvergleich
+      let bestMatch = null;
+      let bestScore = 0.5; // Beispielschwellenwert
+      questions.forEach(question => {
+        let score = similarity(userQuestion, question); // similarity() muss implementiert werden
+        if (score > bestScore) {
+          bestMatch = question;
+        }
+      });
+      return bestMatch;
+    }
+
+    // Funktion zur Berechnung der Ähnlichkeit (eine einfache Implementierung)
+    function similarity(str1, str2) {
+      const words1 = str1.split(' ');
+      const words2 = str2.split(' ');
+      const commonWords = words1.filter(word => words2.includes(word));
+      return commonWords.length / Math.max(words1.length, words2.length);
+    }
+
+    // Funktion zum Abrufen der Antwort für eine Frage
+    function getAnswerForQuestion(question, knowledgeBase) {
+      for (let q of knowledgeBase.questions) {
+        if (q.question === question) {
+          return q.answer;
+        }
+      }
+      return null;
+    }
+    let Mnamen = ["Mia", "Laura", "Lara", "Lina", "Lisa", "Jana", "Lena", "Selena", "Sophia", "Emma", "Maja", "Lea", "Tina", "Helena", "Anna", "Sarah", "Maria", "Anna", "Sophie", "Emily", "Maya", "Melina", "Alice", "Olivia", "Isabella", "Ava", "Charlotte", "Cristina", "Laura", "Anne", "Julia", "Klara", "Bella", "Theresia", "Andrea", "Sofia", "Elena", "Nina", "Nicole", "Amelie", "Leane", "Elia", "Nya", "Naya", "Nora", "Sabrina", "Sabine", "Angelika", "Vanda", "Melinda", "Viktoria", "Liv", "Livia", "Liviana", "Matilda", "Victoria", "Fransiska"];
+
+    // Männliche Namen
+    let Jnamen = ["Elias", "Jonas", "Jakob", "Johannes", "Johann", "Karl", "Kevin", "Linus", "Max", "Maximus", "Maximilian", "Moritz", "Moritz", "Moritz", "Moritz", "Paulo", "Paul", "Fritz", "Anton", "Franz", "Andre", "Andreas", "Peter", "Louis", "Leo", "Lukas", "Holger", "Jonathan", "Willi", "William", "Wilhelm", "Willy", "Viktor", "Victor", "Marcus", "Markus", "Marko", "Mark", "Michael", "Martin", "Kai", "Aleksander", "Alexander", "Alex", "Werner", "Otto", "Uwe", "Ulrich", "Uli", "Bernd", "Bernhard", "Igor", "Ivan", "Ivo", "Sven", "Stefan", "Hans", "Henrik", "Henry", "Herbert", "Herman", "Heinrich"];
+
+    // Array mit beiden Namenstypen
+    let Anamen = [Mnamen, Jnamen];
+    let MMnamen = ["Mia", "laura", "Lara", "Lina", "Lisa", "Jenna", "Lena", "Selena", "Sophia", "Emma", "Skylor", "Lea", "Tina", "Dora", "Anna", "Sarah", "Maria", "Sophie", "Emily", "Melina", "Alice", "Olivia", "Isabella", "Ava", "Isabell", "Cristina", "Laura", "Julia", "Bella", "Theresa", "Andrea", "Sofia", "Elena", "Nina", "Nicole", "Elia", "Nya", "Naya", "Nora", "Sabrina", "Angelika", "Vanda", "Viktoria", "Liv", "Livia", "Liviana", "Matilda", "Victoria", "Carmen", "Fransiska"];
+
+    // Männliche Namen
+    let JJnamen = ["Elias", "Cole", "Kevin", "Zane", "Max", "Maximus", "Maximilian", "Paulo", "Paul", "Andre", "Peter", "Louis", "Leo", "Lukas", "Jonathan", "Willi", "William", "Willy", "Viktor", "Victor", "Marcus", "Markus", "Marko", "Mark", "Michael", "Martin", "Kai", "Aleksander", "Alexander", "Alex", "Igor", "Ivan", "Sven", "Henrik", "Henry", "Robert", "Jimmy", "Cris"];
+
+    // Array mit beiden Namenstypen
+    let AAnamen = [MMnamen, JJnamen];
+    // Funktion zur Verarbeitung der Benutzereingabe
+    let tasks = [];
+    let tasks2 = [];
+    let currentAnswer = '';
+    async function loadTasks() {
+            try {
+                const task1 = await fetch('tasks.json');
+                if (!task1.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                tasks = await task1.json();
+            } catch (error) {
+                console.error('Error loading tasks:', error);
+                return 'Error loading tasks';
+            }
+    }
+    async function loadTasks2() {
+              try {
+                  const task1 = await fetch('tasks2.json');
+                  if (!task1.ok) {
+                      throw new Error('Network response was not ok');
+                  }
+                  tasks2 = await task1.json();
+              } catch (error) {
+                  console.error('Error loading tasks:', error);
+                  return 'Error loading tasks';
+              }
+    }
+
+    function loadRandomTask() {
+            if (tasks.length === 0) {
+                return 'No tasks available';
+            }
+            const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
+            thequestion = randomTask.Frage;
+            return thequestion;
+            theanswer = randomTask.Antwort;
+    }
+
+    function checkAnswer(userMessage) {
+            if (userMessage === theanswer) {
+                return 'Richtig! Eine neue Aufgabe wird geladen.';
+                loadRandomTask();
+                document.getElementById('answer').value = '';
+            } else {
+                return 'Falsch! Versuchen Sie es erneut.';
+            }
+    }
+    async function getBotResponse(userMessage) {
+     if (chalange == "nothing") {
+      const userQuestion = userMessage.toLowerCase();
+      const knowledgeBase = await loadKnowledgeBase('knowledge_base.json');
+      const questions = knowledgeBase.questions.map(q => q.question);
+      const bestMatch = findBestMatch(userQuestion, questions);
+
+      let response;
+      if (userQuestion.includes('√')) {
+          let zahlen = userQuestion.match(/\b\d+\b/g);
+          if (zahlen.length !== 1) {
+              return 'hm?';
+          } else {
+              let number = parseInt(zahlen[0]);
+              let ergebnis = Math.sqrt(number);
+              return `√${number} = ${ergebnis}.`;
+          }
+      } else if (userQuestion.includes('=')) {
+          let zahlen = userQuestion.match(/\b\d+\b/g);
+          if (zahlen.length !== 2) {
+              return 'sorry but i didnt find a mathematical operation';
+          } else {
+              let [question, answer] = zahlen;
+              let ergebnis1 = parseInt(question);
+              let ergebnis2 = parseInt(answer);
+              if (ergebnis1 === ergebnis2) {
+                  return `${question} = ${answer} = True`;
+              } else {
+                  return `${question} = ${answer} = False.`;
+              }
+          }
+      } else if (userQuestion.includes('>')) {
+          let zahlen = userQuestion.match(/\b\d+\b/g);
+          if (zahlen.length !== 2) {
+              return 'sorry but i didnt find a mathematical operation';
+          } else {
+              let [question, answer] = zahlen;
+              let ergebnis1 = parseInt(question);
+              let ergebnis2 = parseInt(answer);
+              if (ergebnis1 === ergebnis2) {
+                  return `${question} = ${answer}`;
+              } else if (ergebnis1 > ergebnis2) {
+                  return `${question} > ${answer} = True`;
+              } else {
+                  return `${question} > ${answer} = False.`;
+              }
+          }
+      } else if (userQuestion.includes('<')) {
+          let zahlen = userQuestion.match(/\b\d+\b/g);
+          if (zahlen.length !== 2) {
+              return 'sorry but i didnt find a mathematical operation';
+          } else {
+              let [question, answer] = zahlen;
+              let ergebnis1 = parseInt(question);
+              let ergebnis2 = parseInt(answer);
+              if (ergebnis1 === ergebnis2) {
+                  return `${question} = ${answer}`;
+              } else if (ergebnis1 < ergebnis2) {
+                  return `${question} < ${answer} = True`;
+              } else {
+                  return `${question} < ${answer} = False.`;
+              }
+          }
+      } else if (userQuestion.includes('how can i spell')) {
+          let [trashword, word] = userQuestion.split("how can i spell", 2).map(str => str.trim());
+          word = word.replace(':', '');
+          word = word.trim();
+          // , hier
+          word = word.split('').join(',');
+          return `${word}`;
+      } else if (userQuestion.includes('how do i spell')) {
+          let [trashword, word] = userQuestion.split("how do i spell", 2).map(str => str.trim());
+          word = word.replace(':', '');
+          word = word.trim();
+          // , hier
+          word = word.split('').join(',');
+          return `${word}`;
+      } else if (userQuestion.includes('wie buchstabiere ich')) {
+          let [trashword, word] = userQuestion.split("wie buchstabiere ich", 2).map(str => str.trim());
+          word = word.replace(':', '');
+          word = word.trim();
+          // , hier
+          word = word.split('').join(',');
+          return `${word}`;
+      } else if (userQuestion.includes('wie buchstabiert man')) {
+          let [trashword, word] = userQuestion.split("wie buchstabiert man", 2).map(str => str.trim());
+          word = word.replace(':', '');
+          word = word.trim();
+          // , hier
+          word = word.split('').join(',');
+          return `${word}`;
+      } else if (userQuestion.includes('is ') && userQuestion.includes(' in ')) {
+          let userR = userQuestion.trim();
+          userR = userR.replace("?", "");
+          // Ersetzung durchführen und das Ergebnis zuweisen
+          if (userR.includes(' in ')) {
+              let [userS1, userS2] = userR.split("in", 2).map(str => str.trim());
+              userS1 = userS1.trim();
+              userS2 = userS2.trim();
+              userS1 = userS1.replace(/“/g, '');
+              userS1 = userS1.replace(/„/g, '');
+              userS1 = userS1.replace('is ', '');
+              let nimm_keyword = userS1.split(" ")[0]; // Trenne das erste Wort vom Rest des Satzes
+              // Entferne das Wort aus userS1 aus userS2
+              if (userS2.includes(userS1)) {
+                  return `yes, "${userS1}" is in "${userS2}"`;
+              } else {
+                  return `no, "${userS1}" is not in "${userS2}"`;
+              }
+          }
+      } else if (userQuestion.includes('ist ') && userQuestion.includes(' in ')) {
+          let userR = userQuestion.trim();
+          userR = userR.replace("?", "");
+          // Ersetzung durchführen und das Ergebnis zuweisen
+          if (userR.includes(' in ')) {
+              let [userS1, userS2] = userR.split("in", 2).map(str => str.trim());
+              userS1 = userS1.trim();
+              userS2 = userS2.trim();
+              userS1 = userS1.replace(/“/g, '');
+              userS1 = userS1.replace(/„/g, '');
+              userS1 = userS1.replace('ist ', '');
+              let nimm_keyword = userS1.split(" ")[0]; // Trenne das erste Wort vom Rest des Satzes
+              // Entferne das Wort aus userS1 aus userS2
+              if (userS2.includes(userS1)) {
+                  return `ja, "${userS1}" ist in "${userS2}"`;
+              } else {
+                  return `nein, "${userS1}" ist nicht in "${userS2}"`;
+              }
+          }
+      } else if (userQuestion.includes('take') && userQuestion.includes('out of')) {
+          let userR = userQuestion.trim();
+          if (userR.includes('out of')) {
+              let [userS1, userS2] = userR.split("out of", 2).map(str => str.trim());
+              let nimm_keyword = userS1.split(" ")[0]; // Trenne das erste Wort vom Rest des Satzes
+              userS1 = userS1.replace(nimm_keyword, "").trim();
+              let userRS = userS2.replace(userS1, "").trim(); // Entferne das Wort aus userS1 aus userS2
+              return `Okay, "${userS1}" out of "${userS2}" is "${userRS}".`;
+          } else {
+              return 'sorry but i cant answer to that';
+          }
+      } else if (userQuestion.includes('nimm') && userQuestion.includes('aus')) {
+          let userR = userQuestion.trim();
+          userR = userR.replace("heraus", "");
+          // Ersetzung durchführen und das Ergebnis zuweisen
+          if (userR.includes('aus')) {
+              let [userS1, userS2] = userR.split("aus", 2).map(str => str.trim());
+              let nimm_keyword = userS1.split(" ")[0]; // Trenne das erste Wort vom Rest des Satzes
+              userS1 = userS1.replace(nimm_keyword, "").trim();
+              let userRS = userS2.replace(userS1, "").trim(); // Entferne das Wort aus userS1 aus userS2
+              return `Okay, "${userS1}" aus "${userS2}" ist "${userRS}".`;
+          } else {
+              return 'I dont know the answer. Please enter my answer to that question';
+          }
+      } else if (userQuestion.includes('count till')) {
+          try {
+              // Zahl extrahieren und in eine Ganzzahl konvertieren
+              let number = parseInt(userQuestion.match(/\b\d+\b/)[0]);
+              if (number > 0) {
+                  // Wenn die Zahl größer als 0 ist, Zahlen von 1 bis zur angegebenen Zahl aufzählen
+                  let count_list = Array.from({length: number}, (_, i) => i + 1).join(', ');
+                  return `i will count till: ${number}: ${count_list}`;
+              } else {
+                  // Wenn die Zahl nicht größer als 0 ist, eine entsprechende Nachricht senden
+                  return 'please enter a positiv number.';
+              }
+          } catch (error) {
+              // Wenn ein Fehler beim Extrahieren oder Konvertieren der Zahl auftritt
+              return 'please enter a valid number.';
+          }
+      }else if (userQuestion.includes('zähle bis')) {
+          try {
+              // Zahl extrahieren und in eine Ganzzahl konvertieren
+              let number = parseInt(userQuestion.match(/\b\d+\b/)[0]);
+              if (number > 0) {
+                  // Wenn die Zahl größer als 0 ist, Zahlen von 1 bis zur angegebenen Zahl aufzählen
+                  let count_list = Array.from({length: number}, (_, i) => i + 1).join(', ');
+                  return `Ich zähle bis ${number}: ${count_list}`;
+              } else {
+                  // Wenn die Zahl nicht größer als 0 ist, eine entsprechende Nachricht senden
+                  return 'Bitte geben Sie eine positive Zahl an.';
+              }
+          } catch (error) {
+              // Wenn ein Fehler beim Extrahieren oder Konvertieren der Zahl auftritt
+              return 'Bitte geben Sie eine gültige Zahl an.';
+          }
+      }else if (userQuestion.includes('ich bin ')) {
+          try {
+              // Alter extrahieren und in eine Ganzzahl konvertieren
+              let userQuestion = userQuestion.replace('jahre alt', '');
+              let age = parseInt(userQuestion.split("ich bin ")[1]);
+              let max_human_age = 122; // Maximales dokumentiertes Alter eines Menschen
+              if (age > max_human_age) {
+                  // Wenn das Alter das maximale Menschenausmaß übersteigt
+                  return 'So alt kann ein Mensch nicht werden.';
+              } else {
+                  // Wenn das Alter innerhalb des menschlichen Bereichs liegt
+                  return 'Cool!';
+              }
+          } catch (error) {
+              // Wenn ein Fehler beim Extrahieren oder Konvertieren des Alters auftritt
+              return 'okay';
+          }
+      } else if (userQuestion.includes('give me') && userQuestion.includes('password')) {
+          // Zufällige Zahlen und Buchstaben generieren
+          let random_number = Math.floor(Math.random() * 900000) + 100000;
+          let random_index = Math.floor(Math.random() * 6);
+          let random_letter = String.fromCharCode(Math.floor(Math.random() * 26) + 97);
+          let random_number2 = Math.floor(Math.random() * 900000) + 100000;
+          let random_index2 = Math.floor(Math.random() * 6);
+          let random_letter2 = String.fromCharCode(Math.floor(Math.random() * 26) + 97);
+          let random_lr = Array.from({ length: 6 }, () => String.fromCharCode(Math.floor(Math.random() * 26) + 97)).join('');
+          let password_with_letter = random_number.toString().replace(random_number.toString().charAt(random_index), random_letter);
+          let password_with_letter2 = random_number2.toString().replace(random_number2.toString().charAt(random_index2), random_number2.toString());
+          let random_number3 = random_number.toString().replace(random_number2.toString().charAt(random_index2), random_number.toString());
+          let random_letter3 = random_lr.replace(random_letter2, random_letter);
+
+          // Passwort je nach Benutzeranfrage generieren
+          if (userQuestion.includes('number')) {
+              return `Please note that the password is randomly generated. Here is the password: ${password_with_letter2}`;
+          } else if (userQuestion.includes('letter')) {
+              return `Please note that the password is randomly generated. Here is the password: ${random_letter3}`;
+          } else {
+              return `Please note that the password is randomly generated. Here is the password: ${password_with_letter}`;
+          }
+      } else if (userQuestion.includes('gib mir') && userQuestion.includes('passwort')) {
+          // Zufällige Zahlen und Buchstaben generieren
+          let random_number = Math.floor(Math.random() * 900000) + 100000;
+          let random_index = Math.floor(Math.random() * 6);
+          let random_letter = String.fromCharCode(Math.floor(Math.random() * 26) + 97);
+          let random_number2 = Math.floor(Math.random() * 900000) + 100000;
+          let random_index2 = Math.floor(Math.random() * 6);
+          let random_letter2 = String.fromCharCode(Math.floor(Math.random() * 26) + 97);
+          let random_lr = Array.from({ length: 6 }, () => String.fromCharCode(Math.floor(Math.random() * 26) + 97)).join('');
+          let password_with_letter = random_number.toString().replace(random_number.toString().charAt(random_index), random_letter);
+          let password_with_letter2 = random_number2.toString().replace(random_number2.toString().charAt(random_index2), random_number2.toString());
+          let random_number3 = random_number.toString().replace(random_number2.toString().charAt(random_index2), random_number.toString());
+          let random_letter3 = random_lr.replace(random_letter2, random_letter);
+
+          // Passwort je nach Benutzeranfrage generieren
+          if (userQuestion.includes('nummer')) {
+              return `Bitte beachten Sie, dass das Passwort zufällig generiert ist. Hier ist das Passwort: ${password_with_letter2}`;
+          } else if (userQuestion.includes('buchstabe')) {
+              return `Bitte beachten Sie, dass das Passwort zufällig generiert ist. Hier ist das Passwort: ${random_letter3}`;
+          } else {
+              return `Bitte beachten Sie, dass das Passwort zufällig generiert ist. Hier ist das Passwort: ${password_with_letter}`;
+          }
+      } else if (userQuestion.includes('sag:')) {
+          // Text extrahieren, der nach "sag:" kommt
+          let textt = userQuestion.replace("sag:", "");
+          // Antwort mit dem extrahierten Text senden
+          return textt;
+      } else if (userQuestion.includes('sag mir:')) {
+          // Text extrahieren, der nach "sag:" kommt
+          let textt = userQuestion.replace("sag mir:", "");
+          // Antwort mit dem extrahierten Text senden
+          return textt;
+      } else if (userQuestion.includes('say:')) {
+          // Text extrahieren, der nach "sag:" kommt
+          let textt = userQuestion.replace("say:", "");
+          // Antwort mit dem extrahierten Text senden
+          return textt;
+      } else if (userQuestion.includes("how should") && userQuestion.includes("i") && userQuestion.includes("call")) {
+          let word = userQuestion.split("call")[1].replace("?", "").trim();
+          // Ersetzen von Pronomen für eine konsistente Antwort
+          word = word.replace("my self", "you").replace("my ", "your ").replace("your ", "my ").replace("you", "me");
+          // Überprüfen, welche Art von Namen der Benutzer möchte
+          if (userQuestion.includes("male") || userQuestion.includes("boy")) {
+              return `I think a good name for ${word} could be: "${JJnamen[Math.floor(Math.random() * JJnamen.length)]}".`;
+          } else if (userQuestion.includes("female") || userQuestion.includes("girl")) {
+              return `I think a good name for ${word} could be: "${MMnamen[Math.floor(Math.random() * MMnamen.length)]}".`;
+          } else {
+              let allenamen = AAnamen[Math.floor(Math.random() * AAnamen.length)];
+              return `I think a good name for ${word} could be: "${allenamen[Math.floor(Math.random() * allenamen.length)]}".`;
+          }
+      } else if (userQuestion.includes("what would be") && userQuestion.includes("a") && userQuestion.includes("name for")) {
+          let word = userQuestion.split("name for")[1].replace("?", "").trim();
+          // Ersetzen von Pronomen für eine konsistente Antwort
+          word = word.replace("my self", "you").replace("my ", "your ").replace("your ", "my ").replace("you", "me");
+          // Überprüfen, welche Art von Namen der Benutzer möchte
+          if (userQuestion.includes("male") || userQuestion.includes("boy")) {
+              return `I think a good name for ${word} could be: "${JJnamen[Math.floor(Math.random() * JJnamen.length)]}".`;
+          } else if (userQuestion.includes("female") || userQuestion.includes("girl")) {
+              return `I think a good name for ${word} could be: "${MMnamen[Math.floor(Math.random() * MMnamen.length)]}".`;
+          } else {
+              let allenamen = AAnamen[Math.floor(Math.random() * AAnamen.length)];
+              return `I think a good name for ${word} could be: "${allenamen[Math.floor(Math.random() * allenamen.length)]}".`;
+          }
+      } else if (userQuestion.includes("wie sollte") && userQuestion.includes("ich") && userQuestion.includes("nennen")) {
+          let word1 = userQuestion.split("ich")[1].replace("?", "").trim();
+          // Ersetzen von Pronomen für eine konsistente Antwort
+          word1 = word1.replace("meine", "deine").replace("mein", "dein").replace("dein", "mein").replace("deine", "meine").replace("dich", "mich");
+          let word = word1.replace("nennen", "").trim();
+          // Überprüfen, welche Art von Namen der Benutzer möchte
+          if (userQuestion.includes("männlich") || userQuestion.includes("jung")) {
+              return `Ich glaube ein guter Name für ${word} könnte: "${Jnamen[Math.floor(Math.random() * Jnamen.length)]}" sein.`;
+          } else if (userQuestion.includes("weiblich") || userQuestion.includes("mädchen")) {
+              return `Ich glaube ein guter Name für ${word} könnte: "${Mnamen[Math.floor(Math.random() * Mnamen.length)]}" sein.`;
+          } else {
+              let allenamen = Anamen[Math.floor(Math.random() * Anamen.length)];
+              return `Ich glaube ein guter Name für ${word} könnte: "${allenamen[Math.floor(Math.random() * allenamen.length)]}" sein.`;
+          }
+      } else if (userQuestion.includes("was wäre") && userQuestion.includes("ein") && userQuestion.includes("name für")) {
+          let word1 = userQuestion.split("name für")[1].replace("?", "").trim();
+          // Ersetzen von Pronomen für eine konsistente Antwort
+          word1 = word1.replace("meine", "deine").replace("mein", "dein").replace("dein", "mein").replace("deine", "meine").replace("dich", "mich");
+          let word = word1.trim();
+          // Überprüfen, welche Art von Namen der Benutzer möchte
+          if (userQuestion.includes("männlich") || userQuestion.includes("jung")) {
+              return `Ich glaube ein guter Name für ${word} könnte: "${Jnamen[Math.floor(Math.random() * Jnamen.length)]}" sein.`;
+          } else if (userQuestion.includes("weiblich") || userQuestion.includes("mädchen")) {
+              return `Ich glaube ein guter Name für ${word} könnte: "${Mnamen[Math.floor(Math.random() * Mnamen.length)]}" sein.`;
+          } else {
+              let allenamen = Anamen[Math.floor(Math.random() * Anamen.length)];
+              return `Ich glaube ein guter Name für ${word} könnte: "${allenamen[Math.floor(Math.random() * allenamen.length)]}" sein.`;
+          }
+      } else if (userQuestion.includes("ersetze") && userQuestion.includes("mit") && userQuestion.includes("in")) {
+          // Zerlegen der Benutzereingabe, um die relevanten Teile zu extrahieren
+          let teil2 = userQuestion.split("ersetze")[1];
+          let teil4 = teil2.split("mit")[1];
+          let teil3 = teil2.split("mit")[0];
+          teil3 = teil3.trim().replace("mit", "");
+          let teil6 = teil4.split("in")[1];
+          let teil5 = teil4.split("in")[0];
+          teil5 = teil5.trim().replace("in", "");
+
+          // Überprüfen, ob der zu ersetzende Text im Zieltext enthalten ist
+          if (teil6.includes(teil3)) {
+              // Ersetzen des Textes und Erstellen der Antwort
+              teil6 = teil6.replace(teil3, teil5);
+              return 'Der bearbeitete Text: ' + teil6;
+          } else {
+              // Falls der zu ersetzende Text nicht im Zieltext enthalten ist
+              return "Entschuldigung, aber '" + teil3 + "' ist nicht in '" + teil6 + "' enthalten.";
+          }
+      } else if (userQuestion.includes("replace") && userQuestion.includes("with") && userQuestion.includes("in")) {
+          // Zerlegen der Benutzereingabe, um die relevanten Teile zu extrahieren
+          let teil2 = userQuestion.split("replace")[1];
+          let teil4 = teil2.split("with")[1];
+          let teil3 = teil2.split("with")[0];
+          teil3 = teil3.trim().replace("mit", "");
+          let teil6 = teil4.split("in")[1];
+          let teil5 = teil4.split("in")[0];
+          teil5 = teil5.trim().replace("in", "");
+
+          // Überprüfen, ob der zu ersetzende Text im Zieltext enthalten ist
+          if (teil6.includes(teil3)) {
+              // Ersetzen des Textes und Erstellen der Antwort
+              teil6 = teil6.replace(teil3, teil5);
+              return 'the edited Text: ' + teil6;
+          } else {
+              // Falls der zu ersetzende Text nicht im Zieltext enthalten ist
+              return "sorry, but '" + teil3 + "' is not in '" + teil6 + "'.";
+          }
+      } else if (userQuestion.includes("wähle eine zahl") && userQuestion.includes("von") && userQuestion.includes("bis")) {
+          // Zerlegen der Benutzereingabe, um den Bereich zu extrahieren
+          let trash1 = userQuestion.split("von")[1];
+          let word1 = trash1.split("bis")[0];
+          let word2 = trash1.split("bis")[1];
+          // Extrahieren der Zahlen aus den Textteilen
+          let uword = word1.match(/\b\d+\b/);
+          let uword2 = word2.match(/\b\d+\b/);
+          uword = parseInt(uword[0]);
+          uword2 = parseInt(uword2[0]);
+          // Generieren einer Zufallszahl innerhalb des Bereichs
+          let zahl;
+          if (uword > uword2) {
+              zahl = Math.floor(Math.random() * (uword - uword2 + 1)) + uword2;
+          } else if (uword < uword2) {
+              zahl = Math.floor(Math.random() * (uword2 - uword + 1)) + uword;
+          } else {
+              zahl = uword;
+          }
+          return `Ich wähle: ${zahl}`;
+      } else if (userQuestion.includes("gib mir") && userQuestion.includes("name")) {
+          if (userQuestion.includes("männlich") || userQuestion.includes("jung")) {
+              return 'Wie wäre es mit: ' + Jnamen[Math.floor(Math.random() * Jnamen.length)] + '.';
+          } else if (userQuestion.includes("weiblich") || userQuestion.includes("mädchen")) {
+              return 'Wie wäre es mit: ' + Mnamen[Math.floor(Math.random() * Mnamen.length)] + '.';
+          } else {
+              let allenamen = Anamen[Math.floor(Math.random() * Anamen.length)];
+              return 'Wie wäre es mit: ' + allenamen[Math.floor(Math.random() * allenamen.length)] + '.';
+          }
+      } else if (/[0-9\+\-\*\/]/.test(userQuestion)) {
+          try {
+              // Ausdruck berechnen und Ergebnis ausgeben
+              let expression = userQuestion.replace(/[a-zA-Z\s]/g, '');
+
+              // Alle Zahlen und mathematischen Operationen finden
+              let numbers = userQuestion.match(/\d+/g);
+              let operations = userQuestion.match(/[-+*/]/g);
+
+              // Mathematische Operationen durchführen
+              let result = parseInt(numbers[0]);
+              let numIndex = 1;
+              operations.forEach(op => {
+                  let num = parseInt(numbers[numIndex]);
+                  switch (op) {
+                      case '+':
+                          result += num;
+                          break;
+                      case '-':
+                          result -= num;
+                          break;
+                      case '*':
+                          result *= num;
+                          break;
+                      case '/':
+                          result /= num;
+                          break;
+                  }
+                  numIndex++;
+              });
+
+              return `${result}.`;
+          } catch (error) {
+              let answer = get_answer_for_question(best_match, knowledge_base);
+              return `${answer}`;
+          }
+      } else if (userQuestion.includes('python') && userQuestion.includes('lernen')) {
+          chalange = "python";
+          clean();
+          return "okay, du lernst jetzt python";
+      } else if (userQuestion.includes('python') && userQuestion.includes('üben')) {
+            chalange = "python";
+            clean();
+            return "okay, du übst jetzt python";
+      } else if (userQuestion.includes('mathe') && userQuestion.includes('lernen')) {
+            chalange = "mathe";
+            clean();
+            return "okay, du lernst jetzt mathe";
+      } else if (userQuestion.includes('mathe') && userQuestion.includes('üben')) {
+            chalange = "mathe";
+            clean();
+            return "okay, du übst jetzt mathe";
+      } else if (userQuestion.includes('learn') && userQuestion.includes('python')) {
+            chalange = "pythone";
+            clean();
+            return "okay, you're going to learn python now";
+      } else if (userQuestion.includes('practice') && userQuestion.includes('python')) {
+            chalange = "pythone";
+            clean();
+            return "okay, you are going to practice python now";
+      } else if (userQuestion.includes('learn') && userQuestion.includes('math')) {
+            chalange = "math";
+            clean();
+            return "okay, you are going to learn math now";
+      } else if (userQuestion.includes('practice') && userQuestion.includes('math')) {
+            chalange = "math";
+            clean();
+            return "okay, you are going to practice math now";
+      } else if (bestMatch) {
+        const answer = getAnswerForQuestion(bestMatch, knowledgeBase);
+        if (answer == "Sorry but i dont know your Name") {
+          let name = document.getElementById("username-display");
+          response = { message: `${name.textContent}` };
+        } else if (answer == "Yes (Username)") {
+          let name = document.getElementById("username-display");
+          let text = "yes " + name.textContent;
+          response = { message: `${text}` };
+        }else if (answer == "hello (Username)") {
+          let name = document.getElementById("username-display");
+          let text = "hello " + name.textContent;
+          response = { message: `${text}` };
+        }else if (answer == "(Username)") {
+          let name = document.getElementById("username-display");
+          let text = name.textContent;
+          response = { message: `${text}` };
+        }else if (answer == "hallo (Username)") {
+          let name = document.getElementById("username-display");
+          let text = "hallo " + name.textContent;
+          response = { message: `${text}` };
+        }else {
+          response = { message: `${answer}` };
+        }
+
+      } else {
+        response = { message: 'sorry but i do not know how to answer to that question' };
+      }
+
+      return response.message;
+    }else if (chalange == "python") {
+          const userQuestion = userMessage.toLowerCase();
+          const knowledgeBase = await loadKnowledgeBase('knowledge_base.json');
+          const questions = knowledgeBase.questions.map(q => q.question);
+          const bestMatch2 = findBestMatch(userQuestion, questions);
+          if (thequestion == "nothing") {
+              await loadTasks();
+              if (tasks.length === 0) {
+                      return 'No tasks available';
+              }
+              const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
+              thequestion = randomTask.Frage;
+              theanswer = randomTask.Antwort;
+              return thequestion;
+              
+          }else {
+                if (userMessage === theanswer) {
+                   if (tasks.length === 0) {
+                         return 'No tasks available';
+                     }
+                     const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
+                     thequestion = randomTask.Frage;
+                     theanswer = randomTask.Antwort;
+                     return 'Richtig! hier ist die neue aufgabe. ' + thequestion;
+                } else if (userQuestion.includes("idk")) {
+                     if (tasks.length === 0) {
+                          return 'No tasks available';
+                      }
+                      const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
+                      thequestion = randomTask.Frage;
+                      theoldanswer = theanswer;
+                      theanswer = randomTask.Antwort;
+                      return 'die richtige antwort ist: ' + theoldanswer + ' hier ist die neue aufgabe ' + thequestion;
+                }else if (userQuestion.includes('zurück') && userQuestion.includes('chat')) {
+                      chalange = "nothing";
+                      clean();
+                      return "okay, du bist zurück im normalen gespräch";
+                } else if (userQuestion.includes('gespräch') && userQuestion.includes('zurpck')) {
+                        chalange = "nothing";
+                        clean();
+                        return "okay, du bist nun wieder im normalen gespräch";
+                } else if (userQuestion.includes('mathe') && userQuestion.includes('lernen')) {
+                        chalange = "mathe";
+                        clean();
+                        return "okay, du lernst jetzt mathe";
+                } else if (userQuestion.includes('mathe') && userQuestion.includes('üben')) {
+                        chalange = "mathe";
+                        clean();
+                        return "okay, du übst jetzt mathe";
+                } else if (userQuestion.includes('learn') && userQuestion.includes('python')) {
+                        chalange = "pythone";
+                        clean();
+                        return "okay, you're going to learn python now";
+                } else if (userQuestion.includes('practice') && userQuestion.includes('python')) {
+                        chalange = "pythone";
+                        clean();
+                        return "okay, you are going to practice python now";
+                } else if (userQuestion.includes('learn') && userQuestion.includes('math')) {
+                        chalange = "math";
+                        clean();
+                        return "okay, you are going to learn math now";
+                } else if (userQuestion.includes('practice') && userQuestion.includes('math')) {
+                        chalange = "math";
+                        clean();
+                        return "okay, you are going to practice math now";
+                }else if (bestMatch2) {
+                    const answer = getAnswerForQuestion(bestMatch2, knowledgeBase);
+                    if (answer == "Sorry but i dont know your Name") {
+                      let name = document.getElementById("username-display");
+                      response = { message: `${name.textContent}` };
+                    } else if (answer == "Yes (Username)") {
+                      let name = document.getElementById("username-display");
+                      let text = "yes " + name.textContent;
+                      response = { message: `${text}` };
+                    }else if (answer == "hello (Username)") {
+                      let name = document.getElementById("username-display");
+                      let text = "hello " + name.textContent;
+                      response = { message: `${text}` };
+                    }else if (answer == "(Username)") {
+                      let name = document.getElementById("username-display");
+                      let text = name.textContent;
+                      response = { message: `${text}` };
+                    }else if (answer == "hallo (Username)") {
+                      let name = document.getElementById("username-display");
+                      let text = "hallo " + name.textContent;
+                      response = { message: `${text}` };
+                    }else {
+                      response = { message: `${answer}` };
+                    }
+                    return response.message;
+                }else {
+                   return 'Falsch! Versuchen Sie es erneut.';
+                }
+          }
+          
+     }else if (chalange == "pythone") {
+           const userQuestion = userMessage.toLowerCase();
+           const knowledgeBase = await loadKnowledgeBase('knowledge_base.json');
+           const questions = knowledgeBase.questions.map(q => q.question);
+           const bestMatch2 = findBestMatch(userQuestion, questions);
+           if (thequestion2 == "nothing") {
+               await loadTasks2();
+               if (tasks2.length === 0) {
+                       return 'No tasks available';
+               }
+               const randomTask2 = tasks2[Math.floor(Math.random() * tasks2.length)];
+               thequestion2 = randomTask2.Frage;
+               theanswer2 = randomTask2.Antwort;
+               return thequestion2;
+
+           }else {
+                if (userMessage === theanswer2) {
+                    if (tasks2.length === 0) {
+                          return 'No tasks available';
+                      }
+                      const randomTask2 = tasks2[Math.floor(Math.random() * tasks2.length)];
+                      thequestion2 = randomTask2.Frage;
+                      theanswer2 = randomTask2.Antwort;
+                      return 'correct! here you have a new question: ' + thequestion2;
+                } else if (userQuestion.includes("idk")) {
+                     if (tasks2.length === 0) {
+                          return 'No tasks available';
+                      }
+                      const randomTask2 = tasks2[Math.floor(Math.random() * tasks2.length)];
+                      thequestion2 = randomTask2.Frage;
+                      theoldanswer2 = theanswer2;
+                      theanswer2 = randomTask2.Antwort;
+                      return 'the correct answer is: ' + theoldanswer2 + ' here you have a new question ' + thequestion2;
+                }else if (userQuestion.includes('python') && userQuestion.includes('lernen')) {
+                      chalange = "python";
+                      clean();
+                      return "okay, du lernst jetzt python";
+                } else if (userQuestion.includes('python') && userQuestion.includes('üben')) {
+                        chalange = "python";
+                        clean();
+                        return "okay, du übst jetzt python";
+                } else if (userQuestion.includes('mathe') && userQuestion.includes('lernen')) {
+                        chalange = "mathe";
+                        clean();
+                        return "okay, du lernst jetzt mathe";
+                } else if (userQuestion.includes('mathe') && userQuestion.includes('üben')) {
+                        chalange = "mathe";
+                        clean();
+                        return "okay, du übst jetzt mathe";
+                } else if (userQuestion.includes('back') && userQuestion.includes('chat')) {
+                        chalange = "nothing";
+                        clean();
+                        return "okay, you're back in the normal chat";
+                } else if (userQuestion.includes('normal') && userQuestion.includes('chat')) {
+                        chalange = "nothing";
+                        clean();
+                        return "okay, you are back in the normal chat";
+                } else if (userQuestion.includes('learn') && userQuestion.includes('math')) {
+                        chalange = "math";
+                        clean();
+                        return "okay, you are going to learn math now";
+                } else if (userQuestion.includes('practice') && userQuestion.includes('math')) {
+                        chalange = "math";
+                        clean();
+                        return "okay, you are going to practice math now";
+                }else if (bestMatch2) {
+                      const answer = getAnswerForQuestion(bestMatch2, knowledgeBase);
+                      if (answer == "Sorry but i dont know your Name") {
+                        let name = document.getElementById("username-display");
+                        response = { message: `${name.textContent}` };
+                      } else if (answer == "Yes (Username)") {
+                        let name = document.getElementById("username-display");
+                        let text = "yes " + name.textContent;
+                        response = { message: `${text}` };
+                      }else if (answer == "hello (Username)") {
+                        let name = document.getElementById("username-display");
+                        let text = "hello " + name.textContent;
+                        response = { message: `${text}` };
+                      }else if (answer == "(Username)") {
+                        let name = document.getElementById("username-display");
+                        let text = name.textContent;
+                        response = { message: `${text}` };
+                      }else if (answer == "hallo (Username)") {
+                        let name = document.getElementById("username-display");
+                        let text = "hallo " + name.textContent;
+                        response = { message: `${text}` };
+                      }else {
+                        response = { message: `${answer}` };
+                      }
+                      return response.message;
+                }else {
+                    return 'wrong! try again.';
+                }
+           }
+
+     } else if (chalange == "mathe") {
+          const userQuestion = userMessage.toLowerCase();
+          const knowledgeBase = await loadKnowledgeBase('knowledge_base.json');
+          const questions = knowledgeBase.questions.map(q => q.question);
+          const bestMatch2 = findBestMatch(userQuestion, questions);
+          if (themathquestion == "") {
+              // create random math question
+              const num1 = Math.floor(Math.random() * 10) + 1;
+              const num2 = Math.floor(Math.random() * 10) + 1;
+              const operator = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
+              themathquestion = `${num1} ${operator} ${num2}`;
+              themathanswer = eval(`${num1} ${operator} ${num2}`);
+              return themathquestion;
+              // if the user question == the answer to the mathematical question, return "correct"
+            
+          }else if (userQuestion == themathanswer) {
+              // create random math question
+              const num1 = Math.floor(Math.random() * 10) + 1;
+              const num2 = Math.floor(Math.random() * 10) + 1;
+              const operator = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
+              themathquestion = `${num1} ${operator} ${num2}`;
+              themathanswer = eval(`${num1} ${operator} ${num2}`);
+              return 'Richtig! hier hast du die nöchste aufgabe ' + themathquestion;
+          }else if (themathquestion != "" && userQuestion.includes("idk")){
+              const num1 = Math.floor(Math.random() * 10) + 1;
+              const num2 = Math.floor(Math.random() * 10) + 1;
+              const operator = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
+              theoldmathanswer = themathanswer;
+              themathquestion = `${num1} ${operator} ${num2}`;
+              themathanswer = eval(`${num1} ${operator} ${num2}`);
+              return "die richtige antwort ist: " + theoldmathanswer + " die neue aufgabe ist: " + themathquestion;
+          }else if (userQuestion.includes('python') && userQuestion.includes('lernen')) {
+                chalange = "python";
+                clean();
+                return "okay, du lernst jetzt python";
+          } else if (userQuestion.includes('python') && userQuestion.includes('üben')) {
+                  chalange = "python";
+                  clean();
+                  return "okay, du übst jetzt python";
+          } else if (userQuestion.includes('zu') && userQuestion.includes('gespräch')) {
+                  chalange = "nothing";
+                  clean();
+                  return "okay, du bist nun wieder im normalen gespräch";
+          } else if (userQuestion.includes('zurück') && userQuestion.includes('chat')) {
+                  chalange = "nothing";
+                  clean();
+                  return "okay, du bist zurück im normalen chat";
+          } else if (userQuestion.includes('learn') && userQuestion.includes('python')) {
+                  chalange = "pythone";
+                  clean();
+                  return "okay, you're going to learn python now";
+          } else if (userQuestion.includes('practice') && userQuestion.includes('python')) {
+                  chalange = "pythone";
+                  clean();
+                  return "okay, you are going to practice python now";
+          } else if (userQuestion.includes('learn') && userQuestion.includes('math')) {
+                  chalange = "math";
+                  clean();
+                  return "okay, you are going to learn math now";
+          } else if (userQuestion.includes('practice') && userQuestion.includes('math')) {
+                  chalange = "math";
+                  clean();
+                  return "okay, you are going to practice math now";
+          }else if (bestMatch2) {
+              const answer = getAnswerForQuestion(bestMatch2, knowledgeBase);
+              if (answer == "Sorry but i dont know your Name") {
+                let name = document.getElementById("username-display");
+                response = { message: `${name.textContent}` };
+              } else if (answer == "Yes (Username)") {
+                let name = document.getElementById("username-display");
+                let text = "yes " + name.textContent;
+                response = { message: `${text}` };
+              }else if (answer == "hello (Username)") {
+                let name = document.getElementById("username-display");
+                let text = "hello " + name.textContent;
+                response = { message: `${text}` };
+              }else if (answer == "(Username)") {
+                let name = document.getElementById("username-display");
+                let text = name.textContent;
+                response = { message: `${text}` };
+              }else if (answer == "hallo (Username)") {
+                let name = document.getElementById("username-display");
+                let text = "hallo " + name.textContent;
+                response = { message: `${text}` };
+              }else {
+                response = { message: `${answer}` };
+              }
+              return response.message;
+          }else {
+              return 'Falsch! Versuchen Sie es erneut.';
+          }
+     }else if (chalange == "math") {
+              const userQuestion = userMessage.toLowerCase();
+              const knowledgeBase = await loadKnowledgeBase('knowledge_base.json');
+              const questions = knowledgeBase.questions.map(q => q.question);
+              const bestMatch2 = findBestMatch(userQuestion, questions);
+              if (themathquestion == "") {
+                  // create random math question
+                  const num1 = Math.floor(Math.random() * 10) + 1;
+                  const num2 = Math.floor(Math.random() * 10) + 1;
+                  const operator = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
+                  themathquestion = `${num1} ${operator} ${num2}`;
+                  themathanswer = eval(`${num1} ${operator} ${num2}`);
+                  return themathquestion;
+                  // if the user question == the answer to the mathematical question, return "correct"
+
+              }else if (userQuestion == themathanswer) {
+                  // create random math question
+                  const num1 = Math.floor(Math.random() * 10) + 1;
+                  const num2 = Math.floor(Math.random() * 10) + 1;
+                  const operator = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
+                  themathquestion = `${num1} ${operator} ${num2}`;
+                  themathanswer = eval(`${num1} ${operator} ${num2}`);
+                  return 'correct! there you have the next question: ' + themathquestion;
+              }else if (themathquestion != "" && userQuestion.includes("idk")){
+                    const num1 = Math.floor(Math.random() * 10) + 1;
+                    const num2 = Math.floor(Math.random() * 10) + 1;
+                    const operator = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
+                    theoldmathanswer = themathanswer;
+                    themathquestion = `${num1} ${operator} ${num2}`;
+                    themathanswer = eval(`${num1} ${operator} ${num2}`);
+                    return "the right answer is: " + theoldmathanswer + " the new question is: " + themathquestion;
+              }else if (userQuestion.includes('python') && userQuestion.includes('lernen')) {
+                    chalange = "python";
+                    clean();
+                    return "okay, du lernst jetzt python";
+              } else if (userQuestion.includes('python') && userQuestion.includes('üben')) {
+                      chalange = "python";
+                      clean();
+                      return "okay, du übst jetzt python";
+              } else if (userQuestion.includes('mathe') && userQuestion.includes('lernen')) {
+                      chalange = "mathe";
+                      clean();
+                      return "okay, du lernst jetzt mathe";
+              } else if (userQuestion.includes('mathe') && userQuestion.includes('üben')) {
+                      chalange = "mathe";
+                      clean();
+                      return "okay, du übst jetzt mathe";
+              } else if (userQuestion.includes('learn') && userQuestion.includes('python')) {
+                      chalange = "pythone";
+                      clean();
+                      return "okay, you're going to learn python now";
+              } else if (userQuestion.includes('practice') && userQuestion.includes('python')) {
+                      chalange = "pythone";
+                      clean();
+                      return "okay, you are going to practice python now";
+              } else if (userQuestion.includes('back') && userQuestion.includes('chat')) {
+                      chalange = "nothing";
+                      clean();
+                      return "okay, you are back in the normal chat now";
+              } else if (userQuestion.includes('normal') && userQuestion.includes('chat')) {
+                      chalange = "nothing";
+                      clean();
+                      return "okay, you're in the normal chat now";
+              }else if (bestMatch2) {
+                    const answer = getAnswerForQuestion(bestMatch2, knowledgeBase);
+                    if (answer == "Sorry but i dont know your Name") {
+                      let name = document.getElementById("username-display");
+                      response = { message: `${name.textContent}` };
+                    } else if (answer == "Yes (Username)") {
+                      let name = document.getElementById("username-display");
+                      let text = "yes " + name.textContent;
+                      response = { message: `${text}` };
+                    }else if (answer == "hello (Username)") {
+                      let name = document.getElementById("username-display");
+                      let text = "hello " + name.textContent;
+                      response = { message: `${text}` };
+                    }else if (answer == "(Username)") {
+                      let name = document.getElementById("username-display");
+                      let text = name.textContent;
+                      response = { message: `${text}` };
+                    }else if (answer == "hallo (Username)") {
+                      let name = document.getElementById("username-display");
+                      let text = "hallo " + name.textContent;
+                      response = { message: `${text}` };
+                    }else {
+                      response = { message: `${answer}` };
+                    }
+                    return response.message;
+              }else {
+                  return 'wrong! try again.';
+              }
+     }
+    }
+
+
+    function newknowledge(){
+        var userInput = document.getElementById('user-input');
+        var userMessage2 = userInput.value.trim();
+        if (userMessage2 !== '') {
+            addMessage(userMessage2, 'sent');
+
+
+            // Simulierte Antwort vom Bot
+            getBotResponse2(userMessage2)
+                .then(response => {
+                    setTimeout(addMessage(response, 'received'), 1000);
+
+                    // Scrollen zum Ende der Chat-Nachrichten
+                    var chatMessages = document.getElementById('chat-messages');
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                })
+                .catch(error => console.error('Bot response error:', error));
+
+            userInput.value = '';
+        }
+    }
+
+    function getBotResponse2(userMessage2) {
+        // Daten für die POST-Anfrage vorbereiten
+        learnnonewthing();
+        var data = { user_input: userMessage2, new_question: document.getElementById("remember").textContent };
+
+        // AJAX-Anfrage senden
+        return fetch('/new_knowledge', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data); // Ausgabe der Antwort vom Server
+            // Hier können Sie weitere Aktionen basierend auf der Serverantwort durchführen
+            return data.message;
+        })
+        .catch(error => console.error('Error fetching bot response:', error));
+    }
+
+    function learnnewthing(){
+        document.getElementById("button1").style.display = "none";
+        document.getElementById("button2").style.display = "block";
+        document.getElementById("button3").style.display = "block";
+        document.getElementById("user-input").placeholder = "Enter the Answer to that question here...";
+    }
+    function learnnonewthing(){
+        document.getElementById("button1").style.display = "block";
+        document.getElementById("button2").style.display = "none";
+        document.getElementById("button3").style.display = "none";
+        document.getElementById("user-input").placeholder = "Type your message...";
+    }
+    var font2 = 'h3';
+    function addMessage(text, type) {
+
+        var chatMessages = document.getElementById('chat-messages');
+        var messageElement = document.createElement(font2);
+        messageElement.classList.add('message', type);
+        messageElement.id = 'messageE';
+        messageElement.textContent = text;
+        chatMessages.appendChild(messageElement);
+        say2(messageElement.textContent);
+
+
+    }
+
+    function change_mood(){
+      document.body.classList.toggle("dark-theme");
+      if(document.body.classList.contains("dark-theme")){
+        document.getElementById("changetheme").textContent = "Light theme";
+        document.querySelector(".bcft").textContent = "Light theme";
+      } else {
+        document.getElementById("changetheme").textContent = "Dark theme";
+        document.querySelector(".bcft").textContent = "Dark theme";
+      }
+    }
+    var navlinks = document.getElementById("navlinks");
+    function showmenu(){
+      if(navlinks.style.display == "none"){
+        navlinks.style.display = "block";
+      }else{
+        navlinks.style.display = "none";
+      }
+    }
+    var btnfs = document.querySelector(".bcft1");
+    var btnf1 = document.getElementById("btnone");
+    var btnf3 = document.getElementById("btnthree");
+    function showfonts(){
+      if(btnfs.style.display == "none"){
+        document.getElementById("fontS").textContent = "Font size v";
+        btnf1.style.display = "block";
+        btnf3.style.display = "block";
+      }else{
+        document.getElementById("fontS").textContent = "Font size <";
+        btnf1.style.display = "none";
+        btnf3.style.display = "none";
+      }
+    }
+    function font1(){
+      font2 = 'h1';
+    }
+    function font3(){
+      font2 = 'h3';
+    }
+    function setinputvalue() {
+      const rand = ['Hi', 'Hello', 'How are you', 'How are you doing', 'What is your name', 'Who are you?', 'What are you?','What is Architecture','Whats a Computer'];
+      const randq = rand[Math.floor(Math.random() * rand.length)];
+      const input = document.getElementById('user-input');
+      input.value = randq;
+    }
+    function helpbtn(){
+      document.getElementById("btn3").textContent = "this function does not exist";
+      setTimeout(function(){
+          document.getElementById("btn3").textContent = "Help";
+      }, 5000);
+    }
+    function isDarkMode() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Function to update the mode information
+    function updateModeInfo() {
+        var modeInfo2 = document.getElementById("changetheme");
+        var modeInfo = document.querySelector('.bcft');
+        if (isDarkMode()) {
+            modeInfo.textContent = "Light theme";
+            modeInfo2.textContent = "Light theme";
+            change_mood()
+        }else {
+            modeInfo.textContent = "Dark theme";
+            modeInfo2.textContent = "Dark theme";
+            change_mood()
+        }
+    }
+
+    // Call the function initially
+    updateModeInfo();
+
+    // Listen for changes in mode preference
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateModeInfo);
+    let speech = new SpeechSynthesisUtterance();
+
+    let voices = [];
+    let speakon = document.getElementById("speakon");
+
+    window.speechSynthesis.onvoiceschanged = () => {
+      voices = window.speechSynthesis.getVoices();
+      speech.voice = voices[0];
+
+      voices.forEach((voice, i) => (voiceSelect.options[i] = new Option(voice.name, i)));
+    }
+    function say2(textfs) {
+      document.querySelectorAll('.speakon').forEach(function(element) {
+        if (element.textContent == "speak: on"){
+          speech.text = textfs;
+          window.speechSynthesis.speak(speech);
+        }
+      });
+    }
+    /*speakon.addEventListener("click", () => {
+      speakonoff();
+    });*/
+    document.querySelectorAll('.speakon').forEach(function(element) {
+      element.addEventListener('click', function() {
+        if (element.textContent == "speak: on") {
+            element.textContent = "speak: off";
+        }else {
+            element.textContent = "speak: on";
+        }
+        // Ändert den Textinhalt des geklickten Elements
+      });
+    });
+    function speakonoff() {
+      if (speakon.textContent == "speak: on") {
+        speakon.textContent = "speak: off";
+      }else {
+        speakon.textContent = "speak: on";
+      }
+    }
+    /*speakon.addEventListener("click", function() {
+      var speech1 = true;
+      window.SpeechRecognition = window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.interimResults = true;
+
+      recognition.addEventListener('result', (e) => {
+        const transcript = Array.from(e.results)
+        .map(result =>result[0])
+        .map(result => result.transcript)
+        document.getElementById("user-input").value = transcript;
+      });
+      if (speech1 == true){
+        recognition.start();
+      }
+    });*/
+    /*function say() {
+      speech.text = document.getElementById("remember").textContent;
+      window.speechSynthesis.speak(speech);
+    }*/
+  </script>
+</body>
+</html>
