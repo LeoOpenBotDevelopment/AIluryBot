@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guidelines</title>
+    <style>
+        :root{
+            --f0f0f0-color: #f0f0f0;
+            --e9e9ea-color: #e9e9ea;
+            --fff-color: #fff;
+            --000-color: #000;
+            --grey-color: grey;
+          }
+          /* #5c3884 */
+          .dark-theme{
+            --f0f0f0-color: #050a19;
+            --e9e9ea-color: #1d2332;
+            --fff-color: black;
+            --000-color: #cdd5f2;
+            --grey-color: #3477ea;
+          }
+          body {
+              font-family: Arial, sans-serif;
+              background-color: var(--f0f0f0-color);
+              margin: 0;
+              padding: 0;
+              justify-content: center;
+              align-items: center;
+          }
+          .userregulations {
+              background-color: var(--e9e9ea-color);
+              border-radius: 20px;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              padding: 40px;
+              width: 90%;
+              text-align: left;
+          }
+          .privacypolicy {
+              background-color: var(--e9e9ea-color);
+              border-radius: 20px;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              padding: 40px;
+              width: 90%;
+              text-align: left;
+          }
+          h1{
+              font-size: 25px;
+              font-weight: bold;
+              color: var(--000-color);
+          }
+          p{
+              font-size: 20px;
+              font-weight: bold;
+              color: var(--000-color);
+          }
+          a{
+              background-color: var(--e9e9ea-color);
+              color: var(--grey-color);
+              border: 1px solid var(--fff-color);
+              padding: 10px 20px;
+              cursor: pointer;
+              border-radius: 5px;
+              transition: background-color 0.3s;
+          }
+
+          a:hover {
+              background-color: var(--grey-color);
+          }
+          #alignment{
+            text-align: center;
+          }
+    </style>
+</head>
+
+<body>
+  <div class="privacypolicy">
+    <h1>inputs/questions:</h1>
+    <br>
+    <p>
+    For example, to learn german you can type in: ‘I want to learn german’, once you have done this you can ask for a task and you will be given one. If you want to practise maths you can for example enter: ‘I want to practise maths’, when you have done this you will be asked a question about maths. At any moment you can change your exercises, for example if you are practising maths and you want to practise german you can simply ask for it as explained before. And if you don't want to practice anything else, you can also ask to get back into the normal conversation without being asked a question by asking, for example: ‘Can I go back to the normal chat?’</p>
+    <br>
+    <div id="alignment">
+      <a href="AIlury.html">back</a>
+    </div>
+  </div>
+  <br>
+  <br>
+  <div class="userregulations">
+    <h1>outputs/answers</h1>
+    <br>
+    <p>
+        If you don't know the answer to any question, you can simply enter ‘idk’ and AIlury will give you the answer and ask you a new one. You can also ask AIlury questions while you are practising, but AIlury will not forget the answers to your questions. If you want to edit the full chat, you can simply click on the messages and either edit or delete them. If you don't want to hear the voice reading out the chat, you can simply click on the ‘speak: on’ button to mute it 
+    </p>
+    <br>
+    <div id="alignment">
+      <a href="AIlury.html">back</a>
+    </div>
+  </div>
+  <script>
+      function change_mood(){
+        document.body.classList.toggle("dark-theme");
+      }
+      function isDarkMode() {
+          if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+              return true;
+          } else {
+              return false;
+          }
+      }
+
+      // Function to update the mode information
+      function updateModeInfo() {
+          if (isDarkMode()) {
+              change_mood()
+          }else {
+              change_mood()
+          }
+      }
+
+      // Call the function initially
+      updateModeInfo();
+
+      // Listen for changes in mode preference
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateModeInfo);
+  </script>
+</body>
+
+</html>
