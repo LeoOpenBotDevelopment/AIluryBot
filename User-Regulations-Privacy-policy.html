@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link id="faviconico" rel="icon" href="AIlurylogo.ico" type="image/x-icon">
+    <title>Guidelines</title>
+    <style>
+      :root{
+        --f0f0f0-color: #f0f0f0;
+        --e9e9ea-color: rgba(255, 255, 255, 0.15);
+        --fff-color: #ffffff;
+        --000-color: #333333;
+        --grey-color: #888888;
+        --accent-color: #000; /*#5c3884;*/
+        --shadow-color: rgba(0, 0, 0, 0.3);
+        --border-color: rgba(255, 255, 255, 0.2);
+      }
+      
+      .dark-theme {
+        --f0f0f0-color: #1b1b1b;
+        --e9e9ea-color: rgba(0, 0, 0, 0.3);
+        --fff-color: #1b1b1b;
+        --000-color: #ffffff;
+        --grey-color: #bbbbbb;
+        --accent-color: #fff; /*#b689f5;*/
+        --shadow-color: rgba(0, 0, 0, 0.7);
+        --border-color: rgba(255, 255, 255, 0.3);
+      }
+
+      body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background-color: var(--f0f0f0-color);
+          color: var(--000-color);
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100%;
+      }
+
+      .container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 20px;
+      }
+
+      .content-box {
+          background-color: var(--e9e9ea-color);
+          backdrop-filter: blur(10px);
+          border-radius: 20px;
+          box-shadow: 0 10px 30px var(--shadow-color);
+          padding: 40px;
+          width: 80%;
+          max-width: 600px;
+          color: var(--fff-color);
+          border: 1px solid var(--border-color);
+          text-align: left;
+      }
+
+      h1 {
+          font-size: 28px;
+          font-weight: 700;
+          color: var(--000-color);
+          margin-bottom: 20px;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+      }
+
+      p {
+          font-size: 18px;
+          line-height: 1.6;
+          color: var(--000-color);
+      }
+
+      a {
+          display: inline-block;
+          background-color: var(--accent-color);
+          color: var(--fff-color);
+          padding: 12px 25px;
+          cursor: pointer;
+          border-radius: 5px;
+          text-decoration: none;
+          transition: background-color 0.3s, transform 0.3s;
+          text-align: center;
+          box-shadow: 0 4px 15px var(--shadow-color);
+      }
+
+      a:hover {
+          background-color: var(--accent-color);
+          transform: translateY(-5px);
+          box-shadow: 0 8px 30px var(--shadow-color);
+      }
+
+      #alignment {
+        text-align: center;
+        margin-top: 20px;
+      }
+    </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="content-box privacypolicy">
+      <h1>Privacy Policy</h1>
+      <p>
+        Inputs:<br>
+        Your personal data is handled according to our privacy policy.<br>
+        The bot permanently stores only your profile picture and username.<br>
+        When you tell the bot your name, it will also save this information.<br>
+        All other data is stored temporarily for the duration of the conversation and is deleted upon refreshing the page.
+      </p>
+      <div id="alignment">
+        <a href="start.html">Back</a>
+      </div>
+    </div>
+
+    <div class="content-box userregulations">
+      <h1>User Regulations</h1>
+      <p>
+        Respectful Interaction:<br><br>
+        Do not use offensive, abusive, or inappropriate language.<br><br>
+        Data Handling:<br><br>
+        Do not attempt to hack, manipulate, or misuse the bot’s data storage.<br>
+        Respect the bot’s data privacy protocols.<br><br>
+        Usage Restrictions:<br><br>
+        Do not use the bot for illegal activities.<br>
+        Do not spam or repeatedly send the same messages.<br><br>
+        Compliance:<br><br>
+        Follow any additional instructions provided by the website.<br><br>
+        Violation Consequences:<br><br>
+        Breach of these regulations may result in restricted access or banning from the website.
+      </p>
+      <div id="alignment">
+        <a href="start.html">Back</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function change_mood() {
+        document.body.classList.toggle("dark-theme");
+    }
+
+    function isDarkMode() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            changeFavicon('AIlurylogo2.ico');
+            return true;
+        } else {
+            changeFavicon('AIlurylogo.ico');
+            return false;
+        }
+    }
+
+    function changeFavicon(faviconurl) {
+        let favilink = document.getElementById("faviconico");
+
+        if (favilink) {
+            favilink.href = faviconurl;
+        } else {
+            favilink = document.createElement('link');
+            favilink.id = 'faviconico';
+            favilink.rel = 'icon';
+            favilink.href = faviconurl;
+            favilink.type = 'image/x-icon';
+            document.head.appendChild(favilink);
+        }
+    }
+
+    function updateModeInfo() {
+        if (isDarkMode()) {
+            change_mood();
+        }
+    }
+
+    updateModeInfo();
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateModeInfo);
+  </script>
+</body>
+
+</html>
