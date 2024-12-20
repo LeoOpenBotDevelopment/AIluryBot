@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link id="faviconico" rel="icon" href="AIlurylogo.ico" type="image/x-icon">
+    <title>AIlury</title>
+    <style>
+        :root { 
+            --light-bg: #000;
+            --light-text: #333;
+            --primary-color: #fff;
+            --secondary-color: #000000;
+            --accent-color: #000000;
+            --gradient-light: linear-gradient(135deg, #000, #ccc);
+            --black-color: #000;
+            --light-color: #fff;
+            --sectionb-color: #fff;
+            --button-color: #fff;
+        }
+        .dark-theme { 
+            --light-bg: #fff;
+            --light-text: #fff;
+            --primary-color: #000;
+            --secondary-color: #fff;
+            --accent-color: #fff;
+            --gradient-light: linear-gradient(135deg, #ccc, #000);
+            --black-color: #fff;
+            --light-color: #fff;
+            --sectionb-color: #000;
+            --button-color: #000;
+        }
+
+        html{
+          scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Helvetica Neue', sans-serif;
+            background: var(--gradient-light);
+            color: var(--light-text);
+            transition: background 0.5s, color 0.5s;
+            width: 100vw;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 50px;
+            background: var(--primary-color);
+            color: var(--light-color);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            animation: slideInDown 0.5s ease-out;
+            transition: 1s;
+        }
+
+        nav div a {
+            color: var(--black-color);
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1em;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        nav div a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.3s;
+        }
+
+        nav div a:hover::before {
+            width: 100%;
+        }
+
+        header, section, footer {
+            padding: 100px 20px 20px;
+            text-align: center;
+            position: relative;
+            transition: 1s;
+        }
+
+        header {
+            background: var(--primary-color);
+            color: var(--black-color);
+            padding: 100px 20px;
+            height: 60vh;
+            clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+            transition: 1s;
+        }
+
+        header h1 {
+            font-size: 3.5em;
+            margin: 0;
+            animation: fadeInDown 1s ease-out;
+            transition: 1s;
+        }
+
+        header p {
+            font-size: 1.5em;
+            animation: fadeInUp 1s ease-out;
+            transition: 1s;
+        }
+
+        section {
+            padding: 60px 20px;
+            margin: 40px 0;
+            border-radius: 15px;
+            background: var(--sectionb-color);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1.5s ease-out, slideUp 1.5s ease-out;
+            transition: 1s;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+            /*animation: fadeInUp 1s;*/
+        }
+
+        .section-title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            animation: fadeInLeft 1.5s ease-out;
+            transition: 1s;
+        }
+
+        .section-content {
+            font-size: 1.2em;
+            line-height: 1.6;
+            animation: fadeInRight 1.5s ease-out;
+        }
+
+        .button {
+            padding: 15px 30px;
+            font-size: 1em;
+            border: none;
+            cursor: pointer;
+            background: var(--secondary-color);
+            color: var(--light-color);
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            border-radius: 50px;
+            animation: bounceIn 1s ease-out;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            animation: fadeInUp 1.5s ease-out;
+            transition: 1s;
+        }
+
+        .feature {
+            flex: 1 1 calc(33.333% - 40px);
+            background: var(--gradient-light);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: zoomIn 1s ease-out;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            color: var(--light-color);
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .feature h3 {
+            font-size: 1.8em;
+            margin-top: 0;
+            color: var(--primary-color);
+            transition: color 0.3s;
+        }
+
+        .feature:hover h3 {
+            color: var(--secondary-color);
+        }
+
+        .feature p {
+            font-size: 1em;
+            line-height: 1.5;
+            transition: 1s;
+        }
+
+        footer {
+            background: var(--primary-color);
+            color: var(--black-color);
+            padding: 20px 0;
+            animation: fadeIn 2s ease-out;
+            transition: 1s;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1em;
+            transition: 1s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            60% { transform: scale(1.2); opacity: 1; }
+            80% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes slideInDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1);}
+            50% { transform: scale(1.05);}
+            100% { transform: scale(1);}
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes colorChange {
+            0% { color: #fff; }
+            50% { color: var(--secondary-color); }
+            100% { color: #fff; }
+        }
+
+        .feature::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature:hover::after {
+            opacity: 1;
+        }
+        .button {
+            display: block;
+            padding: 15px 30px;
+            font-size: 1em;
+            border: none;
+            cursor: pointer;
+            background: var(--secondary-color);
+            color: var(--button-color);
+            transition: background-color 0.3s, transform 0.3s;
+            border-radius: 50px;
+            animation: bounceIn 1s ease-out;
+            display: inline-block;
+            margin-top: 10px;
+            margin-right: 50px;
+            opacity: 1;
+            transition: 1s;
+        }
+        .button2 {
+            padding: 15px 30px;
+            font-size: 1em;
+            border: none;
+            cursor: pointer;
+            background: var(--secondary-color);
+            color: var(--button-color);
+            transition: background-color 0.3s, transform 0.3s;
+            border-radius: 50px;
+            animation: bounceIn 1s ease-out;
+            display: inline-block;
+            margin-top: 10px;
+            opacity: 1;
+            transition: 1s;
+        }
+        /* the intro */
+        .hintroc {
+            font-family: 'Arial', sans-serif;
+            background: #000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeOutfi 1s 2s forwards;
+        }
+
+        .intro-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .intro-text {
+            font-size: 6em;
+            color: transparent;
+            letter-spacing: 0.1em;
+            background: linear-gradient(90deg, #ff0077, #7700ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            position: relative;
+            animation: shine 2s ease-in-out forwards, fadeInfi 1.5s ease-out;
+        }
+
+        .intro-text::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: calc(100% + 20px);
+            height: calc(100% + 20px);
+            border: 2px solid transparent;
+            border-image: linear-gradient(45deg, #ff0077, #7700ff) 1;
+            animation: borderGlow 2s ease-in-out infinite;
+        }
+
+        .intro-text::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+            transform: translateX(-100%);
+            animation: shineEffect 2s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInfi {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shineEffect {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                text-shadow: none;
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(255, 0, 119, 0.8), 0 0 40px rgba(119, 0, 255, 0.6);
+            }
+        }
+
+        @keyframes fadeOutfi {
+            to {
+                opacity: 0;
+                visibility: hidden;
+                display: none;
+            }
+        }
+
+        @keyframes borderGlow {
+            0%, 100% {
+                border-color: #ff0077;
+            }
+            50% {
+                border-color: #7700ff;
+            }
+        }
+        #startBtn{
+            background: linear-gradient(90deg, #ff0077, #7700ff);
+            color: #fff;
+        }
+        @media (max-width: 750px){
+            .startStudio{
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hintroc">
+        <div class="intro-container">
+            <div class="intro-text">AIlury</div>
+        </div>
+    </div>
+    <nav>
+        <div>
+            <a href="#home">Home</a>
+            <a href="#about">about</a>
+            <a href="#solutions">solution</a>
+            <a href="#start">start</a>
+        </div>
+        <a href="start.html"><button class="button">start</button></a>
+    </nav>
+    <header id="home">
+        <h1 class="header1">welcome Ailury</h1>
+        <p>learn, play and have fun</p>
+    </header>
+    <section id="about">
+        <div class="section-title">about</div>
+        <div class="section-content">
+            <p>Ailury is a bot currently in development. We aim to make its responses as natural and human-like as possible, while ensuring it is clear that Ailury is a bot and not a human being.</p>
+        </div>
+    </section>
+    <section id="solutions">
+        <div class="section-title">Problems and Solutions</div>
+        <div class="features">
+            <div class="feature">
+                <h3>dont you know...</h3>
+                <p>When using language models for learning, you might encounter incorrect answers?! Well we carefully research every response to ensure accuracy, for more productive learning. but please keep in mind that Ailury can still make mistakes, but if she makes a mistake you will know.</p>
+            </div>
+            <div class="feature">
+                <h3>dont you know...</h3>
+                <p>If you’re using a language model, you might find that it sometimes provides an answer even when it doesn’t know the correct one. With Ailury, if she doesn’t find a fitting answer, she will let you know that she doesn’t know the answer.</p>
+            </div>
+            <div class="feature">
+                <h3>want to play some games?…</h3>
+                <p>For those who enjoy playing games, we have added a variety of fun games to Ailury, such as "Find the Different Emoji" and quizzes. We constantly add new games to the model to keep things exciting.</p>
+            </div>
+        </div>
+    </section>
+    <section id="start">
+        <div class="section-title">want to start chatting now?</div>
+        <div class="section-content">
+            <p>start chatting with AIlury without having to give personal information.</p>
+            <a href="start.html"><button class="button2" id="startBtn">start</button></a>
+        </div>
+    </section>
+    <section class="startStudio" id="start2">
+        <div class="section-title">Want to become a front-end developer?</div>
+        <div class="section-content">
+            <p>Start using AIlury Programming Studio with unlimited access for <span style="color: green">free</span>.</p>
+            <a href="AIluryProgrammingStudio.html"><button class="button2" id="startBtn">start</button></a>
+            <p>Disclaimer:</p>
+
+            <p style="text-align: left;">This project uses CodeMirror and its addons, which are licensed under the MIT License. All rights are reserved to the original authors. By using this project, you acknowledge the following:</p>
+            <ul style="text-align: left;">
+              <li>CodeMirror and its addons are open-source and licensed under the MIT License. The original copyright notices must be retained.</li>
+              <li>The MIT License details can be found <a href="https://opensource.org/licenses/MIT" target="_blank" style="color: #ff0077;">here</a>.</li>
+              <li>Any customizations made to CodeMirror, including the custom light and dark themes, are based on the original open-source library and adhere to the MIT License.</li>
+              <li>For further details on the licensing and to view the original CodeMirror code, please visit the <a href="https://codemirror.net/" target="_blank" style="color: #ff0077;">CodeMirror website</a>.</li>
+            </ul>
+        </div>
+    </section>
+    <footer>
+        <p>wanna try it out ?</p>
+    </footer>
+    <script>
+
+        let header1 = document.querySelector('.header1');
+        function changeText(word){
+            // add every letter if the word individually with 1 second delay
+            header1.textContent= "";
+            for(let i = 0; i < word.length; i++){
+                setTimeout(() => {
+                    header1.textContent += word[i];
+                    if (header1.textContent == "chat with AIlury and play many games"){
+                        setTimeout(() => {
+                            header1.textContent= "";
+                            changeText("welcome to AIlury");
+                        }, 1000);
+                    }
+                }, i * 100);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const boxes = document.querySelectorAll('section');
+            const startbtn = document.querySelector('.button2');
+            const button = document.querySelector('.button');
+            setTimeout(() => {
+                changeText("chat with AIlury and play many games");
+            }, 5000);
+            const observer2 = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Füge die Klasse hinzu, wenn das Element sichtbar ist
+                        button.style.opacity = 0;
+                        setTimeout(() => {
+                            button.style.display = 'none';
+                        }, 1000);
+                    } else {
+                        // Entferne die Klasse, wenn das Element nicht mehr sichtbar ist
+                        button.style.display = 'block';
+                        button.style.opacity = 1;
+                    }
+                });
+            }, { threshold: 0.1 }); // 10% des Elements muss sichtbar sein
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Füge die Klasse hinzu, wenn das Element sichtbar ist
+                        entry.target.classList.add('visible');
+                    } else {
+                        // Entferne die Klasse, wenn das Element nicht mehr sichtbar ist
+                        entry.target.classList.remove('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            boxes.forEach(box => {
+                observer.observe(box);
+            });
+            observer2.observe(startbtn);
+        });
+        
+
+
+        function change_mood(){
+          document.body.classList.toggle("dark-theme");
+        }
+        function isDarkMode() {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                changeFavicon('AIlurylogo2.ico');
+                return true;
+            } else {
+                changeFavicon('AIlurylogo.ico');
+                return false;
+            }
+        }
+        function changeFavicon(faviconurl) {
+            let favilink = document.getElementById("faviconico");
+    
+            if (favilink) {
+                favilink.href = faviconurl;
+            } else {
+                // Fallback, falls das Element nicht existiert
+                favilink = document.createElement('link');
+                favilink.id = 'faviconico';
+                favilink.rel = 'icon';
+                favilink.href = faviconurl;
+                favilink.type = 'image/x-icon';
+                document.head.appendChild(favilink);
+            }
+        }
+
+        // Function to update the mode information
+        function updateModeInfo() {
+            if (isDarkMode()) {
+                change_mood();
+            }
+            /*else {
+                change_mood();
+            }*/
+        }
+
+        // Call the function initially
+        updateModeInfo();
+
+        // Listen for changes in mode preference
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateModeInfo);
+
+    </script>
+</body>
+</html>
