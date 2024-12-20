@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="AIlurylogo.ico" type="image/x-icon">
+    <title>AIlury</title>
+    <style>
+        :root{
+            --theme-color: black;
+            --theme-color2: white;
+            --theme-glas: rgba(255, 255, 255, 0.5);
+        }
+        .dark-theme{
+            --theme-color: white;
+            --theme-color2: black;
+            --theme-glas: rgba(0, 0, 0, 0.5);
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url(AIluryBackground.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: BodyfadeIn 1s;
+            transition: 1s;
+        }
+        #game {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            animation: fadeInDown 1s;
+            gap: 5px;
+            transition: 1s;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            background: var(--theme-glas);
+            -webkit-backdrop-filter: blur(70px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            cursor: pointer;
+            border: none;
+            color: var(--theme-color);
+            border-radius: 20px;
+            transition: 1s;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 1.5em;
+            transition: 1s;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: var(--theme-glas);
+            -webkit-backdrop-filter: blur(70px);
+            color: var(--theme-color);
+            animation: fadeInDown 1s;
+            transition: 1s;
+        }
+        #mode-select {
+            margin-bottom: 20px;
+            animation: fadeInDown 1s;
+            transition: 1s;
+        }
+        @keyframes fadeInDown{
+          0%{
+            opacity: 0;
+            transform: translateY(-100px);
+          }
+          100%{
+            opacity: 1;
+            transform: translateY(0px);
+          }
+        }
+        @keyframes BodyfadeIn{
+          0%{
+            opacity: 0;
+          }
+          100%{
+            opacity: 1;
+          }
+        }
+        #profile{
+            position: fixed;
+            display: flex;
+            justify-content: space-between;
+            top: 10px;
+            left: 10px;
+            height: 55px;
+            border: none;
+            font-size: 1em;
+            border-radius: 20px;
+            background: var(--theme-glas);
+            -webkit-backdrop-filter: blur(70px);
+            color: var(--theme-color);
+            padding: 10px;
+            animation: fadeInDown 1s;
+            transition: 1s;
+        }
+        #profile:hover{
+            transform: scale(1.1);
+        }
+        #profile img{
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            transition: 1s;
+            /* image cover */
+            object-fit: cover;
+            margin: 5px;
+        }
+        #profile h2{
+            margin: 10px;
+            margin-top: 14px;
+            font-weight: bold;
+        }
+        .clock {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            color: var(--theme-color2);
+            text-shadow: 0px 0px 10px var(--theme-color);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1em;
+            animation: fadeInDown 1s;
+            font-family: 'Arial', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="clock" class="clock"></div>
+    <a href="start.html"><div id="profile">
+        <img src="" alt="profile image" id="theprofileimage">
+        <h2 id="theprofilename">Guest</h2>
+    </div></a>
+    <div id="mode-select">
+        <button onclick="setMode('single')">player vs computer</button>
+        <button onclick="setMode('multi')">Two players</button>
+        <a href="AIluryApps.html"><button id="back">back</button></a>
+    </div>
+    <div id="game">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+    </div>
+    <div id="message"></div>
+    <button id="restart">Restart</button>
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds}`;
+
+            document.getElementById('clock').textContent = timeString;
+        }
+
+        // Update the clock every second
+        setInterval(updateClock, 1000);
+
+        // Initialize the clock immediately
+        updateClock();
+        let theprofilename = document.getElementById('theprofilename');
+        let theprofileimage = document.getElementById('theprofileimage');
+        function loadProfile() {
+            const savedUsername = localStorage.getItem("username");
+            const savedAvatar = localStorage.getItem("avatar");
+
+            if (savedUsername) {
+                theprofilename.textContent = savedUsername;
+            }
+
+            if (savedAvatar) {
+                theprofileimage.src = savedAvatar;
+
+            }
+        }
+        const cells = document.querySelectorAll('.cell');
+        const message = document.getElementById('message');
+        const restartButton = document.getElementById('restart');
+        let currentPlayer = 'X';
+        let gameMode = 'single'; // 'single' for player vs computer, 'multi' for two players
+        let board = Array(9).fill(null);
+        let isGameOver = false;
+
+        cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+        restartButton.addEventListener('click', startGame);
+
+        function setMode(mode) {
+            gameMode = mode;
+            startGame();
+        }
+
+        function startGame() {
+            board.fill(null);
+            currentPlayer = 'X';
+            isGameOver = false;
+            message.textContent = '';
+            cells.forEach(cell => {
+                cell.textContent = '';
+                cell.style.pointerEvents = 'auto';
+            });
+        }
+
+        function handleCellClick(e) {
+            const index = e.target.getAttribute('data-index');
+            if (!isGameOver && !board[index]) {
+                makeMove(index, currentPlayer);
+                if (gameMode === 'single' && currentPlayer === 'O') {
+                    disableClicks();
+                    setTimeout(() => {
+                        computerMove();
+                        enableClicks();
+                    }, 500);
+                }
+            }
+        }
+
+        function makeMove(index, player) {
+            board[index] = player;
+            cells[index].textContent = player;
+            cells[index].style.pointerEvents = 'none';
+            if (checkWin(player)) {
+                message.textContent = `${player} wins!`;
+                isGameOver = true;
+            } else if (board.every(cell => cell)) {
+                message.textContent = `Draw!`;
+                isGameOver = true;
+            } else {
+                currentPlayer = player === 'X' ? 'O' : 'X';
+            }
+        }
+
+        function computerMove() {
+            // Block two consecutive X's if possible
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] === 'X') {
+                    const winPatterns = [
+                        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                        [0, 4, 8], [2, 4, 6]
+                    ];
+                    for (const pattern of winPatterns) {
+                        if (pattern.includes(i)) {
+                            const [a, b, c] = pattern;
+                            if (board[a] === 'X' && board[b] === 'X' && !board[c]) {
+                                return makeMove(c, 'O');
+                            }
+                            if (board[a] === 'X' && board[c] === 'X' && !board[b]) {
+                                return makeMove(b, 'O');
+                            }
+                            if (board[b] === 'X' && board[c] === 'X' && !board[a]) {
+                                return makeMove(a, 'O');
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Otherwise, make a random move
+            let availableCells = [];
+            board.forEach((cell, index) => {
+                if (!cell) availableCells.push(index);
+            });
+            const randomIndex = availableCells[Math.floor(Math.random() * availableCells.length)];
+            makeMove(randomIndex, 'O');
+        }
+
+        function checkWin(player) {
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+            return winPatterns.some(pattern => {
+                return pattern.every(index => board[index] === player);
+            });
+        }
+
+        function disableClicks() {
+            cells.forEach(cell => cell.style.pointerEvents = 'none');
+        }
+
+        function enableClicks() {
+            cells.forEach(cell => {
+                if (!board[cell.getAttribute('data-index')]) {
+                    cell.style.pointerEvents = 'auto';
+                }
+            });
+        }
+
+        startGame();
+        let bodyb = document.querySelector('body');
+        document.addEventListener("DOMContentLoaded", () => {
+            let image = localStorage.getItem('backgroundImage');
+            if (image) {
+                bodyb.style.backgroundImage = `url(${image})`;
+            }
+            loadProfile();
+        });
+        function change_mood(){
+          document.body.classList.toggle("dark-theme");
+        }
+        function isDarkMode() {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // Function to update the mode information
+        function updateModeInfo() {
+            if (isDarkMode()) {
+                change_mood();
+            }
+            /*else {
+                change_mood();
+            }*/
+        }
+
+        // Call the function initially
+        updateModeInfo();
+
+        // Listen for changes in mode preference
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateModeInfo);
+    </script>
+</body>
+</html>
