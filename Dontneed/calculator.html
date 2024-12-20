@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="AIlurylogo.ico" type="image/x-icon">
+  <title>AIlury</title>
+  <style>
+    :root{
+      --theme-color: rgba(255, 255, 255, 0.5);
+      --theme-color2: black;
+      --theme-color3: white;
+    }
+    .dark-theme{
+      --theme-color: rgba(0, 0, 0, 0.5);
+      --theme-color2: white;
+      --theme-color3: black;
+    }
+    body{
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      background-image: url(AIluryBackground.jpg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      align-items: center;
+      height: 100vh;
+      animation: BodyfadeIn 1s;
+      transition: 1s;
+    }
+    #calculator{
+      font-family: Arial, sans-serif;
+      /*background-color: hsl(0, 0%, 15%);*/
+      background: var(--theme-color);
+      -webkit-backdrop-filter: blur(70px);
+      border-radius: 15px;
+      max-width: 500px;
+      animation: fadeInDown 1s;
+      overflow: hidden;
+      transition: 1s;
+    }
+    #display{
+      width: 100%;
+      padding: 20px;
+      font-size: 5rem;
+      text-align: left;
+      border: 2px solid hsl(0, 0%, 20%);
+      border-radius: 10px;
+      /*background-color: hsl(0, 0%, 20%);*/
+      background: var(--theme-color);
+      -webkit-backdrop-filter: blur(70px);
+      color: var(--theme-color2);
+      transition: 1s;
+    }
+    #keys{
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 10px;
+      padding: 25px;
+      transition: 1s;
+    }
+    button{
+      width: 100px;
+      height: 100px;
+      border-radius: 50px;
+      border: none;
+      /*background-color: hsl(0, 0%, 30%);*/
+      background: var(--theme-color);
+      -webkit-backdrop-filter: blur(70px);
+      color: var(--theme-color2);
+      font-size: 35px;
+      font-weight: bold;
+      cursor: pointer;
+      text-alight: center;
+      transition: 1s;
+    }
+    button:hover{
+      /*background-color: hsl(0, 0%, 40%);*/
+      background: var(--theme-color);
+      -webkit-backdrop-filter: blur(70px);
+    }
+    button:active{
+      /*background-color: hsl(0, 0%, 50%);*/
+      background: var(--theme-color);
+      -webkit-backdrop-filter: blur(70px);
+    }
+    .operator-btn{
+      /*background-color: hsl(35, 100%, 55%);*/
+      background: var(--theme-color);
+      -webkit-backdrop-filter: blur(70px);
+    }
+    .operator-btn:hover{
+      /*background-color: hsl(35, 100%, 65%);*/
+      background: var(--theme-color);
+      -webkit-backdrop-filter: blur(70px);
+    }
+    .operator-btn:active{
+      /*background-color: hsl(35, 100%, 75%);*/
+      background: var(--theme-color);
+      -webkit-backdrop-filter: blur(70px);
+    }
+    @keyframes fadeInDown{
+      0%{
+        opacity: 0;
+        transform: translateY(-100px);
+      }
+      100%{
+        opacity: 1;
+        transform: translateY(0px);
+      }
+    }
+    @keyframes BodyfadeIn{
+      0%{
+        opacity: 0;
+      }
+      100%{
+        opacity: 1;
+      }
+    }
+    #profile{
+      position: fixed;
+      display: flex;
+      justify-content: space-between;
+      top: 10px;
+      left: 10px;
+      height: 55px;
+      border: none;
+      font-size: 1em;
+      border-radius: 20px;
+      background: var(--theme-color);
+      -webkit-backdrop-filter: blur(70px);
+      color: var(--theme-color2);
+      padding: 10px;
+      animation: fadeInDown 1s;
+      transition: 1s;
+    }
+    #profile:hover{
+      transform: scale(1.1);
+    }
+    #profile img{
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      transition: 1s;
+      /* image cover */
+      object-fit: cover;
+      margin: 5px;
+    }
+    #profile h2{
+        margin: 10px;
+        margin-top: 14px;
+        font-weight: bold;
+    }
+    .clock {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background-color: transparent;
+        color: var(--theme-color3);
+        text-shadow: 0px 0px 10px var(--theme-color2);
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 1em;
+        animation: fadeInDown 1s;
+        font-family: 'Arial', sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="clock" class="clock"></div>
+  <a href="start.html"><div id="profile">
+    <img src="" alt="profile image" id="theprofileimage">
+    <h2 id="theprofilename">Guest</h2>
+  </div></a>
+  <div id="calculator">
+    <input id="display" readonly>
+    <div id="keys">
+      <button onclick="appendToDisplay('+')" class="operator-btn">+</button>
+      <button onclick="appendToDisplay('7')">7</button>
+      <button onclick="appendToDisplay('8')">8</button>
+      <button onclick="appendToDisplay('9')">9</button>
+      <button onclick="appendToDisplay('-')" class="operator-btn">-</button>
+      <button onclick="appendToDisplay('4')">4</button>
+      <button onclick="appendToDisplay('5')">5</button>
+      <button onclick="appendToDisplay('6')">6</button>
+      <button onclick="appendToDisplay('*')" class="operator-btn">*</button>
+      <button onclick="appendToDisplay('1')">1</button>
+      <button onclick="appendToDisplay('2')">2</button>
+      <button onclick="appendToDisplay('3')">3</button>
+      <button onclick="appendToDisplay('/')" class="operator-btn">/</button>
+      <button onclick="appendToDisplay('0')">0</button>
+      <button onclick="appendToDisplay('.')">.</button>
+      <button onclick="calculate()">=</button>
+      <button onclick="clearDisplay()" class="operator-btn">C</button>
+      <a href="AIluryApps.html"><button class="back"><-</button></a>
+    </div>
+  </div>
+  <script>
+    function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const timeString = `${hours}:${minutes}:${seconds}`;
+        document.getElementById('clock').textContent = timeString;
+    }
+    // Update the clock every second
+    setInterval(updateClock, 1000);
+    // Initialize the clock immediately
+    updateClock();
+    let theprofilename = document.getElementById('theprofilename');
+    let theprofileimage = document.getElementById('theprofileimage');
+    function loadProfile() {
+        const savedUsername = localStorage.getItem("username");
+        const savedAvatar = localStorage.getItem("avatar");
+
+        if (savedUsername) {
+            theprofilename.textContent = savedUsername;
+        }
+        if (savedAvatar) {
+            theprofileimage.src = savedAvatar;
+        }
+    }
+    let bodyb = document.querySelector('body');
+    document.addEventListener("DOMContentLoaded", () => {
+        let image = localStorage.getItem('backgroundImage');
+        if (image) {
+            bodyb.style.backgroundImage = `url(${image})`;
+        }
+        loadProfile();
+    });
+    const display = document.getElementById('display');
+    function appendToDisplay(input){
+      if(display.value == 'Error' || display.value == 'undefined' || display.value == 'function Error() {    [native code]}'){
+        display.value = '';
+        display.value += input;
+      }else{
+        display.value += input;
+      }
+    }
+    function clearDisplay(){
+      display.value = '';
+    }
+    function calculate(){
+      try{
+        display.value = eval(display.value);
+      }
+      catch(error){
+        display.value = 'Error';
+      }
+    }
+    function change_mood(){
+      document.body.classList.toggle("dark-theme");
+    }
+    function isDarkMode() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Function to update the mode information
+    function updateModeInfo() {
+        if (isDarkMode()) {
+            change_mood();
+        }
+        /*else {
+            change_mood();
+        }*/
+    }
+
+    // Call the function initially
+    updateModeInfo();
+
+    // Listen for changes in mode preference
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateModeInfo);
+  </script>
+</body>
+
+</html>
